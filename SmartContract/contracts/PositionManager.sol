@@ -19,23 +19,18 @@ contract PositionManager is Swap, ReentrancyGuard {
     uint256 s_buyPositionId;
     address s_tradeExecutor;
     address s_owner;
-    uint256 s_positionFee;
-
-    enum positionSide {
-        BUY,
-        SELL
-    }
+    uint256 s_dailyPositionFee;
 
     struct Position {
         address wallet;
         address dex;
-        address token; // in sellPosition the token is the selling token, in buyPosition is is the buying token(input token WETH)
+        address tokenIn;
+        address tokenOut;
         uint256 quantity; // input token quantity
         uint256 timestamp;
         uint256 executionValue;
         bool executed;
         uniswapABI forkABI;
-        positionSide side;
         uint256 endTimestamp;
     }
 
@@ -49,48 +44,20 @@ contract PositionManager is Swap, ReentrancyGuard {
         s_owner = msg.sender;
     }
 
-    // First user needs to approve quantity
-    function setSellPosition(
-        address token,
+    // First user needs to approve quantity, only available for WETH, duration in days
+    function createPosition(
+        address tokenIn,
+        address tokenOut,
         uint256 quantity,
-        uint256 sellPrice,
-        address dex
+        uint256 swapPrice,
+        address dex,
+        uint256 duration
     ) external payable nonReentrant {
-        require(msg.value >= s_positionFee, "Need to send more gas");
         require(
-            IERC20(token).balanceOf(msg.sender) >= quantity,
-            "Token balance too low"
+            msg.value >= s_dailyPositionFee * duration,
+            "Need to send more gas"
         );
-        require(sellPrice > 0, "Price cannot be 0");
-        require(whitelistedDexes[dex] == true, "Dex not whitelisted");
-        uniswapABI forkABI = isValidUniswapFork(dex);
-        IERC20(token).transferFrom(msg.sender, address(this), quantity);
-        positionAttributes[s_positionId] = Position(
-            msg.sender,
-            dex,
-            token,
-            quantity,
-            block.timestamp,
-            sellPrice,
-            false,
-            forkABI,
-            positionSide.SELL,
-            block.timestamp + 30 days
-        );
-        s_positionId++;
-        (bool success, ) = s_owner.call{value: s_positionFee}("");
-        require(success);
-    }
-
-    // First user needs to approve quantity, only available for WETH
-    function setBuyPosition(
-        address token,
-        uint256 quantity,
-        uint256 buyPrice,
-        address dex
-    ) external payable nonReentrant {
-        require(msg.value >= s_positionFee, "Need to send more gas");
-        require(buyPrice > 0, "Price cannot be 0");
+        require(swapPrice > 0, "Price cannot be 0");
         require(
             IERC20(s_wethAddress).balanceOf(msg.sender) >= quantity,
             "Token balance too low"
@@ -101,17 +68,19 @@ contract PositionManager is Swap, ReentrancyGuard {
         positionAttributes[s_positionId] = Position(
             msg.sender,
             dex,
-            token,
+            tokenIn,
+            tokenOut,
             quantity,
             block.timestamp,
-            buyPrice,
+            swapPrice,
             false,
             forkABI,
-            positionSide.SELL,
-            block.timestamp + 30 days
+            block.timestamp + (1 days) * duration
         );
         s_positionId++;
-        (bool success, ) = s_owner.call{value: s_positionFee}("");
+        (bool success, ) = s_owner.call{value: s_dailyPositionFee * duration}(
+            ""
+        );
         require(success);
     }
 
@@ -127,35 +96,35 @@ contract PositionManager is Swap, ReentrancyGuard {
             "Position has already been executed"
         );
         positionAttributes[positionId].executed = true;
-        if (position.side == positionSide.BUY) {
-            IERC20(s_wethAddress).transfer(msg.sender, position.quantity);
-        } else {
-            IERC20(position.token).transfer(msg.sender, position.quantity);
-        }
+        IERC20(position.tokenIn).transfer(msg.sender, position.quantity);
     }
 
-    function executeSell(address wallet, uint256 positionId) external {
+    function prolongPosition(
+        uint256 positionId,
+        uint256 duration
+    ) external payable nonReentrant {
+        Position storage position = positionAttributes[positionId];
+        require(
+            msg.value >= s_dailyPositionFee * duration,
+            "Need to send more gas"
+        );
+        require(
+            position.wallet == msg.sender,
+            "Address not an owner of this position"
+        );
+        positionAttributes[positionId].endTimestamp = block.timestamp + 30 days;
+        (bool success, ) = s_owner.call{value: s_dailyPositionFee * duration}(
+            ""
+        );
+        require(success);
+    }
+
+    function executeSwap(address wallet, uint256 positionId) external {
         require(
             msg.sender == s_tradeExecutor,
             "Only trade executor addresss can execute a trade"
         );
-        require(
-            positionAttributes[s_positionId].side == positionSide.BUY,
-            "The position needs to be a sell position"
-        );
-        // Require enough gas, decrement Gas(send it to owner wallet)
-    }
-
-    function executeBuy(address wallet, uint256 positionId) external {
-        require(
-            msg.sender == s_tradeExecutor,
-            "Only trade executor addresss can execute a trade"
-        );
-        require(
-            positionAttributes[positionId].side == positionSide.BUY,
-            "The position needs to be a buy position"
-        );
-        // Require enough gas, decrement Gas(send it to owner wallet)
+        // Require enough gas, decrement gas in mapping
     }
 
     function provideGas() public payable {
@@ -184,6 +153,6 @@ contract PositionManager is Swap, ReentrancyGuard {
     }
 
     function changeFee(uint256 newFee) public {
-        s_positionFee = newFee;
+        s_dailyPositionFee = newFee;
     }
 }
