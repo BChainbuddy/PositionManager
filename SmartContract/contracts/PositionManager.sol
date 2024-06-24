@@ -2,24 +2,30 @@
 
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./DexChecker.sol";
+import "./FeeManager.sol";
+import "./GasManager.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-contract PositionManager is DexChecker, ReentrancyGuard {
+contract PositionManager is
+    ReentrancyGuard,
+    DexChecker,
+    FeeManager,
+    GasManager
+{
     // Events
     event PositionCreated(address indexed wallet, uint256 positionId);
-    event WithdrawnPosition(address indexed wallet, uint256 positionId);
+    event PositionWithdrawn(address indexed wallet, uint256 positionId);
     event PositionExecuted(uint256 positionId);
     event PositionProlonged(uint256 positionId, uint256 duration);
 
+    using SafeERC20 for IERC20;
+
     // Storage variables
-    uint256 s_positionId;
-    address s_wethAddress;
-    uint256 s_buyPositionId;
-    address s_tradeExecutor;
-    address s_owner;
-    uint256 s_dailyPositionFee;
+    uint256 public s_positionId;
+    address private s_tradeExecutor;
 
     struct Position {
         address wallet;
@@ -27,46 +33,48 @@ contract PositionManager is DexChecker, ReentrancyGuard {
         address tokenIn;
         address tokenOut;
         uint256 quantity; // input token quantity
-        uint256 timestamp;
         uint256 executionValue;
+        uint32 endTimestamp;
+        uint24 fee;
         bool executed;
         UniswapABI forkABI;
-        uint256 endTimestamp;
-        uint24 fee;
     }
 
-    mapping(uint256 => Position) internal positionAttributes;
-    mapping(address => uint256) public userGas;
-    mapping(address => bool) public whitelistedDexes;
+    mapping(uint256 => Position) private positionAttributes;
 
-    constructor(address tradeExecutor, address wethAddress) {
+    modifier onlyPositionOwner(uint256 positionId) {
+        require(
+            positionAttributes[positionId].wallet == msg.sender,
+            "Not position owner"
+        );
+        _;
+    }
+
+    constructor(
+        address tradeExecutor,
+        uint256 dailyPositionFee
+    ) FeeManager(dailyPositionFee, tradeExecutor) {
         s_tradeExecutor = tradeExecutor;
-        s_wethAddress = wethAddress;
-        s_owner = msg.sender;
     }
 
-    // First user needs to approve quantity, only available for WETH, duration in days
     function createPosition(
         address tokenIn,
         address tokenOut,
         uint256 quantity,
         uint256 swapPrice,
         address dexRouter,
-        uint256 duration
+        uint32 duration
     ) external payable nonReentrant {
         require(
-            msg.value >= s_dailyPositionFee * duration,
-            "Need to send more gas"
+            msg.value >= getDailyPositionFee() * duration,
+            "Insufficient fee"
         );
-        require(swapPrice > 0, "Price cannot be 0");
+        require(swapPrice > 0, "Swap price cannot be zero");
         require(
-            IERC20(s_wethAddress).balanceOf(msg.sender) >= quantity,
-            "Token balance too low"
+            IERC20(tokenIn).balanceOf(msg.sender) >= quantity,
+            "Insufficient token balance"
         );
-        require(
-            whitelistedDexes[dexRouter] == true,
-            "Dex router not whitelisted"
-        );
+        require(isWhitelistedDex(dexRouter), "Dex router not whitelisted");
         UniswapABI forkABI = isValidUniswapFork(dexRouter);
         (bool exists, uint24 fee) = doesPoolExist(
             dexRouter,
@@ -75,72 +83,66 @@ contract PositionManager is DexChecker, ReentrancyGuard {
             tokenOut
         );
         require(exists, "The pool doesn't exist");
-        IERC20(s_wethAddress).transferFrom(msg.sender, address(this), quantity);
+
+        IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), quantity);
+
         positionAttributes[s_positionId] = Position(
             msg.sender,
             dexRouter,
             tokenIn,
             tokenOut,
             quantity,
-            block.timestamp,
             swapPrice,
+            uint32(block.timestamp) + (1 days) * duration,
+            forkABI == UniswapABI.V3 ? fee : 0,
             false,
-            forkABI,
-            block.timestamp + (1 days) * duration,
-            forkABI == UniswapABI.V3 ? fee : 0
+            forkABI
         );
+
         emit PositionCreated(msg.sender, s_positionId);
         s_positionId++;
-        (bool success, ) = s_owner.call{value: s_dailyPositionFee * duration}(
-            ""
-        );
-        require(success);
+
+        distributeFee(msg.value);
     }
 
-    function withdrawPosition(uint256 positionId) external nonReentrant {
+    function withdrawPosition(
+        uint256 positionId
+    ) external onlyPositionOwner(positionId) nonReentrant {
         Position storage position = positionAttributes[positionId];
-        require(
-            position.wallet == msg.sender,
-            "Address not an associated with this position"
-        );
-        require(position.quantity > 0, "Position doesnt exists");
-        require(
-            position.executed == false,
-            "Position has already been executed"
-        );
-        positionAttributes[positionId].executed = true;
-        IERC20(position.tokenIn).transfer(msg.sender, position.quantity);
-        emit WithdrawnPosition(msg.sender, positionId);
+        require(!position.executed, "Position already executed");
+
+        position.executed = true;
+        IERC20(position.tokenIn).safeTransfer(msg.sender, position.quantity);
+
+        emit PositionWithdrawn(msg.sender, positionId);
     }
 
     function prolongPosition(
         uint256 positionId,
-        uint256 duration
-    ) external payable nonReentrant {
+        uint32 duration
+    ) external payable onlyPositionOwner(positionId) nonReentrant {
         Position storage position = positionAttributes[positionId];
         require(
-            msg.value >= s_dailyPositionFee * duration,
-            "Need to send more gas"
+            msg.value >= getDailyPositionFee() * duration,
+            "Insufficient fee"
         );
-        require(
-            position.wallet == msg.sender,
-            "Address not an owner of this position"
-        );
-        positionAttributes[positionId].endTimestamp = block.timestamp + 30 days;
-        (bool success, ) = s_owner.call{value: s_dailyPositionFee * duration}(
-            ""
-        );
-        require(success);
+
+        position.endTimestamp += (1 days) * duration;
+
+        distributeFee(msg.value);
+
         emit PositionProlonged(positionId, duration);
     }
 
-    function executeSwap(uint256 positionId) external {
+    function executeSwap(uint256 positionId) external nonReentrant {
         require(
             msg.sender == s_tradeExecutor,
-            "Only trade executor addresss can execute a trade"
+            "Only trade executor can execute swap"
         );
-        // Require enough gas, decrement gas in mapping
+
         Position storage position = positionAttributes[positionId];
+        require(!position.executed, "Position already executed");
+
         uint256 tokensReceived;
         if (position.forkABI == UniswapABI.V2) {
             IUniswapV2Router router = IUniswapV2Router(position.dexRouter);
@@ -148,13 +150,14 @@ contract PositionManager is DexChecker, ReentrancyGuard {
                 address(router),
                 position.quantity
             );
+
             address[] memory path = new address[](2);
             path[0] = position.tokenIn;
             path[1] = position.tokenOut;
 
             uint256[] memory amounts = router.swapExactTokensForTokens(
                 position.quantity,
-                position.executionValue * position.quantity,
+                position.executionValue,
                 path,
                 position.wallet,
                 block.timestamp
@@ -167,6 +170,7 @@ contract PositionManager is DexChecker, ReentrancyGuard {
                 address(router),
                 position.quantity
             );
+
             router.exactInputSingle(
                 position.tokenIn,
                 position.tokenOut,
@@ -178,35 +182,24 @@ contract PositionManager is DexChecker, ReentrancyGuard {
                 0
             );
         }
+
+        position.executed = true;
+
         emit PositionExecuted(positionId);
     }
 
-    function provideGas() public payable {
-        userGas[msg.sender] += msg.value;
-    }
-
-    function withdrawGas(uint256 gasAmount) public {
-        (bool sent, ) = payable(msg.sender).call{value: gasAmount}("");
-        require(sent, "Failed to send Ether");
-    }
-
-    // Only owner of the position or trade executor can see the position
     function seePositionAttributes(
         uint256 positionId
-    ) public view returns (Position memory) {
+    ) external view returns (Position memory) {
         require(
             msg.sender == positionAttributes[positionId].wallet ||
-                msg.sender == s_tradeExecutor
+                msg.sender == s_tradeExecutor,
+            "Not authorized to view this position"
         );
         return positionAttributes[positionId];
     }
 
-    function whitelistDexRouter(address dexRouter) public {
-        require(msg.sender == s_owner, "Address not an owner");
-        whitelistedDexes[dexRouter] = true;
-    }
-
-    function changeFee(uint256 newFee) public {
-        s_dailyPositionFee = newFee;
+    function setNewTradeExecutor(address newTradeExecutor) external onlyOwner {
+        s_tradeExecutor = newTradeExecutor;
     }
 }
