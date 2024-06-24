@@ -1,0 +1,8 @@
+Smart contracts:
+1. Implement the uniswapv2 and uniswapv3 swap logic ✅
+2. Add check if the pool exist ✅
+3. Think about adding a modification of executionValue ✅
+4. Check if there are enough events
+5. Check if the structure is okay, if not add more contracts
+6. Check for language
+7. Add Comments
