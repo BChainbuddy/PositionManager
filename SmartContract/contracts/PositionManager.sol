@@ -9,24 +9,29 @@ import "./FeeManager.sol";
 import "./GasManager.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+/**
+ * @title PositionManager
+ * @notice This contract manages trading positions on Uniswap V2 and V3 forks, allowing users to create, prolong, and execute positions. It also handles fee management and gas provision.
+ */
 contract PositionManager is
     ReentrancyGuard,
     DexChecker,
     FeeManager,
     GasManager
 {
+    using SafeERC20 for IERC20;
+
     // Events
     event PositionCreated(address indexed wallet, uint256 positionId);
     event PositionWithdrawn(address indexed wallet, uint256 positionId);
     event PositionExecuted(uint256 positionId);
     event PositionProlonged(uint256 positionId, uint256 duration);
 
-    using SafeERC20 for IERC20;
-
     // Storage variables
     uint256 public s_positionId;
     address private s_tradeExecutor;
 
+    // Struct representing trading position
     struct Position {
         address wallet;
         address dexRouter;
@@ -42,21 +47,36 @@ contract PositionManager is
 
     mapping(uint256 => Position) private positionAttributes;
 
+    // Modifier to check if the caller is the owner of the position
     modifier onlyPositionOwner(uint256 positionId) {
         require(
             positionAttributes[positionId].wallet == msg.sender,
-            "Not position owner"
+            "Not the position owner"
         );
         _;
     }
 
+    /**
+     * @dev Constructor to initialize the contract with the trade executor and daily position fee.
+     * @param tradeExecutor Address of the trade executor.
+     * @param dailyPositionFee Fee charged per day for maintaining a position.
+     */
     constructor(
         address tradeExecutor,
-        uint256 dailyPositionFee
+        uint64 dailyPositionFee
     ) FeeManager(dailyPositionFee, tradeExecutor) {
         s_tradeExecutor = tradeExecutor;
     }
 
+    /**
+     * @dev Function to create a new trading position.
+     * @param tokenIn Address of the input token.
+     * @param tokenOut Address of the output token.
+     * @param quantity Quantity of input tokens.
+     * @param swapPrice Desired swap price.
+     * @param dexRouter Address of the DEX router.
+     * @param duration Duration of the position in days.
+     */
     function createPosition(
         address tokenIn,
         address tokenOut,
@@ -105,6 +125,10 @@ contract PositionManager is
         distributeFee(msg.value);
     }
 
+    /**
+     * @dev Function to withdraw an existing position.
+     * @param positionId ID of the position to withdraw.
+     */
     function withdrawPosition(
         uint256 positionId
     ) external onlyPositionOwner(positionId) nonReentrant {
@@ -117,6 +141,11 @@ contract PositionManager is
         emit PositionWithdrawn(msg.sender, positionId);
     }
 
+    /**
+     * @dev Function to prolong the duration of an existing position.
+     * @param positionId ID of the position to prolong.
+     * @param duration Additional duration in days.
+     */
     function prolongPosition(
         uint256 positionId,
         uint32 duration
@@ -134,6 +163,10 @@ contract PositionManager is
         emit PositionProlonged(positionId, duration);
     }
 
+    /**
+     * @dev Function to execute a swap for a given position.
+     * @param positionId ID of the position to execute.
+     */
     function executeSwap(uint256 positionId) external nonReentrant {
         require(
             msg.sender == s_tradeExecutor,
@@ -188,6 +221,11 @@ contract PositionManager is
         emit PositionExecuted(positionId);
     }
 
+    /**
+     * @dev Function to view the attributes of a position.
+     * @param positionId ID of the position to view.
+     * @return Position struct containing the position's details.
+     */
     function seePositionAttributes(
         uint256 positionId
     ) external view returns (Position memory) {
@@ -199,6 +237,10 @@ contract PositionManager is
         return positionAttributes[positionId];
     }
 
+    /**
+     * @dev Function to set a new trade executor.
+     * @param newTradeExecutor Address of the new trade executor.
+     */
     function setNewTradeExecutor(address newTradeExecutor) external onlyOwner {
         s_tradeExecutor = newTradeExecutor;
     }

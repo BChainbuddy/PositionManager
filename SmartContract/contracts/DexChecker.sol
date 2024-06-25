@@ -2,6 +2,10 @@
 
 pragma solidity ^0.8.9;
 
+/**
+ * @title IUniswapV2Router
+ * @dev Interface for Uniswap V2 Router, used for token swaps.
+ */
 interface IUniswapV2Router {
     function swapExactTokensForTokens(
         uint256 amountIn,
@@ -14,6 +18,10 @@ interface IUniswapV2Router {
     function factory() external view returns (address);
 }
 
+/**
+ * @title IUniswapV3Router
+ * @dev Interface for Uniswap V3 Router, used for token swaps with more parameters.
+ */
 interface IUniswapV3Router {
     function exactInputSingle(
         address tokenIn,
@@ -29,6 +37,10 @@ interface IUniswapV3Router {
     function factory() external view returns (address);
 }
 
+/**
+ * @title IUniswapV2Factory
+ * @dev Interface for Uniswap V2 Factory, used to get pairs.
+ */
 interface IUniswapV2Factory {
     function getPair(
         address tokenA,
@@ -36,6 +48,10 @@ interface IUniswapV2Factory {
     ) external view returns (address pair);
 }
 
+/**
+ * @title IUniswapV3Factory
+ * @dev Interface for Uniswap V3 Factory, used to get pools.
+ */
 interface IUniswapV3Factory {
     function getPool(
         address tokenA,
@@ -44,12 +60,17 @@ interface IUniswapV3Factory {
     ) external view returns (address pool);
 }
 
+/**
+ * @title DexChecker
+ * @dev Provides utility functions to check and interact with Uniswap V2 and V3 DEXes.
+ */
 contract DexChecker {
     enum UniswapABI {
         V3,
         V2
     }
 
+    // Function selectors for Uniswap V2 and V3 swap functions
     bytes4 private constant UNISWAPV3_SWAP_SELECTOR =
         bytes4(
             keccak256(
@@ -64,6 +85,11 @@ contract DexChecker {
             )
         );
 
+    /**
+     * @dev Checks if a given DEX address is a valid Uniswap V2 or V3 fork.
+     * @param dex The address of the DEX to check.
+     * @return The type of Uniswap fork (V2 or V3).
+     */
     function isValidUniswapFork(address dex) public view returns (UniswapABI) {
         uint256 size;
         assembly {
@@ -88,6 +114,14 @@ contract DexChecker {
         revert("The dex address is not UniswapV3 fork nor UniswapV2 fork");
     }
 
+    /**
+     * @dev Checks if a pool exists for a given DEX router and token pair.
+     * @param dexRouter The address of the DEX router.
+     * @param dexType The type of Uniswap fork (V2 or V3).
+     * @param tokenIn The address of the input token.
+     * @param tokenOut The address of the output token.
+     * @return A boolean indicating if the pool exists, and the fee tier for V3 pools.
+     */
     function doesPoolExist(
         address dexRouter,
         UniswapABI dexType,
@@ -102,6 +136,13 @@ contract DexChecker {
         return (false, 0);
     }
 
+    /**
+     * @dev Checks if a pool exists for Uniswap V2.
+     * @param _router The address of the Uniswap V2 router.
+     * @param tokenIn The address of the input token.
+     * @param tokenOut The address of the output token.
+     * @return A boolean indicating if the pool exists, and a zero fee for V2 pools.
+     */
     function doesPoolExistV2(
         address _router,
         address tokenIn,
@@ -118,6 +159,13 @@ contract DexChecker {
         }
     }
 
+    /**
+     * @dev Checks if a pool exists for Uniswap V3.
+     * @param _router The address of the Uniswap V3 router.
+     * @param tokenIn The address of the input token.
+     * @param tokenOut The address of the output token.
+     * @return A boolean indicating if the pool exists, and the fee tier for V3 pools.
+     */
     function doesPoolExistV3(
         address _router,
         address tokenIn,

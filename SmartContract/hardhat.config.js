@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 // require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config();
-require("hardhat-deploy");
+require("@nomicfoundation/hardhat-ignition");
 require("@nomiclabs/hardhat-ethers");
 
 // You need to export an object to set up your config
