@@ -74,7 +74,7 @@ contract DexChecker {
     bytes4 private constant UNISWAPV3_SWAP_SELECTOR =
         bytes4(
             keccak256(
-                "exactInputSingle(address,address,uint24,address,uint256,uint256,uint256,uint160)"
+                "exactInputSingle((address,address,uint24,address,uint256,uint256,uint256,uint160))"
             )
         );
 

@@ -94,11 +94,13 @@ contract PositionManager is
             IERC20(tokenIn).balanceOf(msg.sender) >= quantity,
             "Insufficient token balance"
         );
-        require(isWhitelistedDex(dexRouter), "Dex router not whitelisted");
-        UniswapABI forkABI = isValidUniswapFork(dexRouter);
+        require(
+            whitelistedDexes[dexRouter].isWhitelisted,
+            "Dex router not whitelisted"
+        );
         (bool exists, uint24 fee) = doesPoolExist(
             dexRouter,
-            forkABI,
+            whitelistedDexes[dexRouter].dexType,
             tokenIn,
             tokenOut
         );
@@ -114,9 +116,9 @@ contract PositionManager is
             quantity,
             swapPrice,
             uint32(block.timestamp) + (1 days) * duration,
-            forkABI == UniswapABI.V3 ? fee : 0,
+            whitelistedDexes[dexRouter].dexType == UniswapABI.V3 ? fee : 0,
             false,
-            forkABI
+            whitelistedDexes[dexRouter].dexType
         );
 
         emit PositionCreated(msg.sender, s_positionId);

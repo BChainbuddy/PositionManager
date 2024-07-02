@@ -3,18 +3,24 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./DexChecker.sol";
 
 /**
  * @title DexControl
  * @dev Manages the whitelisting of decentralized exchange (DEX) routers.
  * @dev Inherits Ownable to restrict certain functions to the contract owner.
  */
-contract DexControl is Ownable {
+contract DexControl is Ownable, DexChecker {
     // Event emitted when a DEX router is whitelisted
     event DexRouterWhitelisted(address dexRouter);
 
     // Mapping to store whitelisted DEX routers
-    mapping(address => bool) private whitelistedDexes;
+    mapping(address => DexRouter) public whitelistedDexes;
+
+    struct DexRouter {
+        bool isWhitelisted;
+        UniswapABI dexType;
+    }
 
     /**
      * @dev Sets the initial owner of the contract.
@@ -28,16 +34,9 @@ contract DexControl is Ownable {
      * @param dexRouter The address of the DEX router to whitelist.
      */
     function whitelistDexRouter(address dexRouter) public onlyOwner {
-        whitelistedDexes[dexRouter] = true;
+        UniswapABI forkABI = isValidUniswapFork(dexRouter);
+        whitelistedDexes[dexRouter] = DexRouter(true, forkABI);
         emit DexRouterWhitelisted(dexRouter);
     }
 
-    /**
-     * @dev Checks if a DEX router is whitelisted.
-     * @param dexRouter The address of the DEX router to check.
-     * @return True if the DEX router is whitelisted, false otherwise.
-     */
-    function isWhitelistedDex(address dexRouter) public view returns (bool) {
-        return whitelistedDexes[dexRouter];
-    }
 }
