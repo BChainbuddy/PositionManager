@@ -65,6 +65,8 @@ interface IUniswapV3Factory {
  * @dev Provides utility functions to check and interact with Uniswap V2 and V3 DEXes.
  */
 contract DexChecker {
+    event LogBytes(bytes data);
+
     enum UniswapABI {
         V3,
         V2
@@ -99,19 +101,44 @@ contract DexChecker {
             revert("Address is not a contract!");
         }
 
-        (bool successV3, ) = dex.staticcall(
-            abi.encodeWithSelector(UNISWAPV3_SWAP_SELECTOR)
-        );
-        if (successV3) {
+        bytes memory code = new bytes(size);
+        assembly {
+            extcodecopy(dex, add(code, 0x20), 0, size)
+        }
+
+        bool hasV3Selector = findSelector(code, UNISWAPV3_SWAP_SELECTOR);
+        bool hasV2Selector = findSelector(code, UNISWAPV2_SWAP_SELECTOR);
+
+        if (hasV3Selector) {
             return UniswapABI.V3;
         }
-        (bool successV2, ) = dex.staticcall(
-            abi.encodeWithSelector(UNISWAPV2_SWAP_SELECTOR)
-        );
-        if (successV2) {
+        if (hasV2Selector) {
             return UniswapABI.V2;
         }
+
         revert("The dex address is not UniswapV3 fork nor UniswapV2 fork");
+    }
+
+    /**
+     * @dev Searches for a specific selector in the given bytecode.
+     * @param code The bytecode to search.
+     * @param selector The selector to search for.
+     * @return A boolean indicating if the selector was found.
+     */
+    function findSelector(
+        bytes memory code,
+        bytes4 selector
+    ) internal pure returns (bool) {
+        for (uint256 i = 0; i <= code.length - 4; i++) {
+            bytes4 foundSelector;
+            assembly {
+                foundSelector := mload(add(add(code, 0x20), i))
+            }
+            if (foundSelector == selector) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

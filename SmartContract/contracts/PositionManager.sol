@@ -37,7 +37,7 @@ contract PositionManager is
         address dexRouter;
         address tokenIn;
         address tokenOut;
-        uint256 quantity; // input token quantity
+        uint256 quantity;
         uint256 executionValue;
         uint32 endTimestamp;
         uint24 fee;

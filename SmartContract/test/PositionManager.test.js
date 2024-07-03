@@ -33,6 +33,10 @@ describe("PositionManager", () => {
 
     await uniswapV3.waitForDeployment();
 
+    const mockContract = await ethers.deployContract("MockContract");
+
+    await mockContract.waitForDeployment();
+
     const quantity = ethers.parseEther("100");
 
     return {
@@ -44,6 +48,7 @@ describe("PositionManager", () => {
       quantity,
       uniswapV2,
       uniswapV3,
+      mockContract,
     };
   }
   describe("Initial check", () => {
@@ -55,32 +60,83 @@ describe("PositionManager", () => {
       expect(await positionManager.getDailyPositionFee()).to.equal(DAILY_FEE);
     });
   });
-  describe("Whitelist a uniswap router!", () => {
-    it("Whitelisted", async () => {
-      const { positionManager, uniswapV2, uniswapV3 } = await loadFixture(
+  describe("Whitelist a uniswap router", () => {
+    it("Revert address is a wallet", async () => {
+      const { positionManager, owner } = await loadFixture(
         deployContractFixture
       );
-      // await positionManager.whitelistDexRouter(uniswapV2.target);
-      // function swapExactTokensForTokens(
-      //   uint256 amountIn,
-      //   uint256 amountOutMin,
-      //   address[] calldata path,
-      //   address to,
-      //   uint256 deadline
-      await uniswapV2.swapExactTokensForTokens(
-        "100",
-        "100",
-        ["0x"],
-        "0x",
-        "100"
-      );
-      // await positionManager.whitelistDexRouter(uniswapV2.target);
+
+      // Check if the address is a valid Uniswap fork
+      await expect(positionManager.isValidUniswapFork(owner.address)).to.be
+        .reverted;
+
+      // Whitelist the address
+      await expect(positionManager.whitelistDexRouter(owner.address)).to.be
+        .reverted;
+
+      // Verify whitelisting
+      const dexInfo = await positionManager.whitelistedDexes(owner.address);
+      expect(dexInfo[0]).to.be.false;
+      expect(Number(dexInfo[1])).to.equal(0);
     });
-    it("Contract not a uniswap v3 or v2 fork", async () => {
-      const { positionManager, uniswapV2, uniswapV3 } = await loadFixture(
+    it("Should whitelist Uniswap V2 router", async () => {
+      const { positionManager, uniswapV2 } = await loadFixture(
         deployContractFixture
       );
-      // positionManager.whitelistDexRouter(positionManager.address);
+      // Check if the router is a valid Uniswap V2 fork
+      const dexType = await positionManager.isValidUniswapFork(
+        uniswapV2.target
+      );
+      expect(Number(dexType)).to.equal(1); // 0 corresponds to UniswapABI.V2
+
+      // Whitelist the router
+      await positionManager.whitelistDexRouter(uniswapV2.target);
+
+      // Verify whitelisting
+      const dexInfo = await positionManager.whitelistedDexes(uniswapV2.target);
+      expect(dexInfo[0]).to.be.true;
+      expect(Number(dexInfo[1])).to.equal(1);
+    });
+
+    it("Should whitelist Uniswap V3 router", async () => {
+      const { positionManager, uniswapV3 } = await loadFixture(
+        deployContractFixture
+      );
+
+      // Check if the router is a valid Uniswap V3 fork
+      const dexType = await positionManager.isValidUniswapFork(
+        uniswapV3.target
+      );
+      expect(Number(dexType)).to.equal(0); // 1 corresponds to UniswapABI.V3
+
+      // Whitelist the router
+      await positionManager.whitelistDexRouter(uniswapV3.target);
+
+      // Verify whitelisting
+      const dexInfo = await positionManager.whitelistedDexes(uniswapV3.target);
+      expect(dexInfo[0]).to.be.true;
+      expect(Number(dexInfo[1])).to.equal(0);
+    });
+
+    it("Should revert because the contract doesnt include V2 or V3 interface", async () => {
+      const { positionManager, mockContract } = await loadFixture(
+        deployContractFixture
+      );
+
+      // Check if the address is a valid Uniswap fork
+      await expect(positionManager.isValidUniswapFork(mockContract.target)).to
+        .be.reverted;
+
+      // Whitelist the address
+      await expect(positionManager.whitelistDexRouter(mockContract.target)).to
+        .be.reverted;
+
+      // Verify whitelisting
+      const dexInfo = await positionManager.whitelistedDexes(
+        mockContract.target
+      );
+      expect(dexInfo[0]).to.be.false;
+      expect(Number(dexInfo[1])).to.equal(0);
     });
   });
   describe("Positions", () => {
