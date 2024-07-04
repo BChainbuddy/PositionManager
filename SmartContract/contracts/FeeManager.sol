@@ -33,6 +33,14 @@ contract FeeManager is DexControl {
     }
 
     /**
+     * @dev Returns expected fee.
+     * @return The expected gas fee in WEI.
+     */
+    function getExpectedFee(uint256 duration) public view returns (uint256) {
+        return duration * getDailyPositionFee();
+    }
+
+    /**
      * @dev Changes the daily position fee.
      * @dev Can only be called by the contract owner.
      * @param newFee The new daily position fee to be set.

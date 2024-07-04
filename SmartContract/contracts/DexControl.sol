@@ -17,6 +17,7 @@ contract DexControl is Ownable, DexChecker {
     // Mapping to store whitelisted DEX routers
     mapping(address => DexRouter) public whitelistedDexes;
 
+    // Struct of DexRouter info
     struct DexRouter {
         bool isWhitelisted;
         UniswapABI dexType;
@@ -38,5 +39,4 @@ contract DexControl is Ownable, DexChecker {
         whitelistedDexes[dexRouter] = DexRouter(true, forkABI);
         emit DexRouterWhitelisted(dexRouter);
     }
-
 }
