@@ -83,9 +83,7 @@ describe("PositionManager", () => {
       await expect(userConnected.changeFee(newFee)).to.be.reverted;
     });
     it("Returns expected fee", async () => {
-      const { positionManager, addr1 } = await loadFixture(
-        deployContractFixture
-      );
+      const { positionManager } = await loadFixture(deployContractFixture);
 
       const duration = 3; //days
 
@@ -367,7 +365,7 @@ describe("PositionManager", () => {
       );
     });
     it("User prolongs position", async () => {
-      const { positionManager, owner, token1, token2, uniswapV3 } =
+      const { positionManager, owner, token1, token2, uniswapV3, addr1 } =
         await loadFixture(deployContractFixture);
 
       // Create pool
@@ -407,6 +405,65 @@ describe("PositionManager", () => {
       const positionInfo = await positionManager.seePositionAttributes("0");
 
       expect(Number(positionInfo[6])).to.equal(blockTimestamp + 259200 * 2);
+      await expect(positionManager.prolongPosition("0", 3)).to.be.revertedWith(
+        "Insufficient fee"
+      );
+      await expect(
+        positionManager.connect(addr1).prolongPosition("0", 3)
+      ).to.be.revertedWith("Not the position owner");
+    });
+    it("Withdraws position", async () => {
+      const { positionManager, owner, token1, token2, uniswapV3, addr1 } =
+        await loadFixture(deployContractFixture);
+
+      // Create pool
+      await token1.approve(uniswapV3.target, ethers.parseEther("1"));
+      await token2.approve(uniswapV3.target, ethers.parseEther("1"));
+
+      await uniswapV3.createPool(token1.target, token2.target, "3000");
+
+      const duration = 3; //days
+
+      // Whitelist a dex router
+      await positionManager.whitelistDexRouter(uniswapV3.target);
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Create position
+      await token1.approve(positionManager.target, ethers.parseEther("1"));
+      await positionManager.createPosition(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        "1",
+        uniswapV3.target,
+        duration,
+        { value: expectedFee }
+      );
+
+      await positionManager.withdrawPosition("0");
+
+      // Tests
+      const positionInfo = await positionManager.seePositionAttributes("0");
+
+      expect(await token1.balanceOf(positionManager.target)).to.equal("0");
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("1000")
+      );
+      expect(positionInfo[8]).to.be.true;
+      await expect(positionManager.withdrawPosition("0")).to.be.revertedWith(
+        "Position already executed"
+      );
+      await expect(
+        positionManager.connect(addr1).withdrawPosition("0")
+      ).to.be.revertedWith("Not the position owner");
+    });
+  });
+  describe("Executes swap", () => {
+    it("Reverts swap execution", async () => {
+      const { positionManager, addr1 } = await loadFixture(
+        deployContractFixture
+      );
     });
   });
 });
