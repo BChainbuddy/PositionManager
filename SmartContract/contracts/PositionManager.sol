@@ -6,19 +6,13 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./DexChecker.sol";
 import "./FeeManager.sol";
-import "./GasManager.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title PositionManager
  * @notice This contract manages trading positions on Uniswap V2 and V3 forks, allowing users to create, prolong, and execute positions. It also handles fee management and gas provision.
  */
-contract PositionManager is
-    ReentrancyGuard,
-    DexChecker,
-    FeeManager,
-    GasManager
-{
+contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
     using SafeERC20 for IERC20;
 
     // Events
@@ -63,8 +57,9 @@ contract PositionManager is
      */
     constructor(
         address tradeExecutor,
-        uint64 dailyPositionFee
-    ) FeeManager(dailyPositionFee, tradeExecutor) {
+        uint64 dailyPositionFee,
+        uint64 executionFee
+    ) FeeManager(dailyPositionFee, executionFee, tradeExecutor) {
         s_tradeExecutor = tradeExecutor;
     }
 

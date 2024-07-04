@@ -5,6 +5,7 @@ module.exports = buildModule("Deploy", (m) => {
   const contract = m.contract("PositionManager", [
     process.env.PUBLIC_KEY,
     DAILY_FEE,
+    DAILY_FEE,
   ]);
 
   return { contract };

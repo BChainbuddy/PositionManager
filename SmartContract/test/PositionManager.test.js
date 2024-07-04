@@ -16,6 +16,7 @@ describe("PositionManager", () => {
     const positionManager = await ethers.deployContract("PositionManager", [
       owner.address,
       DAILY_FEE,
+      DAILY_FEE,
     ]);
 
     await positionManager.waitForDeployment();
@@ -61,6 +62,7 @@ describe("PositionManager", () => {
       );
       expect(await positionManager.owner()).to.equal(owner.address);
       expect(await positionManager.getDailyPositionFee()).to.equal(DAILY_FEE);
+      expect(await positionManager.getExecutionFee()).to.equal(DAILY_FEE);
     });
   });
   describe("Fee manager", () => {
@@ -68,9 +70,11 @@ describe("PositionManager", () => {
       const { positionManager } = await loadFixture(deployContractFixture);
 
       const newFee = ethers.parseEther("0.001");
-      await positionManager.changeFee(newFee);
+      await positionManager.changeDailyPositionFee(newFee);
+      await positionManager.changeExecutionFee(newFee);
 
       expect(await positionManager.getDailyPositionFee()).to.equal(newFee);
+      expect(await positionManager.getExecutionFee()).to.equal(newFee);
     });
     it("Revertes changing a fee", async () => {
       const { positionManager, addr1 } = await loadFixture(
@@ -80,7 +84,8 @@ describe("PositionManager", () => {
       const userConnected = positionManager.connect(addr1);
       const newFee = ethers.parseEther("0.001");
 
-      await expect(userConnected.changeFee(newFee)).to.be.reverted;
+      await expect(userConnected.changeDailyPositionFee(newFee)).to.be.reverted;
+      await expect(userConnected.changeExecutionFee(newFee)).to.be.reverted;
     });
     it("Returns expected fee", async () => {
       const { positionManager } = await loadFixture(deployContractFixture);
@@ -88,7 +93,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       expect(await positionManager.getExpectedFee(duration)).to.equal(
-        DAILY_FEE * duration
+        Number(DAILY_FEE) + DAILY_FEE * duration
       );
     });
   });

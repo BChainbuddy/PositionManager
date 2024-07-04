@@ -10,7 +10,8 @@ import "./DexControl.sol";
  * @dev Inherits DexControl for owner-only access control to fee management functions.
  */
 contract FeeManager is DexControl {
-    uint64 private s_dailyPositionFee;
+    uint64 private s_dailyPositionFee; // Fee for backend services
+    uint64 private s_executionFee; // Fee for execution of transaction
 
     /**
      * @dev Sets the initial daily position fee and the contract owner.
@@ -19,9 +20,11 @@ contract FeeManager is DexControl {
      */
     constructor(
         uint64 dailyPositionFee,
+        uint64 executionFee,
         address initialOwner
     ) DexControl(initialOwner) {
         s_dailyPositionFee = dailyPositionFee;
+        s_executionFee = executionFee;
     }
 
     /**
@@ -33,11 +36,19 @@ contract FeeManager is DexControl {
     }
 
     /**
+     * @dev Returns the current daily position fee.
+     * @return The current daily position fee in uint256.
+     */
+    function getExecutionFee() public view returns (uint256) {
+        return s_executionFee;
+    }
+
+    /**
      * @dev Returns expected fee.
      * @return The expected gas fee in WEI.
      */
     function getExpectedFee(uint256 duration) public view returns (uint256) {
-        return duration * getDailyPositionFee();
+        return getExecutionFee() + duration * getDailyPositionFee();
     }
 
     /**
@@ -45,8 +56,17 @@ contract FeeManager is DexControl {
      * @dev Can only be called by the contract owner.
      * @param newFee The new daily position fee to be set.
      */
-    function changeFee(uint64 newFee) external onlyOwner {
+    function changeDailyPositionFee(uint64 newFee) external onlyOwner {
         s_dailyPositionFee = newFee;
+    }
+
+    /**
+     * @dev Changes the execution fee.
+     * @dev Can only be called by the contract owner.
+     * @param newFee The new execution fee to be set.
+     */
+    function changeExecutionFee(uint64 newFee) external onlyOwner {
+        s_executionFee = newFee;
     }
 
     /**
