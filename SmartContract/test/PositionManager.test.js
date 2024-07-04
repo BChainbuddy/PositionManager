@@ -174,15 +174,70 @@ describe("PositionManager", () => {
     });
   });
   describe("Positions", () => {
-    //   function createPosition(
-    //     address tokenIn,
-    //     address tokenOut,
-    //     uint256 quantity,
-    //     uint256 swapPrice,
-    //     address dexRouter,
-    //     uint32 duration
-    // ) external payable nonReentrant
+    it("Reverts create position", async () => {
+      const { positionManager, token1, token2, uniswapV2 } = await loadFixture(
+        deployContractFixture
+      );
 
+      const duration = 3; //days
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Insufficient fee
+      await expect(
+        positionManager.createPosition(
+          token1.target,
+          token2.target,
+          ethers.parseEther("1"),
+          "1",
+          uniswapV2.target,
+          duration,
+          { value: "1" }
+        )
+      ).to.be.revertedWith("Insufficient fee");
+
+      // Insufficient token balance
+      await expect(
+        positionManager.createPosition(
+          token1.target,
+          token2.target,
+          ethers.parseEther("1000000"),
+          "1",
+          uniswapV2.target,
+          duration,
+          { value: expectedFee }
+        )
+      ).to.be.revertedWith("Insufficient token balance");
+
+      // Address not whitelisted
+      await expect(
+        positionManager.createPosition(
+          token1.target,
+          token2.target,
+          ethers.parseEther("1"),
+          "1",
+          uniswapV2.target,
+          duration,
+          { value: expectedFee }
+        )
+      ).to.be.revertedWith("Dex router not whitelisted");
+
+      // Whitelist address
+      await positionManager.whitelistDexRouter(uniswapV2.target);
+
+      // Desired pool doesn't exist
+      await expect(
+        positionManager.createPosition(
+          token1.target,
+          token2.target,
+          ethers.parseEther("1"),
+          "1",
+          uniswapV2.target,
+          duration,
+          { value: expectedFee }
+        )
+      ).to.be.revertedWith("The pool doesn't exist");
+    });
     it("Creates a new position on UniswapV2", async () => {
       const { positionManager, owner, token1, token2, uniswapV2 } =
         await loadFixture(deployContractFixture);
@@ -208,6 +263,14 @@ describe("PositionManager", () => {
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
+      // Balance before position
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("999")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("0")
+      );
+
       // Create position
       await token1.approve(positionManager.target, ethers.parseEther("1"));
       await positionManager.createPosition(
@@ -219,6 +282,8 @@ describe("PositionManager", () => {
         duration,
         { value: expectedFee }
       );
+
+      // Tests
       const blockTimestamp = (await ethers.provider.getBlock("latest"))
         .timestamp;
 
@@ -234,8 +299,74 @@ describe("PositionManager", () => {
       expect(positionInfo[7]).to.equal("0");
       expect(positionInfo[8]).to.be.false;
       expect(positionInfo[9]).to.equal("1");
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("998")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("1")
+      );
     });
     it("Creates a new position on UniswapV3", async () => {
+      const { positionManager, owner, token1, token2, uniswapV3 } =
+        await loadFixture(deployContractFixture);
+
+      // Create pool
+      await token1.approve(uniswapV3.target, ethers.parseEther("1"));
+      await token2.approve(uniswapV3.target, ethers.parseEther("1"));
+
+      await uniswapV3.createPool(token1.target, token2.target, "3000");
+
+      const duration = 3; //days
+
+      // Whitelist a dex router
+      await positionManager.whitelistDexRouter(uniswapV3.target);
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Balance before position
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("1000")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("0")
+      );
+
+      // Create position
+      await token1.approve(positionManager.target, ethers.parseEther("1"));
+      await positionManager.createPosition(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        "1",
+        uniswapV3.target,
+        duration,
+        { value: expectedFee }
+      );
+
+      // Tests
+      const blockTimestamp = (await ethers.provider.getBlock("latest"))
+        .timestamp;
+
+      const positionInfo = await positionManager.seePositionAttributes("0");
+
+      expect(positionInfo[0]).to.equal(owner.address);
+      expect(positionInfo[1]).to.equal(uniswapV3.target);
+      expect(positionInfo[2]).to.equal(token1.target);
+      expect(positionInfo[3]).to.equal(token2.target);
+      expect(positionInfo[4]).to.equal(ethers.parseEther("1"));
+      expect(positionInfo[5]).to.equal("1");
+      expect(Number(positionInfo[6])).to.equal(blockTimestamp + 259200);
+      expect(positionInfo[7]).to.equal("3000");
+      expect(positionInfo[8]).to.be.false;
+      expect(positionInfo[9]).to.equal("0");
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("999")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("1")
+      );
+    });
+    it("User prolongs position", async () => {
       const { positionManager, owner, token1, token2, uniswapV3 } =
         await loadFixture(deployContractFixture);
 
@@ -263,21 +394,19 @@ describe("PositionManager", () => {
         duration,
         { value: expectedFee }
       );
+
       const blockTimestamp = (await ethers.provider.getBlock("latest"))
         .timestamp;
 
+      // Prolongs position
+      await positionManager.prolongPosition("0", duration, {
+        value: expectedFee,
+      });
+
+      // Tests
       const positionInfo = await positionManager.seePositionAttributes("0");
 
-      expect(positionInfo[0]).to.equal(owner.address);
-      expect(positionInfo[1]).to.equal(uniswapV3.target);
-      expect(positionInfo[2]).to.equal(token1.target);
-      expect(positionInfo[3]).to.equal(token2.target);
-      expect(positionInfo[4]).to.equal(ethers.parseEther("1"));
-      expect(positionInfo[5]).to.equal("1");
-      expect(Number(positionInfo[6])).to.equal(blockTimestamp + 259200);
-      expect(positionInfo[7]).to.equal("3000");
-      expect(positionInfo[8]).to.be.false;
-      expect(positionInfo[9]).to.equal("0");
+      expect(Number(positionInfo[6])).to.equal(blockTimestamp + 259200 * 2);
     });
   });
 });
