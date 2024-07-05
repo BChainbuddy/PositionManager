@@ -465,9 +465,216 @@ describe("PositionManager", () => {
     });
   });
   describe("Executes swap", () => {
-    it("Reverts swap execution", async () => {
-      const { positionManager, addr1 } = await loadFixture(
+    it("Swap execution with UniswapV2", async () => {
+      const { positionManager, uniswapV3, token1, token2 } = await loadFixture(
         deployContractFixture
+      );
+
+      // Create pool
+      await token1.approve(uniswapV3.target, ethers.parseEther("1"));
+      await token2.approve(uniswapV3.target, ethers.parseEther("1"));
+
+      await uniswapV3.createPool(token1.target, token2.target, "3000");
+
+      await uniswapV3.addLiquidity(
+        token1.target,
+        token2.target,
+        "3000",
+        ethers.parseEther("1"),
+        ethers.parseEther("1")
+      );
+
+      const duration = 3; //days
+
+      // Whitelist a dex router
+      await positionManager.whitelistDexRouter(uniswapV3.target);
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Create position
+      await token1.approve(positionManager.target, ethers.parseEther("1"));
+      await positionManager.createPosition(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        "1",
+        uniswapV3.target,
+        duration,
+        { value: expectedFee }
+      );
+
+      // Perform swap execution
+      await positionManager.executeSwap("0");
+
+      // Tests
+      const positionInfo = await positionManager.seePositionAttributes("0");
+
+      expect(await token1.balanceOf(positionManager.target)).to.equal("0");
+      expect(await token2.balanceOf(positionManager.target)).to.equal("0");
+      expect(positionInfo[8]).to.be.true;
+    });
+    it("Swap execution with UniswapV2", async () => {
+      const { positionManager, uniswapV2, token1, token2, owner } =
+        await loadFixture(deployContractFixture);
+
+      // Add liquidity
+      await token1.approve(uniswapV2.target, ethers.parseEther("1"));
+      await token2.approve(uniswapV2.target, ethers.parseEther("1"));
+      await uniswapV2.addLiquidity(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        owner.address,
+        Date.now()
+      );
+
+      const duration = 3; //days
+
+      // Whitelist a dex router
+      await positionManager.whitelistDexRouter(uniswapV2.target);
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Balance before position
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("999")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("0")
+      );
+
+      // Create position
+      await token1.approve(positionManager.target, ethers.parseEther("1"));
+      await positionManager.createPosition(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        "1",
+        uniswapV2.target,
+        duration,
+        { value: expectedFee }
+      );
+
+      // Perform swap execution
+      await positionManager.executeSwap("0");
+
+      // Tests
+      const positionInfo = await positionManager.seePositionAttributes("0");
+
+      expect(await token1.balanceOf(positionManager.target)).to.equal("0");
+      expect(await token2.balanceOf(positionManager.target)).to.equal("0");
+      expect(positionInfo[8]).to.be.true;
+    });
+    it("Reverts swap execution", async () => {
+      const { positionManager, uniswapV2, token1, token2, owner, addr1 } =
+        await loadFixture(deployContractFixture);
+
+      // Add liquidity
+      await token1.approve(uniswapV2.target, ethers.parseEther("1"));
+      await token2.approve(uniswapV2.target, ethers.parseEther("1"));
+      await uniswapV2.addLiquidity(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        owner.address,
+        Date.now()
+      );
+
+      const duration = 3; //days
+
+      // Whitelist a dex router
+      await positionManager.whitelistDexRouter(uniswapV2.target);
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Balance before position
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("999")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("0")
+      );
+
+      // Create position
+      await token1.approve(positionManager.target, ethers.parseEther("1"));
+      await positionManager.createPosition(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        "1",
+        uniswapV2.target,
+        duration,
+        { value: expectedFee }
+      );
+
+      // Perform swap execution
+      await positionManager.executeSwap("0");
+
+      // Tests
+      await expect(positionManager.executeSwap("0")).to.be.revertedWith(
+        "Position already executed"
+      );
+      await expect(
+        positionManager.connect(addr1).executeSwap("0")
+      ).to.be.revertedWith("Only trade executor can execute swap");
+    });
+    it("Changes trade executor", async () => {
+      const { positionManager, uniswapV2, token1, token2, owner, addr1 } =
+        await loadFixture(deployContractFixture);
+
+      // Add liquidity
+      await token1.approve(uniswapV2.target, ethers.parseEther("1"));
+      await token2.approve(uniswapV2.target, ethers.parseEther("1"));
+      await uniswapV2.addLiquidity(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        ethers.parseEther("1"),
+        owner.address,
+        Date.now()
+      );
+
+      const duration = 3; //days
+
+      // Whitelist a dex router
+      await positionManager.whitelistDexRouter(uniswapV2.target);
+
+      const expectedFee = await positionManager.getExpectedFee(duration);
+
+      // Balance before position
+      expect(await token1.balanceOf(owner.address)).to.equal(
+        ethers.parseEther("999")
+      );
+      expect(await token1.balanceOf(positionManager.target)).to.equal(
+        ethers.parseEther("0")
+      );
+
+      // Create position
+      await token1.approve(positionManager.target, ethers.parseEther("1"));
+      await positionManager.createPosition(
+        token1.target,
+        token2.target,
+        ethers.parseEther("1"),
+        "1",
+        uniswapV2.target,
+        duration,
+        { value: expectedFee }
+      );
+
+      // Changing the trade executor
+      await positionManager.setNewTradeExecutor(addr1.address);
+
+      // Tests
+      await expect(positionManager.executeSwap("0")).to.be.revertedWith(
+        "Only trade executor can execute swap"
       );
     });
   });

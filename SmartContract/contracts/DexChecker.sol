@@ -23,15 +23,19 @@ interface IUniswapV2Router {
  * @dev Interface for Uniswap V3 Router, used for token swaps with more parameters.
  */
 interface IUniswapV3Router {
+    struct ExactInputSingleParams {
+        address tokenIn;
+        address tokenOut;
+        uint24 fee;
+        address recipient;
+        uint256 deadline;
+        uint256 amountIn;
+        uint256 amountOutMinimum;
+        uint160 sqrtPriceLimitX96;
+    }
+
     function exactInputSingle(
-        address tokenIn,
-        address tokenOut,
-        uint24 fee,
-        address recipient,
-        uint256 deadline,
-        uint256 amountIn,
-        uint256 amountOutMinimum,
-        uint160 sqrtPriceLimitX96
+        ExactInputSingleParams calldata params
     ) external returns (uint256 amountOut);
 
     function factory() external view returns (address);

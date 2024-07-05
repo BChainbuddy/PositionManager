@@ -201,16 +201,20 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
                 position.quantity
             );
 
-            router.exactInputSingle(
-                position.tokenIn,
-                position.tokenOut,
-                position.fee,
-                position.wallet,
-                block.timestamp + 10 minutes,
-                position.quantity,
-                position.executionValue * position.quantity,
-                0
-            );
+            IUniswapV3Router.ExactInputSingleParams
+                memory params = IUniswapV3Router.ExactInputSingleParams(
+                    position.tokenIn,
+                    position.tokenOut,
+                    position.fee,
+                    position.wallet,
+                    block.timestamp + 10 minutes,
+                    position.quantity,
+                    position.executionValue,
+                    0
+                );
+
+            uint256 amountOut = router.exactInputSingle(params);
+            tokensReceived = amountOut;
         }
 
         position.executed = true;
