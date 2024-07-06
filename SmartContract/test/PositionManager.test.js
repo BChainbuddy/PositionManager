@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { network, ethers } = require("hardhat");
+const { ethers } = require("hardhat");
 const { DAILY_FEE } = require("../helper-hardhat-config");
 const {
   loadFixture,
