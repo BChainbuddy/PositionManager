@@ -1,8 +1,9 @@
 const { ethers } = require("hardhat");
+const hre = require("hardhat");
 
 let deployer;
 
-ethers
+hre.ethers
   .getSigners()
   .then(([owner]) => {
     deployer = owner;
@@ -10,7 +11,7 @@ ethers
   .catch((error) => {
     console.error(error);
   });
-  
+
 async function createPosition(
   tokenAddress1,
   tokenAddress2,
@@ -21,6 +22,7 @@ async function createPosition(
 ) {
   console.log("Connecting to the contracts...");
 
+  const [owner, addr1] = await hre.ethers.getSigners();
   const PositionManager = await ethers.getContract("PositionManager", deployer);
   const token1 = await ethers.getContractAt("Token", tokenAddress1, deployer);
   console.log(`This is the Position Manager address ${swapRouter.target}`);
@@ -57,7 +59,7 @@ async function createPosition(
   console.log("Position Created!");
 }
 
-createPosition(deployer, deployer, ethers.parseEther("1"), "1", deployer, "3")
+createPosition("0x", "0x", ethers.parseEther("1"), "1", "0x", "3")
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);

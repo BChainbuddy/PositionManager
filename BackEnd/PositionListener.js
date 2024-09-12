@@ -1,7 +1,5 @@
-// Connect to contract
+const { getV3Price, getV2Price } = require("./GetQuote");
 const { ethers } = require("ethers");
-const { positionListener } = require("./PositionListener");
-require("dotenv").config();
 
 const contractAddress = "0xf8B27F9e884BAD05fDBfD18f0FA193776052c368";
 const abi = [
@@ -557,70 +555,45 @@ const abi = [
   },
 ];
 
-async function startBot() {
-  // Retrieve contract
-  console.log("Connecting to contract...");
+async function positionListener(
+  positionId,
+  token1,
+  token2,
+  targetPrice,
+  dexRouter,
+  ABIType,
+  endTimestamp,
+  fee
+) {
+  console.log(`Position listener for position ${positionId}`);
   let provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
   let contract = new ethers.Contract(contractAddress, abi, signer);
-  console.log("Successfully connected to the contract!");
 
-  // Loop through Positions with positionId to find all positions that were yet to be executed
-  console.log("Looping through positions...");
-  let positionId = await contract.s_positionId();
-
-  if (positionId == 0) {
-    console.log("Positions haven't been made yet!");
-    return;
-  }
-
-  for (let i = 0; i < positionId; i++) {
-    const positionAttributes = await contract.seePositionAttributes(
-      i.toString()
-    );
-    if (positionAttributes[8] == false) {
-      // Start the listener
-      positionListener(
-        i,
-        positionAttributes[2],
-        positionAttributes[3],
-        positionAttributes[5],
-        positionAttributes[1],
-        positionAttributes[9],
-        positionAttributes[6],
-        positionAttributes[7]
-      );
+  const strategy = async () => {
+    if (endTimestamp >= Date.now() / 1000) {
+      console.log("Strategy has timeout!");
+      clearInterval(strategyInterval);
     }
 
-    // [
-    //     '0xA9774e31e68c1a0C9507e942692305eb8c3B32AE',
-    //     '0x425141165d3DE9FEC831896C016617a52363b687',
-    //     '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
-    //     '0xbe72E441BF55620febc26715db68d3494213D8Cb',
-    //     10000000000000n,
-    //     3200n,
-    //     1720606020n,
-    //     0n,
-    //     false,
-    //     1n
-    // ]
-    // address wallet;
-    // address dexRouter;
-    // address tokenIn;
-    // address tokenOut;
-    // uint256 quantity;
-    // uint256 executionValue;
-    // uint32 endTimestamp;
-    // uint24 fee;
-    // bool executed;
-    // UniswapABI forkABI;
-    // positionId, token1, token2, targetPrice, dexRouter, ABIType;
-    // endTimestamp, executed, fee;
-  }
-  // For Each create a setInterval that Is checking if the price of a pool is the same as execution value
-  // If the endTimestamp is more than Date.now() / 1000, then stop the loop, or if it gets executed
+    if (ABIType == 0) {
+      const price = await getV3Price(dexRouter, token1, token2, fee);
+      console.log(`Current price: ${price}`);
+      if (price == targetPrice) {
+        await contract.executeSwap(positionId.toString());
+      }
+    } else {
+      const price = await getV2Price(dexRouter, token1, token2);
+      console.log(`Current price: ${price}`);
+      if (price == targetPrice) {
+        await contract.executeSwap(positionId.toString());
+      }
+    }
+  };
+
+  const strategyInterval = setInterval(strategy, 5000);
 }
 
-startBot();
+module.exports = { positionListener };
