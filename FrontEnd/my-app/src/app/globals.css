@@ -39,13 +39,18 @@ body {
 .carouselUp {
   display: flex;
   flex-direction: column;
-  animation: scrollUp 20s linear infinite; /* Adjust the timing to match the content height */
+  animation: scrollUp 30s linear infinite; /* Adjust the timing to match the content height */
 }
 
 .carouselDown {
   display: flex;
   flex-direction: column;
-  animation: scrollDown 20s linear infinite; /* Adjust the timing to match the content height */
+  animation: scrollDown 30s linear infinite; /* Adjust the timing to match the content height */
+}
+
+.carouselDown:hover,
+.carouselUp:hover {
+  animation-play-state: paused;
 }
 
 @keyframes scrollUp {
@@ -62,12 +67,18 @@ body {
 
 .scrollerUp {
   max-width: 600px;
+  -webkit-mask: linear-gradient(transparent, white 20%, white 80%, transparent);
+  mask: linear-gradient(transparent, white 20%, white 80%, transparent);
+  overflow: hidden;
 }
 
 .scrollerDown {
   max-width: 600px;
   display: flex;
   align-items: flex-end;
+  -webkit-mask: linear-gradient(transparent, white 20%, white 80%, transparent);
+  mask: linear-gradient(transparent, white 20%, white 80%, transparent);
+  overflow: hidden;
 }
 
 .scroller__inner {
@@ -75,4 +86,14 @@ body {
   flex-wrap: nowrap;
   animation: scroll var(--_animation-duration, 40s)
     var(--_animation-direction, forwards) linear infinite;
+}
+
+.scrollDownText {
+  animation: scrollText 2s ease-in-out infinite;
+}
+
+@keyframes scrollText {
+  50% {
+    transform: translateY(-10px);
+  }
 }

@@ -7,3 +7,9 @@ export const jura = Jura({
     variable: '--font-jura',
     subsets: ['latin'],
 })
+
+export const juraBold = Jura({
+    weight: '700',
+    variable: '--font-juraBold',
+    subsets: ['latin'],
+})

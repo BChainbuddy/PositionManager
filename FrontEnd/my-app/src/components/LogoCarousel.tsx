@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect } from "react";
 
-export default function LogoCorousel({ up }: { up: boolean }) {
+export default function LogoCarousel({ up }: { up: boolean }) {
   useEffect(() => {
     const scrollers = up
       ? document.querySelectorAll(".scrollerUp")
@@ -37,7 +37,7 @@ export default function LogoCorousel({ up }: { up: boolean }) {
   }, []);
   return (
     <div
-      className={`max-w-[300px] overflow-hidden max-h-[100vh] fixed ${
+      className={`max-w-[300px] overflow-hidden max-h-[100vh] absolute ${
         up ? "top-0 left-[20%] scrollerUp" : "bottom-0 right-[20%] scrollerDown"
       }`}
     >
@@ -46,7 +46,7 @@ export default function LogoCorousel({ up }: { up: boolean }) {
           up ? "carouselUp" : "carouselDown"
         } `}
       >
-        {[...Array(30)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <Image
             key={i}
             src={`${

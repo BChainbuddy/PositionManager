@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { inter, interBold } from "./fonts/Inter";
+import { jura, juraBold } from "./fonts/Jura";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body
+        className={`overflow-x-hidden ${interBold.variable} ${inter.variable} ${jura.variable} ${juraBold.variable}`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

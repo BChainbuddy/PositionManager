@@ -12,6 +12,12 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        interBold: ["var(--font-interBold)"],
+        inter: ["var(--font-inter)"],
+        jura: ["var(--font-jura)"],
+        juraBold: ["var(--font-juraBold)"]
+      },
     },
   },
   plugins: [],
