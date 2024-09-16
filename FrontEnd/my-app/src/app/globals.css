@@ -26,7 +26,25 @@
   }
 }
 
-/* Base font size for small screens */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #061a1b;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #01ff39;
+  border-radius: 10px;
+  border: 2px solid #01ff39;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #01ff39 #061a1b;
+}
+
 body {
   background-color: #041516;
 }
@@ -94,6 +112,25 @@ body {
 
 @keyframes scrollText {
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-20%);
+  }
+}
+
+.header {
+  animation: headerAnimation 5sec linear forwards;
+}
+
+@keyframes headerAnimation {
+  0% {
+    mask: linear-gradient(90deg, transparent, transparent);
+  }
+  100% {
+    mask: linear-gradient(
+      90deg,
+      transparent,
+      10% white,
+      90% white,
+      transparent
+    );
   }
 }

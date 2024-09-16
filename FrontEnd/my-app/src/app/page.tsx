@@ -1,13 +1,15 @@
 import Image from "next/image";
 import LogoCarousel from "@/components/LogoCarousel";
+import StepCard from "@/components/StepCard";
+import ShadowBars from "@/components/ShadowBars";
+import LineScroll from "@/components/LineScroll";
 
 export default function Home() {
   return (
     <>
+      <ShadowBars />
       <div className="relative h-[100vh] w-[100vw] overflow-x-hidden flex justify-center items-center">
-        <div className="absolute -left-[60px] h-[100vh] w-[60px] shadow-[0_0_2rem_2rem_#01FF39]"></div>
-        <div className="absolute right-[-60px] h-[100vh] w-[60px] shadow-[0_0_2rem_2rem_#01FF39]"></div>
-        <div className="text-center text-white font-inter">
+        <div className="text-center text-white font-inter header">
           <p className="text-5xl text-[#01FF39] tracking-[0.6rem] mb-6 font-juraBold">
             TRADE FORGE
           </p>
@@ -60,6 +62,36 @@ export default function Home() {
             width={600}
           />
         </div>
+      </div>
+      <div className="mt-24 relative">
+        {/* <div className="absolute left-1/2 transform -translate-x-1/2 top-[10rem] bottom-[10rem] w-[100px]">
+          <div className="relative h-full w-[2rem]">
+            <Image src="/UnionLine.png" alt="Line" fill />
+          </div>
+        </div> */}
+        <LineScroll />
+        <StepCard
+          header={true}
+          left={true}
+          stepNumber="Step 1"
+          title="Create Your Position"
+          description="Easily initiate your trade by selecting the tokens you'd like to swap, defining the quantity, and choosing your preferred decentralized exchange. Specify your trading goals, such as swap price and duration, and Trade Forge will handle the rest."
+          imageSrc="/Step1Border.png"
+        />
+        <StepCard
+          left={false}
+          stepNumber="Step 2"
+          title="Monitor & Optimize"
+          description="Once you've forged your position, Trade Forge continuously monitors the market for your set swap price. You can check the progress at any time."
+          imageSrc="/Step2Border.png"
+        />
+        <StepCard
+          left={true}
+          stepNumber="Step 3"
+          title="Automatic Execution & Rewards"
+          description="Once your specified conditions are met, Trade Forge automatically executes the swap on your behalf."
+          imageSrc="/Step3Border.png"
+        />
       </div>
     </>
   );
