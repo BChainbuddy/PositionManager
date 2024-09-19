@@ -4,6 +4,7 @@ import StepCard from "@/components/StepCard";
 import ShadowBars from "@/components/ShadowBars";
 import LineScroll from "@/components/LineScroll";
 import IconText from "@/components/IconText";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -56,12 +57,9 @@ export default function Home() {
               while automating the heavy lifting.
             </p>
           </div>
-          <Image
-            src="/TradeForge.webp"
-            alt="Trade Forge"
-            height={600}
-            width={600}
-          />
+          <div className="relative h-[25rem] w-[25rem]">
+            <Image src="/TradeForge.webp" alt="Trade Forge" fill />
+          </div>
         </div>
       </div>
       <div className="mt-24 relative">
@@ -120,6 +118,7 @@ export default function Home() {
           START TRADING
         </button>
       </div>
+      <Footer />
     </>
   );
 }
