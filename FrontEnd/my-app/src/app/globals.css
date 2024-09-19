@@ -134,3 +134,16 @@ body {
     );
   }
 }
+
+.lineMask {
+  -webkit-mask: linear-gradient(transparent, white);
+  mask: linear-gradient(transparent, white 5%);
+}
+
+.IconText {
+
+}
+
+@keyframes IconTextAnimation {
+  
+}

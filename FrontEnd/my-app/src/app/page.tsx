@@ -3,6 +3,7 @@ import LogoCarousel from "@/components/LogoCarousel";
 import StepCard from "@/components/StepCard";
 import ShadowBars from "@/components/ShadowBars";
 import LineScroll from "@/components/LineScroll";
+import IconText from "@/components/IconText";
 
 export default function Home() {
   return (
@@ -64,34 +65,60 @@ export default function Home() {
         </div>
       </div>
       <div className="mt-24 relative">
-        {/* <div className="absolute left-1/2 transform -translate-x-1/2 top-[10rem] bottom-[10rem] w-[100px]">
-          <div className="relative h-full w-[2rem]">
-            <Image src="/UnionLine.png" alt="Line" fill />
-          </div>
-        </div> */}
         <LineScroll />
         <StepCard
           header={true}
-          left={true}
+          left={false}
           stepNumber="Step 1"
           title="Create Your Position"
           description="Easily initiate your trade by selecting the tokens you'd like to swap, defining the quantity, and choosing your preferred decentralized exchange. Specify your trading goals, such as swap price and duration, and Trade Forge will handle the rest."
           imageSrc="/Step1Border.png"
         />
         <StepCard
-          left={false}
+          left={true}
           stepNumber="Step 2"
           title="Monitor & Optimize"
-          description="Once you've forged your position, Trade Forge continuously monitors the market for your set swap price. You can check the progress at any time."
+          description="Once you've forged your position, Trade Forge continuously monitors the market for your set swap price. You can check the progress at any time. If your position needs more time to reach the target price, you can easily extend the duration and let Trade Forge continue tracking and optimizing your trade on your behalf."
           imageSrc="/Step2Border.png"
         />
         <StepCard
-          left={true}
+          left={false}
           stepNumber="Step 3"
           title="Automatic Execution & Rewards"
-          description="Once your specified conditions are met, Trade Forge automatically executes the swap on your behalf."
+          description="Once your specified conditions are met, Trade Forge automatically executes the swap on your behalf. The swapped tokens and any rewards are automatically sent to your wallet, making the entire process seamless and effortless."
           imageSrc="/Step3Border.png"
         />
+      </div>
+      <div className="mt-52">
+        <div className="flex flex-col text-center font-juraBold">
+          <p className="text-4xl font-jura text-white">Why Trade Forge?</p>
+          <p className="text-xl text-[#01FF39]">Trade Smarter, Not Harder</p>
+        </div>
+        <div className="flex flex-row space-x-32 justify-center mt-24">
+          <IconText
+            src="/TradeIconWhite.png"
+            alt="Trade Icon"
+            text="Customizable Positions"
+          />
+          <IconText
+            src="/AutomationIcon.png"
+            alt="Automation Icon"
+            text="Seamless Automation"
+          />
+          <IconText
+            src="/SecureIcon.png"
+            alt="Secure icon"
+            text="Decentralized & Secure"
+          />
+        </div>
+      </div>
+      <div className="mt-52 flex flex-col justify-center items-center space-y-5">
+        <p className="text-center font-juraBold text-white text-2xl">
+          LIKE WHAT YOU SEE?
+        </p>
+        <button className="text-black bg-[#01FF39] w-72 h-14 rounded-2xl text-2xl font-juraBold">
+          START TRADING
+        </button>
       </div>
     </>
   );

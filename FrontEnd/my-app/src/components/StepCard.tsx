@@ -18,9 +18,9 @@ export default function StepCard({
   left,
 }: StepCardProps) {
   return (
-    <div className="flex flex-row justify-around items-center mt-16">
+    <div className="flex flex-row justify-around items-center mt-32">
       {left && (
-        <div className="w-[25rem] h-[25rem] relative">
+        <div className="w-[20rem] h-[20rem] relative">
           <Image src={imageSrc} alt={title} fill />
         </div>
       )}
@@ -30,7 +30,7 @@ export default function StepCard({
             Seamless Trading in Three Easy Steps
           </p>
         )}
-        <div className="w-[25rem] mt-10">
+        <div className="w-[20rem] mt-10">
           <p className="font-inter">
             <span className="text-[#01FF39]">{stepNumber}:</span> {title}
           </p>
@@ -38,7 +38,7 @@ export default function StepCard({
         </div>
       </div>
       {!left && (
-        <div className="w-[25rem] h-[25rem] relative">
+        <div className="w-[20rem] h-[20rem] relative">
           <Image src={imageSrc} alt={title} fill />
         </div>
       )}

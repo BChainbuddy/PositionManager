@@ -59,7 +59,7 @@ export default function LineScroll() {
       <div className="relative h-full w-[2rem] z-10" ref={ref}>
         <Image src="/UnionLine.png" alt="Line" fill className="z-10" />
         <div
-          className="absolute bg-[#041516] h-[98%] z-20 w-[5rem] bottom-0"
+          className="absolute bg-[#041516] h-full z-20 w-[5rem] bottom-0 lineMask"
           ref={ref2}
         ></div>
       </div>
