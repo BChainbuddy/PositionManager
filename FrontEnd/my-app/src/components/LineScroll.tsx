@@ -24,9 +24,14 @@ export default function LineScroll() {
         );
 
         // New Height
-        ref2.current.style.height = `${newHeight}px`;
+        // console.log(`New height ${newHeight}`);
+        // console.log(`Current height ${Number(ref2.current.offsetHeight)}`);
+        if (newHeight < Number(ref2.current.offsetHeight)) {
+          console.log("Smaller!");
+          ref2.current.style.height = `${newHeight}px`;
+        }
 
-        console.log(`This is the new height: ${newHeight}px`);
+        // console.log(`This is the new height: ${newHeight}px`);
       }
     }
   }, [viewportCenter, initialY, initialHeight]);
@@ -41,8 +46,8 @@ export default function LineScroll() {
       const rect = ref.current?.getBoundingClientRect();
       setInitialY(rect.top + window.scrollY); // Get the initial Y position of the element relative to the document
       setInitialHeight(ref2.current.offsetHeight); // Get the initial height of the element
-      console.log("INITIAL DISTANCE", rect.y);
-      console.log("INITIAL HEIGHT", ref2.current.offsetHeight);
+      // console.log("INITIAL DISTANCE", rect.y);
+      // console.log("INITIAL HEIGHT", ref2.current.offsetHeight);
     }
 
     // Add scroll event listener

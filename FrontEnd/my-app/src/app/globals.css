@@ -140,10 +140,49 @@ body {
   mask: linear-gradient(transparent, white 5%);
 }
 
-.IconText {
+.trade {
+  animation: fadeInTitle 1.5s 0.5s ease-in forwards;
+  opacity: 0;
+}
 
+.forge {
+  animation: fadeInTitle 1.5s 1.5s ease-in forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.IconText {
 }
 
 @keyframes IconTextAnimation {
-  
+}
+
+.stepCardLeft {
+  opacity: 0;
+  transform: translateX(-2rem);
+}
+
+.stepCardRight {
+  opacity: 0;
+  transform: translateX(2rem);
+}
+
+.stepCardFinished {
+  animation: stepCardFadeIn 1s ease-in forwards;
+}
+
+@keyframes stepCardFadeIn {
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

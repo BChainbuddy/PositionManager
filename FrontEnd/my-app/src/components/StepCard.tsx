@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState, useRef } from "react";
 
 interface StepCardProps {
   header?: boolean;
@@ -17,14 +20,54 @@ export default function StepCard({
   imageSrc,
   left,
 }: StepCardProps) {
+  const [viewed, setViewed] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const checkPosition = () => {
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Check if the Y position of the item is at the 50% Y position of the viewport
+      if (
+        rect.top <= viewportHeight * 0.5 &&
+        rect.bottom >= viewportHeight * 0.5
+      ) {
+        setViewed(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", checkPosition);
+    checkPosition(); // Initial check on load
+
+    return () => {
+      window.removeEventListener("scroll", checkPosition);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-row justify-around items-center mt-32">
+    <div
+      className="flex flex-row justify-around items-center mt-32"
+      ref={cardRef}
+    >
       {left && (
-        <div className="w-[20rem] h-[20rem] relative">
+        <div
+          className={`w-[20rem] h-[20rem] relative stepCardLeft ${
+            viewed ? "stepCardFinished" : ""
+          }`}
+        >
           <Image src={imageSrc} alt={title} fill />
         </div>
       )}
-      <div className="text-white">
+      <div
+        className={`text-white ${
+          left
+            ? `stepCardRight ${viewed && "stepCardFinished"}`
+            : `stepCardLeft ${viewed && "stepCardFinished"}`
+        } `}
+      >
         {header && (
           <p className="font-juraBold text-3xl w-[20rem] text-center">
             Seamless Trading in Three Easy Steps
@@ -38,7 +81,11 @@ export default function StepCard({
         </div>
       </div>
       {!left && (
-        <div className="w-[20rem] h-[20rem] relative">
+        <div
+          className={`w-[20rem] h-[20rem] relative stepCardRight ${
+            viewed ? "stepCardFinished" : ""
+          }`}
+        >
           <Image src={imageSrc} alt={title} fill />
         </div>
       )}

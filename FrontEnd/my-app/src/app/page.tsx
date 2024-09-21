@@ -13,7 +13,8 @@ export default function Home() {
       <div className="relative h-[100vh] w-[100vw] overflow-x-hidden flex justify-center items-center">
         <div className="text-center text-white font-inter header">
           <p className="text-5xl text-[#01FF39] tracking-[0.6rem] mb-6 font-juraBold">
-            TRADE FORGE
+            <span className="trade">TRADE </span>
+            <span className="forge">FORGE</span>
           </p>
           <p>Make trading on blockchain great again.</p>
           <p className="mt-2">
