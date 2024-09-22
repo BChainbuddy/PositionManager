@@ -27,7 +27,6 @@ export default function LineScroll() {
         // console.log(`New height ${newHeight}`);
         // console.log(`Current height ${Number(ref2.current.offsetHeight)}`);
         if (newHeight < Number(ref2.current.offsetHeight)) {
-          console.log("Smaller!");
           ref2.current.style.height = `${newHeight}px`;
         }
 

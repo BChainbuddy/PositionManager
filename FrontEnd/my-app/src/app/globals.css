@@ -141,12 +141,12 @@ body {
 }
 
 .trade {
-  animation: fadeInTitle 1.5s 0.5s ease-in forwards;
+  animation: fadeInTitle 1.25s 0.5s ease-in forwards;
   opacity: 0;
 }
 
 .forge {
-  animation: fadeInTitle 1.5s 1.5s ease-in forwards;
+  animation: fadeInTitle 1.25s 1.25s ease-in forwards;
   opacity: 0;
 }
 
@@ -160,10 +160,40 @@ body {
   }
 }
 
-.IconText {
+.iconText {
+  opacity: 0;
+  transform: translateY(2rem) scale(0.8);
+}
+
+.iconTextFinished {
+  animation: IconTextAnimation 1s linear forwards;
+}
+
+.iconImageFinished {
+  animation: IconImageAnimation 1s linear forwards;
 }
 
 @keyframes IconTextAnimation {
+  80% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    /* filter: drop-shadow(0 0 0 #01ff39); */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    /* filter: drop-shadow(-1rem -1mm 5mm #01ff39); */
+  }
+}
+
+@keyframes IconImageAnimation {
+  80% {
+    filter: drop-shadow(0 0 0 #01ff39);
+  }
+  100% {
+    filter: drop-shadow(0 0 10rem #01ff39);
+  }
 }
 
 .stepCardLeft {

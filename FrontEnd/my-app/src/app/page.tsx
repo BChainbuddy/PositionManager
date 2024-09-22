@@ -98,16 +98,19 @@ export default function Home() {
             src="/TradeIconWhite.png"
             alt="Trade Icon"
             text="Customizable Positions"
+            delay="0s"
           />
           <IconText
             src="/AutomationIcon.png"
             alt="Automation Icon"
             text="Seamless Automation"
+            delay="0.5s"
           />
           <IconText
             src="/SecureIcon.png"
             alt="Secure icon"
             text="Decentralized & Secure"
+            delay="1s"
           />
         </div>
       </div>
