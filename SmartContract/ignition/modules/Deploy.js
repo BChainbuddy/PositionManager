@@ -10,3 +10,6 @@ module.exports = buildModule("Deploy", (m) => {
 
   return { contract };
 });
+
+//command
+//npx hardhat ignition deploy ignition/modules/Deploy.js --network sepolia --verify
