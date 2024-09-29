@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`overflow-x-hidden ${interBold.variable} ${inter.variable} ${jura.variable} ${juraBold.variable}`}
+        className={`overflow-x-hidden ${interBold.variable} ${inter.variable} ${jura.variable} ${juraBold.variable} relative z-10`}
       >
         {children}
       </body>

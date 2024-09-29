@@ -116,7 +116,7 @@ body {
   }
 }
 
-.header {
+.title {
   animation: headerAnimation 5sec linear forwards;
 }
 
@@ -238,5 +238,40 @@ body {
     #52ff0060 50%,
     #113222
   );
-  filter: drop-shadow(0px 0px 0.5rem #01ff39);
+}
+
+.connectModal {
+  transform: translate(-50%, -50%);
+  animation: showModal 0.4s linear forwards;
+}
+
+@keyframes showModal {
+  0% {
+    opacity: 0; /* Start completely transparent */
+    top: 55%; /* Start slightly lower */
+    background-color: rgba(0, 0, 0, 0); /* Start fully transparent */
+    border: 0.1rem solid transparent; /* Start with no visible border */
+    color: #ffffff30;
+  }
+
+  50% {
+    opacity: 0.8; /* Fade to 80% opacity */
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.5
+    ); /* Transition to a semi-transparent background */
+    border: 0.1rem solid rgba(255, 255, 255, 0.4); /* Light border during the animation */
+    top: 52%; /* Move closer to the center */
+    color: #ffffff60;
+  }
+
+  100% {
+    opacity: 1; /* Fully visible */
+    top: 50%; /* Final position centered */
+    background-color: rgba(0, 0, 0, 0.7); /* End with darker background */
+    border: 0.1rem solid rgba(255, 255, 255, 0.7); /* Final light border */
+    color: #ffffff;
+  }
 }

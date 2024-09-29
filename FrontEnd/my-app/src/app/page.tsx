@@ -15,7 +15,7 @@ export default function Home() {
       <div className="relative z-20">
         <ShadowBars />
         <div className="relative h-[100vh] w-[100vw] overflow-x-hidden flex justify-center items-center">
-          <div className="text-center text-white font-inter header">
+          <div className="text-center text-white font-inter title">
             <p className="text-5xl text-[#01FF39] tracking-[0.6rem] mb-6 font-juraBold">
               <span className="trade">TRADE </span>
               <span className="forge">FORGE</span>
