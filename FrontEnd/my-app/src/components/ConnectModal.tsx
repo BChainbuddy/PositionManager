@@ -1,6 +1,6 @@
 import { client } from "@/lib/client";
 import { connectSmartWallet } from "@/lib/wallet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createWallet, inAppWallet } from "thirdweb/wallets";
 import { useActiveAccount, useConnect } from "thirdweb/react";
 import Image from "next/image";
@@ -52,6 +52,12 @@ export default function ConnectModal({
     });
   };
 
+  useEffect(() => {
+    if (account) {
+      setViewModal(false);
+    }
+  }, [account]);
+
   return (
     <div
       className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 ${
@@ -88,7 +94,7 @@ export default function ConnectModal({
               return wallet;
             });
           }}
-          className="rounded-xl bg-white overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff]"
+          className="rounded-xl bg-white overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
           <Image src="/metamaskLogo.png" alt="metamask logo" fill />
         </div>
@@ -100,7 +106,7 @@ export default function ConnectModal({
               return wallet;
             });
           }}
-          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff]"
+          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
           <Image
             src="/coinbaseWalletLogo.svg"
@@ -110,7 +116,7 @@ export default function ConnectModal({
         </div>
         <div
           onClick={handleLogin}
-          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff]"
+          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
           <Image src="/gmailLogo.png" alt="gmail logo" fill />
         </div>

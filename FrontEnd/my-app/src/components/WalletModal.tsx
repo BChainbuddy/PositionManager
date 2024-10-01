@@ -1,6 +1,4 @@
-import { useDisconnect } from "@thirdweb-dev/react";
-import { useState } from "react";
-import { useActiveWallet } from "thirdweb/react";
+import { useActiveWallet, useDisconnect } from "thirdweb/react";
 
 interface WalletModalProps {
   showModal: boolean;
@@ -13,19 +11,28 @@ export default function WalletModal({
   setSigner,
   setViewModal,
 }: WalletModalProps) {
-  const connectedWallet = useActiveWallet();
+  const wallet = useActiveWallet();
   const { disconnect } = useDisconnect();
 
   return (
-    <div
-      className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 ${
-        showModal ? "block connectModal" : "hidden"
-      }`}
-    >
-      <h1 className="text-3xl font-juraBold">WALLET</h1>
-      <p className="" onClick={() => disconnect(connectedWallet)}>
-        Disconnect
-      </p>
-    </div>
+    showModal &&
+    wallet && (
+      <div
+        className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 flex flex-col ${
+          showModal ? "block connectModal" : "hidden"
+        }`}
+      >
+        <h1 className="text-3xl font-juraBold">WALLET</h1>
+        <p
+          className=" w-[8rem] h-[2rem] border-2 border-white flex justify-center items-center rounded-xl mx-auto cursor-pointer mt-5"
+          onClick={() => {
+            disconnect(wallet);
+            setViewModal(false);
+          }}
+        >
+          Disconnect
+        </p>
+      </div>
+    )
   );
 }

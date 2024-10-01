@@ -1,10 +1,11 @@
 const fs = require("fs");
 const hre = require("hardhat");
 
-const abiFile =
-  "/Users/jakapotokar/Desktop/PositionManager/FrontEnd/my-app/src/data/abi.json";
-const addressFile =
-  "/Users/jakapotokar/Desktop/PositionManager/FrontEnd/my-app/src/data/contractAddresses.json";
+const abiFile = process.env.ABI_FILE || "";
+const addressFile = process.env.ADDRESS_FILE || "";
+
+console.log(abiFile);
+console.log(addressFile);
 
 async function checkIfFileExists(customPath) {
   if (!fs.existsSync(customPath)) {

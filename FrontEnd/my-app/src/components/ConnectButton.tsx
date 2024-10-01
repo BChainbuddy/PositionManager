@@ -1,8 +1,8 @@
 "use client";
 
 import { client } from "@/lib/client";
-import { useBalance } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
+import { polygonAmoy } from "thirdweb/chains";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 
 interface ConnectButtonProps {
@@ -23,33 +23,44 @@ export default function ConnectButton({
   const [balance, setBalance] = useState<number>(0);
 
   const account = useActiveAccount();
+
   const { data, isLoading } = useWalletBalance({
-    chain: "80002",
-    address: account,
+    chain: polygonAmoy,
+    address: account?.address,
     client: client,
   });
 
+  console.log(account?.address);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <>
-      {signer && data ? (
+      {account && data ? (
         <div
-          className="h-[4rem] w-[15rem] bg-[#071007] text-white flex flex-col justify-evenly px-6 rounded-xl border-2 border-gray-600"
+          className="h-[4rem] w-[15rem] bg-[#071007] text-white flex flex-col justify-evenly px-4 rounded-xl border-2 border-gray-600 cursor-pointer"
           onClick={() => {
             setViewModal2(!viewModal2);
           }}
         >
           <p>
             Address:{" "}
-            {signer.address.substring(0, 8) +
+            {account?.address.substring(0, 8) +
               "..." +
-              signer.address.substring(
-                signer.address.length - 3,
-                signer.address.length
+              account?.address.substring(
+                account?.address.length - 3,
+                account?.address.length
               )}
           </p>
           <p>
             Balance:{" "}
-            {(data.displayValue ? data.displayValue : "0") + " " + data.symbol}
+            {data.displayValue.toString().length > 9
+              ? data.displayValue.toString().substring(0, 8) +
+                "..." +
+                " " +
+                data.symbol
+              : data.displayValue + " " + data.symbol}
           </p>
         </div>
       ) : (

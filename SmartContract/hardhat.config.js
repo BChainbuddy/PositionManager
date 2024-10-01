@@ -3,6 +3,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 require("@nomicfoundation/hardhat-ignition");
 require("@nomiclabs/hardhat-ethers");
+require("@nomicfoundation/hardhat-verify");
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -11,14 +12,13 @@ require("@nomiclabs/hardhat-ethers");
  */
 
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || "";
-const SEPOLIA_RPC_URL =
-  process.env.SEPOLIA_RPC_URL ||
-  "https://eth-sepolia.g.alchemy.com/v2/bIHb0pcmOJQCVBuXaQEU7l7pGVBfbYhH";
-const GOERLI_RPC_URL =
-  process.env.GOERLI_RPC_URL ||
-  "https://eth-goerli.g.alchemy.com/v2/v7gysm05jc_5bbc2w0h3g-OqsHGY9K-v";
+const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL || "";
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || "";
+const AMOY_RPC_URL = process.env.AMOY_RPC_URL || "";
+const ZKSYNC_RPC_URL = process.env.ZKSYNC_RPC_URL || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
+const POLYSCAN_API_KEY = process.env.POLYSCAN_API_KEY || "";
 
 module.exports = {
   defaultNetwork: "hardhat",
@@ -43,6 +43,15 @@ module.exports = {
       chainId: 5,
       blockConfirmations: 6,
     },
+    polygonAmoy: {
+      url: AMOY_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 80002,
+      blockConfirmations: 6,
+      verify: {
+        explorer: "https://polygonscan.com",
+      },
+    },
   },
   solidity: {
     compilers: [
@@ -61,7 +70,11 @@ module.exports = {
     ],
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      goerli: ETHERSCAN_API_KEY,
+      sepolia: POLYSCAN_API_KEY,
+      polygonAmoy: POLYSCAN_API_KEY,
+    },
   },
   gasReporter: {
     enabled: true,
