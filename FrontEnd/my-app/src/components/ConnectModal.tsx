@@ -1,18 +1,26 @@
+import { client } from "@/lib/client";
 import { connectSmartWallet } from "@/lib/wallet";
 import { useState } from "react";
+import { createWallet, inAppWallet } from "thirdweb/wallets";
+import { useActiveAccount, useConnect } from "thirdweb/react";
+import Image from "next/image";
 
 interface ConnectModalProps {
   showModal: boolean;
   setSigner: (s: any) => any;
+  setViewModal: (show: boolean) => any;
 }
 
 export default function ConnectModal({
   showModal,
   setSigner,
+  setViewModal,
 }: ConnectModalProps) {
   const [password, setPassword] = useState<string>("");
   const [loadingStatus, setLoadingStatus] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const account = useActiveAccount();
 
   const connectWallet = async () => {
     try {
@@ -20,23 +28,38 @@ export default function ConnectModal({
       const wallet = await connectSmartWallet(password, (status) =>
         setLoadingStatus(status)
       );
-
       const s = await wallet.getSigner();
-      setSigner(s);
-      setIsLoading(false);
+      if (s) {
+        setSigner(s);
+        setIsLoading(false);
+        setViewModal(false);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  const { connect } = useConnect();
+
+  const handleLogin = async () => {
+    await connect(async () => {
+      const wallet = inAppWallet();
+      await wallet.connect({
+        client: client,
+        strategy: "google",
+      });
+      return wallet;
+    });
+  };
+
   return (
     <div
-      className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl px-10 py-16 ${
+      className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 ${
         showModal ? "block connectModal" : "hidden"
       }`}
     >
-      <h1 className="text-3xl font-juraBold">LOGIN</h1>
-      <div className="flex flex-col space-y-4 mt-8">
+      <h1 className="text-3xl font-juraBold">SIGN IN</h1>
+      <div className="flex flex-col space-y-4 mt-6">
         <p className="text-lg font-inter">
           Enter password to access/create account
         </p>
@@ -49,12 +72,49 @@ export default function ConnectModal({
       </div>
       <button
         onClick={() => connectWallet()}
-        className={`py-1.5 px-6 rounded-2xl mt-8 font-juraBold transition-all duration-500 text-black ${
+        className={`py-1.5 px-6 rounded-2xl mt-4 font-juraBold transition-all duration-500 text-black ${
           password ? "bg-[#01ff39]" : "bg-[#01ff3960]"
         }`}
       >
-        Login
+        {isLoading ? "Loading..." : "LOGIN"}
       </button>
+      <p className="text-sm mt-6 mb-2">Or sign in via</p>
+      <div className="flex flex-row justify-around items-center">
+        <div
+          onClick={() => {
+            connect(async () => {
+              const wallet = createWallet("io.metamask");
+              await wallet.connect({ client: client });
+              return wallet;
+            });
+          }}
+          className="rounded-xl bg-white overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff]"
+        >
+          <Image src="/metamaskLogo.png" alt="metamask logo" fill />
+        </div>
+        <div
+          onClick={() => {
+            connect(async () => {
+              const wallet = createWallet("com.coinbase.wallet");
+              await wallet.connect({ client: client });
+              return wallet;
+            });
+          }}
+          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff]"
+        >
+          <Image
+            src="/coinbaseWalletLogo.svg"
+            alt="coinbase wallet logo"
+            fill
+          />
+        </div>
+        <div
+          onClick={handleLogin}
+          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff]"
+        >
+          <Image src="/gmailLogo.png" alt="gmail logo" fill />
+        </div>
+      </div>
     </div>
   );
 }

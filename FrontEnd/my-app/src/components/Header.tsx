@@ -3,10 +3,12 @@
 import { useState } from "react";
 import ConnectButton from "./ConnectButton";
 import ConnectModal from "./ConnectModal";
+import WalletModal from "./WalletModal";
 
 export default function Header() {
   const [signer, setSigner] = useState<any>(undefined);
   const [viewModal, setViewModal] = useState<boolean>(false);
+  const [viewModal2, setViewModal2] = useState<boolean>(false);
 
   return (
     <>
@@ -19,10 +21,23 @@ export default function Header() {
           setViewModal={setViewModal}
           viewModal={viewModal}
           signer={signer}
+          setViewModal2={setViewModal2}
+          viewModal2={viewModal2}
         />
       </div>
       {viewModal && (
-        <ConnectModal showModal={viewModal} setSigner={setSigner} />
+        <ConnectModal
+          showModal={viewModal}
+          setSigner={setSigner}
+          setViewModal={setViewModal}
+        />
+      )}
+      {viewModal2 && (
+        <WalletModal
+          showModal={viewModal2}
+          setSigner={setSigner}
+          setViewModal={setViewModal2}
+        />
       )}
     </>
   );
