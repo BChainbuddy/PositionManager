@@ -1,0 +1,46 @@
+import { useEffect, useState } from "react";
+
+export default function MarketCap() {
+  const [marketcap, setMarketcap] = useState<number>(0);
+
+  const fetchMarketCap = async () => {
+    try {
+      const response = await fetch("/api/marketcap");
+      if (!response.ok) {
+        throw new Error("Failed to fetch data from API");
+      }
+      const data = await response.json();
+      //   console.log(data.data.data);
+
+      const totalMarketcap = data.data.data.total_market_cap.usd;
+      const loops = 50;
+      const dividedPart = totalMarketcap / loops;
+      let currentAmount = 0;
+      const intervalTime = 60;
+
+      const interval = setInterval(() => {
+        currentAmount += dividedPart;
+        if (currentAmount >= totalMarketcap) {
+          currentAmount = totalMarketcap;
+          clearInterval(interval);
+        }
+        setMarketcap(currentAmount);
+      }, intervalTime);
+
+      return () => clearInterval(interval);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketCap();
+  }, []);
+
+  return (
+    <div className="bg-[#01FF39] py-2 px-4 rounded-lg text-center font-juraBold">
+      <p>Current marketcap of cryptocurrency market</p>
+      <p className="text-lg">{Math.floor(marketcap)} USD</p>
+    </div>
+  );
+}

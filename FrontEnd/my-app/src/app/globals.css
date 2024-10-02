@@ -270,7 +270,7 @@ body {
   100% {
     opacity: 1; /* Fully visible */
     top: 50%; /* Final position centered */
-    background-color: rgba(0, 0, 0, 0.7); /* End with darker background */
+    background-color: rgba(0, 0, 0, 0.99); /* End with darker background */
     border: 0.1rem solid rgba(255, 255, 255, 0.7); /* Final light border */
     color: #ffffff;
   }

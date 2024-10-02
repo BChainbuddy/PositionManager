@@ -30,11 +30,6 @@ export default function ConnectButton({
     client: client,
   });
 
-  console.log(account?.address);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <>
       {account && data ? (
@@ -44,24 +39,30 @@ export default function ConnectButton({
             setViewModal2(!viewModal2);
           }}
         >
-          <p>
-            Address:{" "}
-            {account?.address.substring(0, 8) +
-              "..." +
-              account?.address.substring(
-                account?.address.length - 3,
-                account?.address.length
-              )}
-          </p>
-          <p>
-            Balance:{" "}
-            {data.displayValue.toString().length > 9
-              ? data.displayValue.toString().substring(0, 8) +
-                "..." +
-                " " +
-                data.symbol
-              : data.displayValue + " " + data.symbol}
-          </p>
+          {viewModal2 ? (
+            <p className="text-center">X</p>
+          ) : (
+            <>
+              <p>
+                Address:{" "}
+                {account?.address.substring(0, 8) +
+                  "..." +
+                  account?.address.substring(
+                    account?.address.length - 3,
+                    account?.address.length
+                  )}
+              </p>
+              <p>
+                Balance:{" "}
+                {data.displayValue.toString().length > 9
+                  ? data.displayValue.toString().substring(0, 8) +
+                    "..." +
+                    " " +
+                    data.symbol
+                  : data.displayValue + " " + data.symbol}
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <div
