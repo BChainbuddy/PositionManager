@@ -68,7 +68,7 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
      * @param tokenIn Address of the input token.
      * @param tokenOut Address of the output token.
      * @param quantity Quantity of input tokens.
-     * @param swapPrice Desired swap price.
+     * @param swapPrice Desired swap price. Multiply it by 10 ** 18, so 1USD is 1000000000000000000.
      * @param dexRouter Address of the DEX router.
      * @param duration Duration of the position in days.
      */

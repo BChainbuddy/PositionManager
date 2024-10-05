@@ -4,9 +4,6 @@ const { DAILY_FEE } = require("../helper-hardhat-config");
 const {
   loadFixture,
 } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
-const {
-  days,
-} = require("@nomicfoundation/hardhat-network-helpers/dist/src/helpers/time/duration");
 
 describe("PositionManager", () => {
   async function deployContractFixture() {
@@ -465,7 +462,7 @@ describe("PositionManager", () => {
     });
   });
   describe("Executes swap", () => {
-    it("Swap execution with UniswapV2", async () => {
+    it("Swap execution with UniswapV3", async () => {
       const { positionManager, uniswapV3, token1, token2 } = await loadFixture(
         deployContractFixture
       );

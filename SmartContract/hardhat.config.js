@@ -4,6 +4,7 @@ require("dotenv").config();
 require("@nomicfoundation/hardhat-ignition");
 require("@nomiclabs/hardhat-ethers");
 require("@nomicfoundation/hardhat-verify");
+require("@nomicfoundation/hardhat-ignition-ethers");
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more

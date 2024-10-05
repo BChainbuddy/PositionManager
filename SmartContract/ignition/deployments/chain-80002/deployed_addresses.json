@@ -1,3 +1,5 @@
 {
-  "Deploy#PositionManager": "0x449D1610204D666cf0B5f820F3c31A5A1A20FAe6"
+  "Deploy#PositionManager": "0xA754cdbc3fF6ACDb2FB2c323e0017d9cE2f7EcB4",
+  "DeployDexV2#MockUniswapV2Router": "0x3B8645a6bE711BAbd52c7b1700bcdd4DdFaF208f",
+  "DeployDexV3#MockUniswapV3Router": "0xF3FAcb8B17597625487E6CBCF8C022797c555177"
 }
