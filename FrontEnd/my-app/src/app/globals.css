@@ -275,3 +275,10 @@ body {
     color: #ffffff;
   }
 }
+
+.positionsGrid {
+  /* border: 0.2rem solid linear-gradient(0.25turn, #ffe500, #019922); */
+  border-image: linear-gradient(0.25turn, #ffe500 0%, #019922 100%) 1;
+  border-width: 0.2rem;
+  border-style: solid;
+}

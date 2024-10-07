@@ -13,7 +13,7 @@ export default function TopCoins() {
         throw new Error("Failed to fetch data from API");
       }
       const data = await response.json();
-      console.log(data.data);
+      // console.log(data.data);
       setCoins(data.data);
     } catch (error) {
       console.error("Error:", error);

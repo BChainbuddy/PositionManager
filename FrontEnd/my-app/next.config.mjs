@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "coin-images.coingecko.com",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "assets.coingecko.com",
+        pathname: "**",
+      },
     ],
   },
 };
