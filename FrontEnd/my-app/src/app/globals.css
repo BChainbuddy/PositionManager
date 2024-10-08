@@ -277,8 +277,29 @@ body {
 }
 
 .positionsGrid {
-  /* border: 0.2rem solid linear-gradient(0.25turn, #ffe500, #019922); */
-  border-image: linear-gradient(0.25turn, #ffe500 0%, #019922 100%) 1;
-  border-width: 0.2rem;
-  border-style: solid;
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, 7rem);
+  gap: 2rem;
+  padding: 1rem;
+  width: 36rem;
+  margin: 0 auto;
+  justify-content: center; */
+  position: relative;
+  border: 4px solid transparent;
+  border-radius: 3%;
+  background: #002319;
+  background-clip: padding-box;
+  padding: 10px;
+}
+
+.positionsGrid::after {
+  position: absolute;
+  top: -0.3rem;
+  bottom: -0.3rem;
+  left: -0.3rem;
+  right: -0.3rem;
+  background: linear-gradient(0.25turn, #ffe500 0%, #019922 100%);
+  content: "";
+  z-index: -1;
+  border-radius: 3%;
 }
