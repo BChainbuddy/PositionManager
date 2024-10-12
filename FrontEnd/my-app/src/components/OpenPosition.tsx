@@ -6,10 +6,11 @@ interface OpenPositionProps {
 }
 
 export default function OpenPosition({ position }: OpenPositionProps) {
+  console.log(position);
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[7rem]">
       <div className="relative h-[3.5rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
-        <div className="absolute translate-x-3 rounded-full overflow-hidden z-20">
+        <div className="absolute -translate-x-3 rounded-full overflow-hidden z-10">
           <div className="relative h-[2.4rem] w-[2.4rem]">
             <Image
               src={position.imgIn ? position.imgIn : "/unknownToken.png"}
@@ -20,7 +21,7 @@ export default function OpenPosition({ position }: OpenPositionProps) {
             />
           </div>
         </div>
-        <div className="absolute -translate-x-3 rounded-full overflow-hidden z-10">
+        <div className="absolute translate-x-3 rounded-full overflow-hidden z-20">
           <div className="relative h-[2.4rem] w-[2.4rem]">
             <Image
               src={position.imgOut ? position.imgOut : "/unknownToken.png"}
@@ -36,8 +37,15 @@ export default function OpenPosition({ position }: OpenPositionProps) {
         <p className="text-xs">
           {position.symbolIn + "/" + position.symbolOut}
         </p>
-        <p className="text-xs">Price: 0.001</p>
-        <p className="text-xs">Target: 0.002</p>
+        <p className="text-xs">
+          Price:{" "}
+          {position.price ? position.price.toString().substring(0, 7) : "0"}
+        </p>
+
+        <p className="text-xs">
+          Target:{" "}
+          {(position.executionValue / 10 ** 18).toString().substring(0, 7)}
+        </p>
         <p className="text-xs">10 aug 2023</p>
       </div>
     </div>

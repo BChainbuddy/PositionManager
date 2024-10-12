@@ -1,5 +1,5 @@
 import { client } from "@/lib/client";
-import { connectSmartWallet } from "@/lib/wallet";
+// import { connectSmartWallet } from "@/lib/wallet";
 import { useEffect, useState } from "react";
 import { createWallet, inAppWallet } from "thirdweb/wallets";
 import { useActiveAccount, useConnect } from "thirdweb/react";
@@ -24,16 +24,16 @@ export default function ConnectModal({
 
   const connectWallet = async () => {
     try {
-      setIsLoading(true);
-      const wallet = await connectSmartWallet(password, (status) =>
-        setLoadingStatus(status)
-      );
-      const s = await wallet.getSigner();
-      if (s) {
-        setSigner(s);
-        setIsLoading(false);
-        setViewModal(false);
-      }
+      // setIsLoading(true);
+      // const wallet = await connectSmartWallet(password, (status) =>
+      //   setLoadingStatus(status)
+      // );
+      // const s = await wallet.getSigner();
+      // if (s) {
+      //   setSigner(s);
+      //   setIsLoading(false);
+      //   setViewModal(false);
+      // }
     } catch (error) {
       console.error(error);
     }
