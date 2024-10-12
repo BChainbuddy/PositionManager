@@ -6,6 +6,12 @@ interface OpenPositionProps {
 }
 
 export default function OpenPosition({ position }: OpenPositionProps) {
+  const getDate = () => {
+    const myDate = new Date(position.endTimestamp * 1000);
+    console.log(myDate.getDate());
+    return myDate.toDateString();
+  };
+
   console.log(position);
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[7rem]">
@@ -46,7 +52,7 @@ export default function OpenPosition({ position }: OpenPositionProps) {
           Target:{" "}
           {(position.executionValue / 10 ** 18).toString().substring(0, 7)}
         </p>
-        <p className="text-xs">10 aug 2023</p>
+        <p className="text-xs">{getDate()}</p>
       </div>
     </div>
   );
