@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="w-full h-[11vh] header flex flex-row items-center justify-between px-16 drop-shadow-[0_0_0.5rem_#01ff39]">
+      <div className="w-full h-[11vh] header flex flex-row items-center justify-between px-16 z-50 relative">
         <p className="text-[#01FF39] text-4xl font-juraBold">
           TRADE <span className="text-white ml-1">FORGE</span>
         </p>

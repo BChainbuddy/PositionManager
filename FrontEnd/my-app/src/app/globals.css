@@ -234,10 +234,17 @@ body {
   background: linear-gradient(
     0.25turn,
     #113222,
+    #309512 25%,
+    #52ff00 50%,
+    #113222
+  );
+  /* background: linear-gradient(
+    0.25turn,
+    #113222,
     #30951281 25%,
     #52ff0060 50%,
     #113222
-  );
+  ); */
 }
 
 .connectModal {
@@ -296,8 +303,60 @@ body {
   bottom: -0.3rem;
   left: -0.3rem;
   right: -0.3rem;
-  background: linear-gradient(0.25turn, #ffe500 0%, #019922 100%);
+  background: linear-gradient(0.875turn, #ffe500 0%, #019922 100%);
   content: "";
   z-index: -1;
   border-radius: 3%;
+}
+
+.bottomShadow {
+  box-shadow: 0 0 0.5rem 0.5rem #01ff39;
+}
+
+.bottomTransition {
+  animation: bottomTransitionAnimation 1.5s forwards ease-in-out;
+}
+
+@keyframes bottomTransitionAnimation {
+  0% {
+    box-shadow: 0 0 0.5rem 0.5rem #01ff39;
+  }
+
+  40% {
+    box-shadow: 0 0 0.5rem 47vh #01ff39;
+  }
+
+  60% {
+    box-shadow: 0 0 0.5rem 47vh #01ff39;
+  }
+
+  100% {
+    box-shadow: 0 0 0.5rem 0.5rem #01ff39;
+  }
+}
+
+.topShadow {
+  box-shadow: 0 0 0.5rem 0.3rem #01ff39;
+}
+
+.topTransition {
+  animation: topTransitionAnimation 1.5s forwards ease-in-out;
+}
+
+@keyframes topTransitionAnimation {
+  0% {
+    box-shadow: 0 0 0.5rem 0.3rem #01ff39;
+  }
+
+  40% {
+    box-shadow: 0 0 0.5rem 47vh #01ff39;
+  }
+
+  60% {
+    box-shadow: 0 0 0.5rem 47vh #01ff39;
+  }
+
+  100% {
+    box-shadow: 0 0 0.5rem 0.3rem #01ff39;
+  }
 }

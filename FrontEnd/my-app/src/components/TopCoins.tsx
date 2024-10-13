@@ -25,16 +25,16 @@ export default function TopCoins() {
   }, []);
 
   return (
-    <div>
+    <div className="mt-10">
       <h2 className="text-center font-interBold text-[#FFE500]">
         Top 10 Cryptocurrencies by Price Change
       </h2>
-      <div className="grid grid-cols-5 gap-2 mt-6">
+      <div className="grid grid-cols-5 gap-3 mt-6">
         {coins &&
           coins.map((coin, i) => (
             <div
               key={i}
-              className="relative h-[4rem] w-[4rem] bg-white rounded-lg overflow-hidden shadow-md group"
+              className="relative h-[4.5rem] w-[4.5rem] bg-white rounded-lg overflow-hidden shadow-md group"
             >
               {coin.symbol ? (
                 <>

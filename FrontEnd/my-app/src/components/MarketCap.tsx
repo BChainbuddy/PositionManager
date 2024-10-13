@@ -38,8 +38,8 @@ export default function MarketCap() {
   }, []);
 
   return (
-    <div className="bg-[#01FF39] py-2 px-4 rounded-lg text-center font-juraBold">
-      <p>Current marketcap of cryptocurrency market</p>
+    <div className="bg-[#01FF39] py-2 text-center w-[23rem] rounded-xl font-juraBold self-end mr-2">
+      <p className="text-sm">Current marketcap of cryptocurrency market</p>
       <p className="text-lg">{Math.floor(marketcap)} USD</p>
     </div>
   );

@@ -60,7 +60,7 @@ export default function ConnectModal({
 
   return (
     <div
-      className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 ${
+      className={`fixed z-40 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 ${
         showModal ? "block connectModal" : "hidden"
       }`}
     >

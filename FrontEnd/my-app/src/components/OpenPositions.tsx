@@ -169,9 +169,11 @@ export default function OpenPositions() {
   }, []);
 
   return (
-    <div className="flex flex-col">
-      <p className="text-white mb-3 ml-2 font-interBold">Your open positions</p>
-      <div className="positionsGrid grid grid-cols-3 w-[25rem] gap-[1.5rem] place-items-center">
+    <div className="flex flex-col mt-10">
+      <p className="text-white mb-3 ml-2 font-interBold text-sm">
+        Your open positions
+      </p>
+      <div className="positionsGrid grid grid-cols-3 w-[25rem] gap-[1.5rem] place-items-center h-[21rem]">
         {positions.length ? (
           positions.map((position, i) => (
             <OpenPosition position={position} key={i} />

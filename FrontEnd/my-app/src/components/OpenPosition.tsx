@@ -8,16 +8,16 @@ interface OpenPositionProps {
 export default function OpenPosition({ position }: OpenPositionProps) {
   const getDate = () => {
     const myDate = new Date(position.endTimestamp * 1000);
-    console.log(myDate.getDate());
+    // console.log(myDate.getDate());
     return myDate.toDateString();
   };
 
-  console.log(position);
+  // console.log(position);
   return (
-    <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[7rem]">
-      <div className="relative h-[3.5rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
+    <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[6.5rem]">
+      <div className="relative h-[3.3rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
         <div className="absolute -translate-x-3 rounded-full overflow-hidden z-10">
-          <div className="relative h-[2.4rem] w-[2.4rem]">
+          <div className="relative h-[2.3rem] w-[2.3rem]">
             <Image
               src={position.imgIn ? position.imgIn : "/unknownToken.png"}
               alt="Token logo"
@@ -28,7 +28,7 @@ export default function OpenPosition({ position }: OpenPositionProps) {
           </div>
         </div>
         <div className="absolute translate-x-3 rounded-full overflow-hidden z-20">
-          <div className="relative h-[2.4rem] w-[2.4rem]">
+          <div className="relative h-[2.3rem] w-[2.3rem]">
             <Image
               src={position.imgOut ? position.imgOut : "/unknownToken.png"}
               alt="Token logo"
@@ -39,20 +39,20 @@ export default function OpenPosition({ position }: OpenPositionProps) {
           </div>
         </div>
       </div>
-      <div className="py-2 flex flex-col space-y-0.5">
-        <p className="text-xs">
+      <div className="py-1 flex flex-col">
+        <p className="text-[0.7rem]">
           {position.symbolIn + "/" + position.symbolOut}
         </p>
-        <p className="text-xs">
+        <p className="text-[0.6rem]">
           Price:{" "}
           {position.price ? position.price.toString().substring(0, 7) : "0"}
         </p>
 
-        <p className="text-xs">
+        <p className="text-[0.6rem]">
           Target:{" "}
           {(position.executionValue / 10 ** 18).toString().substring(0, 7)}
         </p>
-        <p className="text-xs">{getDate()}</p>
+        <p className="text-[0.6rem]">{getDate()}</p>
       </div>
     </div>
   );
