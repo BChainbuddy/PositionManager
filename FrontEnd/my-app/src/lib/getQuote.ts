@@ -117,18 +117,21 @@ export async function getV3Price(
   decimalsIn: number,
   decimalsOut: number
 ) {
-  const poolAddress = await getPoolAddress(
-    routerAddress,
-    tokenAddress1,
-    tokenAddress2,
-    fee
-  );
-  const poolContract = new ethers.Contract(
-    poolAddress,
-    UniswapV3PoolABI,
-    provider
-  );
   try {
+    const poolAddress = await getPoolAddress(
+      routerAddress,
+      tokenAddress1,
+      tokenAddress2,
+      fee
+    );
+
+    if (!poolAddress) return null;
+
+    const poolContract = new ethers.Contract(
+      poolAddress,
+      UniswapV3PoolABI,
+      provider
+    );
     const slot0 = await poolContract.slot0();
     const sqrtPriceX96 = slot0.sqrtPriceX96;
 
@@ -148,9 +151,9 @@ export async function getV3Price(
       price = 1 / (Number(sqrtPriceX96) / 2 ** 96) ** 2;
       price = price * 10 ** (decimalsIn - decimalsOut);
     }
-    
+
     return price;
   } catch (error) {
-    console.error("Error fetching slot0 data:", error);
+    console.error("Error fetching V3 price:", error);
   }
 }
