@@ -360,3 +360,15 @@ body {
     box-shadow: 0 0 0.5rem 0.3rem #01ff39;
   }
 }
+
+.allPositionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 7rem);
+  gap: 1rem;
+  padding: 1rem 5vw;
+  /* position: relative;
+  border-radius: 3%;
+  background: #002319;
+  background-clip: padding-box;
+  padding: 1.2rem; */
+}
