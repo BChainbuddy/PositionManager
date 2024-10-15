@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { Position } from "./OpenPositions";
+import LogoWrapper from "./LogoWrapper";
 
 interface OpenPositionProps {
   position: Position;
@@ -8,7 +8,6 @@ interface OpenPositionProps {
 export default function UserPosition({ position }: OpenPositionProps) {
   const getDate = () => {
     const myDate = new Date(position.endTimestamp * 1000);
-    // console.log(myDate.getDate());
     return myDate.toDateString();
   };
 
@@ -18,23 +17,17 @@ export default function UserPosition({ position }: OpenPositionProps) {
       <div className="relative h-[4rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
         <div className="absolute -translate-x-3 rounded-full overflow-hidden z-10">
           <div className="relative h-[2.7rem] w-[2.7rem]">
-            <Image
+            <LogoWrapper
               src={position.imgIn ? position.imgIn : "/unknownToken.png"}
               alt="Token logo"
-              fill
-              className="bg-white"
-              quality={100}
             />
           </div>
         </div>
         <div className="absolute translate-x-3 rounded-full overflow-hidden z-20">
           <div className="relative h-[2.7rem] w-[2.7rem]">
-            <Image
+            <LogoWrapper
               src={position.imgOut ? position.imgOut : "/unknownToken.png"}
               alt="Token logo"
-              fill
-              className="bg-white"
-              quality={100}
             />
           </div>
         </div>

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import CoinList from "@/data/coinlist.json";
-import OpenPosition from "./OpenPosition";
 import { price } from "@/lib/price";
 import UserPosition from "./UserPosition";
 
