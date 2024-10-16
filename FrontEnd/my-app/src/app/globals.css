@@ -389,3 +389,22 @@ body {
 .topShadowYellow {
   box-shadow: 0 0 0.5rem 0.5rem #ffe500;
 }
+
+.forgeCard {
+  position: relative;
+  border-radius: 3%;
+  background-clip: padding-box;
+  padding: 1.2rem;
+}
+
+.forgeCard::after {
+  position: absolute;
+  top: -0.3rem;
+  bottom: -0.3rem;
+  left: -0.3rem;
+  right: -0.3rem;
+  background: linear-gradient(0.875turn, #ffe500 0%, #019922 100%);
+  content: "";
+  z-index: -1;
+  border-radius: 3%;
+}
