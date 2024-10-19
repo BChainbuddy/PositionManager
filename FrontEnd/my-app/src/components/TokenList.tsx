@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from "react";
 import tokenList from "@/data/coinlist.json";
-import LogoWrapper from "./LogoWrapper";
 import Image from "next/image";
 import { useForge } from "./ForgeContext";
+import { ethers } from "ethers";
+import { client } from "@/lib/client";
+import { polygon } from "thirdweb/chains";
+import ERC20Abi from "@/data/ERC20Abi.json";
+import { getContract, readContract, resolveMethod } from "thirdweb";
+import { Abi } from "thirdweb/utils";
 
 interface TokenListProps {
   showModal: (arg1: boolean) => void;
@@ -26,14 +31,53 @@ export default function TokenList({ input, showModal }: TokenListProps) {
     }
   };
 
-  function filterTokenList(text: string) {
-    const filterTokens =
-      text !== ""
-        ? filteredTokens.filter((token) =>
-            token.symbol.toLowerCase().includes(text.toLowerCase())
-          )
-        : tokenList.tokens;
-    setFilteredTokens(filterTokens);
+  async function filterTokenList(text: string | undefined) {
+    if (ethers.isAddress(text)) {
+      findToken(text);
+    } else {
+      const filterTokens =
+        text !== ""
+          ? tokenList.tokens.filter((token) =>
+              token.symbol.toLowerCase().includes((text || "").toLowerCase())
+            )
+          : tokenList.tokens;
+      setFilteredTokens(filterTokens);
+    }
+  }
+
+  async function findToken(address: string) {
+    try {
+      const contract = getContract({
+        client,
+        address: address,
+        chain: polygon,
+        abi: ERC20Abi as Abi, // Cast ABI as object[],
+      });
+
+      // Read the symbol, name and decimals from the token contract
+      console.log(contract);
+
+      const Name = await readContract({
+        contract: contract,
+        method: "function name() view returns (string)",
+        params: [],
+      });
+
+      const Symbol = await readContract({
+        contract: contract,
+        method: "function symbol() view returns (string)",
+        params: [],
+      });
+
+      const Decimals = await readContract({
+        contract: contract,
+        method: "function decimals() view returns (uint256)",
+        params: [],
+      });
+      setFilteredTokens([{ symbol: Symbol, name: Name, decimals: Decimals }]);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   useEffect(() => {
@@ -61,28 +105,35 @@ export default function TokenList({ input, showModal }: TokenListProps) {
         ></input>
         <div
           id="tokenList"
-          className="bg-amber-50 rounded text-center text-black flex flex-col overflow-y-auto h-80"
+          className="bg-amber-50 rounded-b-md text-center text-black flex flex-col overflow-y-auto h-80"
         >
-          {filteredTokens.map((token, index) => (
-            <div
-              className="hover:bg-zinc-300 cursor-pointer transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
-              key={`${token.symbol}-${index}`}
-              onClick={() => {
-                input ? setInputToken(token) : setOutputToken(token);
-                closeModal();
-              }}
-            >
-              <p>{token.symbol}</p>
-              <div className="relative h-6 w-6">
-                <Image
-                  src={token.logoURI ? token.logoURI : "/uknownToken.jpg"}
-                  alt={`${token.symbol} symbol`}
-                  fill
-                  className="bg-white rounded-full overflow-clip"
-                />
+          {filteredTokens.length ? (
+            filteredTokens.map((token, index) => (
+              <div
+                className="hover:bg-zinc-300 cursor-pointer transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
+                key={`${token.symbol}-${index}`}
+                onClick={() => {
+                  input ? setInputToken(token) : setOutputToken(token);
+                  closeModal();
+                }}
+              >
+                <p>{token.symbol}</p>
+                <div className="relative h-6 w-6">
+                  <Image
+                    src={token.logoURI ? token.logoURI : "/unknownToken.png"}
+                    alt={`${token.symbol} symbol`}
+                    fill
+                    className="bg-white rounded-full overflow-clip"
+                  />
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center text-[#3f3f3f] text-xs px-1.5 mt-1">
+              Cannot find the symbol? Input the token address and we'll find it
+              for you!
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
