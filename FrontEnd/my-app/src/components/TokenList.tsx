@@ -42,7 +42,7 @@ export default function TokenList({
 
   return (
     <div
-      className="fixed inset-0 bg-opacity backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 bg-opacity backdrop-blur-sm flex justify-center items-center z-20"
       id="wrapper"
       onClick={handleClose}
     >
@@ -65,7 +65,7 @@ export default function TokenList({
         >
           {filteredTokens.map((token, index) => (
             <div
-              className="hover:bg-zinc-300 transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
+              className="hover:bg-zinc-300 cursor-pointer transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
               key={`${token.symbol}-${index}`}
               onClick={() => {
                 willChooseToken(token);

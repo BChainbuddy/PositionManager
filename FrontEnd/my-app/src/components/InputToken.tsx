@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TokenList from "./TokenList";
+import { shortenSymbol } from "@/lib/shortenSymbol";
 
 export default function InputToken() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -12,9 +13,9 @@ export default function InputToken() {
   }, [chosenToken]);
   return (
     <>
-      <div className="">
+      <div className="bg-[#282727] h-7 rounded-xl hover:bg-[#1b5e3591] transition-all duration-500 cursor-pointer w-24 text-center ease-out flex items-center justify-center">
         <p onClick={() => setShowModal(!showModal)}>
-          {chosenToken.symbol ? chosenToken.symbol : "SYMBOL"}
+          {chosenToken.symbol ? shortenSymbol(7, chosenToken.symbol) : "SYMBOL"}
         </p>
       </div>
       {showModal && (
