@@ -21,8 +21,8 @@ const ForgeContext = createContext<ForgeContextType | undefined>(undefined);
 
 // Provider to wrap your app and share the transition state
 export function ForgeContextProvider({ children }: { children: ReactNode }) {
-  const [inputToken, setInputToken] = useState<any>(null);
-  const [outputToken, setOutputToken] = useState<any>(null);
+  const [inputToken, setInputToken] = useState<any>("");
+  const [outputToken, setOutputToken] = useState<any>("");
 
   return (
     <ForgeContext.Provider
@@ -34,13 +34,11 @@ export function ForgeContextProvider({ children }: { children: ReactNode }) {
 }
 
 // Hook to use the context in any component
-export function usePageTransition() {
+export function useForge() {
   const context = useContext(ForgeContext);
 
   if (!context) {
-    throw new Error(
-      "usePageTransition must be used within a ForgeContextProvider"
-    );
+    throw new Error("useForge must be used within a ForgeContextProvider");
   }
 
   return context;

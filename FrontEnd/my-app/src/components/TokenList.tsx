@@ -4,17 +4,17 @@ import { useEffect, useState } from "react";
 import tokenList from "@/data/coinlist.json";
 import LogoWrapper from "./LogoWrapper";
 import Image from "next/image";
+import { useForge } from "./ForgeContext";
 
 interface TokenListProps {
   showModal: (arg1: boolean) => void;
-  willChooseToken: (token: string) => void;
+  input: boolean;
 }
 
-export default function TokenList({
-  willChooseToken,
-  showModal,
-}: TokenListProps) {
+export default function TokenList({ input, showModal }: TokenListProps) {
   const [filteredTokens, setFilteredTokens] = useState<any[]>([]);
+
+  const { setInputToken, setOutputToken } = useForge();
 
   const closeModal = () => {
     showModal(false);
@@ -68,7 +68,7 @@ export default function TokenList({
               className="hover:bg-zinc-300 cursor-pointer transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
               key={`${token.symbol}-${index}`}
               onClick={() => {
-                willChooseToken(token);
+                input ? setInputToken(token) : setOutputToken(token);
                 closeModal();
               }}
             >
