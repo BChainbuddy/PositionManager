@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-export default function Step2() {
+interface Step2Props {
+  nextStep: () => void;
+  previousStep: () => void;
+}
+
+export default function Step2({ nextStep, previousStep }: Step2Props) {
   const [automatic, setAutomatic] = useState(true);
 
   return (
@@ -23,10 +28,16 @@ export default function Step2() {
           ></div>
         </div>
       </div>
-      <button className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6">
+      <button
+        className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6"
+        onClick={nextStep}
+      >
         CONTINUE
       </button>
-      <button className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2">
+      <button
+        className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
+        onClick={previousStep}
+      >
         back
       </button>
     </div>

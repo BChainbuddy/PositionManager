@@ -1,7 +1,11 @@
 import InputSwitch from "./InputSwitch";
 import InputToken from "./InputToken";
 
-export default function Step1() {
+interface Step1Props {
+  nextStep: () => void;
+}
+
+export default function Step1({ nextStep }: Step1Props) {
   return (
     <div className="h-full w-full flex flex-col text-white justify-center items-center font-juraBold">
       <p className="text-center text-[#01FF39] text-xl">CREATE YOUR POSITION</p>
@@ -14,7 +18,10 @@ export default function Step1() {
         <p>OUTPUT TOKEN:</p>
         <InputToken input={false} />
       </div>
-      <button className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6">
+      <button
+        className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6"
+        onClick={nextStep}
+      >
         CONTINUE
       </button>
     </div>
