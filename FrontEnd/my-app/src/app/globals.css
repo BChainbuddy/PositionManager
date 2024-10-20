@@ -390,25 +390,6 @@ body {
   box-shadow: 0 0 0.5rem 0.5rem #ffe500;
 }
 
-.forgeCard {
-  position: relative;
-  border-radius: 3%;
-  background-clip: padding-box;
-  padding: 1.2rem;
-}
-
-.forgeCard::after {
-  position: absolute;
-  top: -0.3rem;
-  bottom: -0.3rem;
-  left: -0.3rem;
-  right: -0.3rem;
-  background: linear-gradient(0.875turn, #ffe500 0%, #019922 100%);
-  content: "";
-  z-index: -1;
-  border-radius: 3%;
-}
-
 .spin {
   animation: spinAnimation 0.25s linear forwards;
 }
@@ -420,5 +401,47 @@ body {
 
   100% {
     transform: rotate(180deg);
+  }
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.forgeCard {
+  background: #002114;
+  border-radius: 0.5rem;
+
+  position: relative;
+}
+
+.forgeCard::before,
+.forgeCard::after {
+  content: "";
+  position: absolute;
+  inset: -0.3rem;
+  z-index: -1;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    #ffe500,
+    #019922,
+    #ffe500
+  );
+  border-radius: inherit;
+  animation: rotation 20s linear infinite;
+}
+
+.forgeCard::after {
+  filter: blur(0.5rem);
+}
+
+@keyframes rotation {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
   }
 }
