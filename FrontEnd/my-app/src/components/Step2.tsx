@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AvailableDexes from "./AvailableDexes";
 
 interface Step2Props {
   nextStep: () => void;
@@ -28,6 +29,7 @@ export default function Step2({ nextStep, previousStep }: Step2Props) {
           ></div>
         </div>
       </div>
+      <AvailableDexes />
       <button
         className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6"
         onClick={nextStep}

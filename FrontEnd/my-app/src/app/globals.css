@@ -445,3 +445,13 @@ body {
     --gradient-angle: 360deg;
   }
 }
+
+.dexGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 7rem);
+  gap: 2rem;
+  /* padding: rem; */
+  width: 80%;
+  margin: 0 auto;
+  position: relative;
+}
