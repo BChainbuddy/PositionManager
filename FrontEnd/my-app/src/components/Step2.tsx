@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AvailableDexes from "./AvailableDexes";
+import { useForge } from "./ForgeContext";
 
 interface Step2Props {
   nextStep: () => void;
@@ -11,10 +12,18 @@ interface Step2Props {
 export default function Step2({ nextStep, previousStep }: Step2Props) {
   const [automatic, setAutomatic] = useState(true);
 
+  const { setRouterAddress } = useForge();
+
+  useEffect(() => {
+    if (automatic) {
+      setRouterAddress("");
+    }
+  }, [automatic]);
+
   return (
     <div className="h-full w-full flex flex-col text-white justify-center items-center font-juraBold">
       <p className="text-center text-[#01FF39] text-xl">CHOOSE LIQUIDITY</p>
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row space-x-2 mt-6">
         <p>Automatic</p>
         <div
           className={` w-[3rem] h-[1.5rem] relative z-10 rounded-xl flex items-center transition-all duration-1000 ease-in-out ${
@@ -29,7 +38,7 @@ export default function Step2({ nextStep, previousStep }: Step2Props) {
           ></div>
         </div>
       </div>
-      <AvailableDexes />
+      <AvailableDexes automatic={automatic} />
       <button
         className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6"
         onClick={nextStep}

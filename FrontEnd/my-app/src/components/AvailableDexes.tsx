@@ -22,7 +22,11 @@ const provider = new ethers.JsonRpcProvider(
   process.env.NEXT_PUBLIC_POLYGON_RPC_URL
 );
 
-export default function AvailableDexes() {
+interface AvailableDexesProps {
+  automatic: boolean;
+}
+
+export default function AvailableDexes({ automatic }: AvailableDexesProps) {
   const [dexes, setDexes] = useState<any[]>([]);
 
   const { inputToken, outputToken } = useForge();
@@ -144,7 +148,11 @@ export default function AvailableDexes() {
   }, [dexes]);
 
   return (
-    <div className="flex flex-col">
+    <div
+      className={`dexGrid mt-6 transition-all duration-1000 ${
+        automatic && "grayscale disabled"
+      }`}
+    >
       {dexes.length ? (
         dexes.map((dex, i) => <Dex dex={dex} key={i} />)
       ) : (

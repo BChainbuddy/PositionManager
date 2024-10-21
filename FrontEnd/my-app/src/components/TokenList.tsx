@@ -98,7 +98,7 @@ export default function TokenList({ input, showModal }: TokenListProps) {
           X
         </button>
         <input
-          className="bg-slate-300 rounded-t-md p-2 text-gray-600"
+          className="bg-slate-300 rounded-t-md p-2 text-gray-600 outline-none"
           type="text"
           placeholder="Search symbol..."
           onChange={(e) => filterTokenList(e.target.value)}
