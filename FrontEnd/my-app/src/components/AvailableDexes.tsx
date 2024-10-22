@@ -143,10 +143,6 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
     getAvailableDexes();
   }, []);
 
-  useEffect(() => {
-    console.log(dexes);
-  }, [dexes]);
-
   return (
     <div
       className={`dexGrid mt-6 transition-all duration-1000 ${

@@ -467,3 +467,19 @@ body {
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.walletBackground {
+  background: linear-gradient(135deg, #041516 0%, #0a1e1f 50%, #183234 100%);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

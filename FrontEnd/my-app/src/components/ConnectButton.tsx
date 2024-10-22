@@ -34,7 +34,7 @@ export default function ConnectButton({
     <>
       {account && data ? (
         <div
-          className="h-[4rem] w-[15rem] bg-[#071007] text-white flex flex-col justify-evenly px-4 rounded-xl border-2 border-gray-600 cursor-pointer"
+          className="h-[4rem] w-[15rem] walletBackground text-white flex flex-col justify-evenly px-4 rounded-xl border-2 border-gray-600 cursor-pointer"
           onClick={() => {
             setViewModal2(!viewModal2);
           }}
