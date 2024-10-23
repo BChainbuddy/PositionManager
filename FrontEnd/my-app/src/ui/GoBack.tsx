@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
-import { usePageTransition } from "./PageTransitionContext";
+import { usePageTransition } from "../context/PageTransitionContext";
 
 export default function GoBack() {
   const router = useRouter();

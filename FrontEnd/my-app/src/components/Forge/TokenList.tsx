@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import tokenList from "@/data/coinlist.json";
 import Image from "next/image";
-import { useForge } from "./ForgeContext";
+import { useForge } from "../../context/ForgeContext";
 import { ethers } from "ethers";
 import { client } from "@/lib/client";
 import { polygon } from "thirdweb/chains";

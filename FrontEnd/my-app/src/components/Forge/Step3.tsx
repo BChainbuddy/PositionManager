@@ -1,6 +1,6 @@
 "use client";
 
-import { useForge } from "./ForgeContext";
+import { useForge } from "../../context/ForgeContext";
 
 interface Step3Props {
   nextStep: () => void;

@@ -1,5 +1,5 @@
-import AllPosition from "@/components/AllPositions";
-import GoBack from "@/components/GoBack";
+import AllPosition from "@/components/Positions/AllPositions";
+import GoBack from "@/ui/GoBack";
 
 export default function Positions() {
   return (

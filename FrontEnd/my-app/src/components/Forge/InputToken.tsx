@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import TokenList from "./TokenList";
 import { shortenSymbol } from "@/lib/shortenSymbol";
-import { useForge } from "./ForgeContext";
+import { useForge } from "../../context/ForgeContext";
 import Image from "next/image";
 
 export default function InputToken({ input }: { input: boolean }) {

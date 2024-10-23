@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useForge } from "./ForgeContext";
+import { useForge } from "../../context/ForgeContext";
 
 interface DexProps {
   logo: string;

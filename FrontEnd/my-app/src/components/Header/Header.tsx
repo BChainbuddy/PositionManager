@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import ConnectButton from "./ConnectButton";
-import ConnectModal from "./ConnectModal";
-import WalletModal from "./WalletModal";
+import ConnectModal from "../Wallet/ConnectModal";
+import WalletModal from "../Wallet/WalletModal";
 
 export default function Header() {
   const [signer, setSigner] = useState<any>(undefined);

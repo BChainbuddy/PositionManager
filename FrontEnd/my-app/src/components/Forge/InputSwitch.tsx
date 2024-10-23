@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { useForge } from "./ForgeContext";
+import { useForge } from "../../context/ForgeContext";
 
 export default function InputSwitch() {
   const [animateSpin, setAnimateSpin] = useState<boolean>(false);

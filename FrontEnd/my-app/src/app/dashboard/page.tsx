@@ -1,9 +1,9 @@
 "use client";
 
-import MarketCap from "@/components/MarketCap";
-import OpenPositions from "@/components/OpenPositions";
-import { usePageTransition } from "@/components/PageTransitionContext";
-import TopCoins from "@/components/TopCoins";
+import MarketCap from "@/components/Dashboard/MarketCap";
+import OpenPositions from "@/components/Dashboard/OpenPositions";
+import { usePageTransition } from "@/context/PageTransitionContext";
+import TopCoins from "@/components/Dashboard/TopCoins";
 import Link from "next/link";
 import { useActiveAccount } from "thirdweb/react";
 

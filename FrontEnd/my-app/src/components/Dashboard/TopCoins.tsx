@@ -1,7 +1,7 @@
 // components/TopCoins.tsx
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import CircleLoading from "./CircleLoading";
+import CircleLoading from "../../ui/CircleLoading";
 
 export default function TopCoins() {
   const [coins, setCoins] = useState<any[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);

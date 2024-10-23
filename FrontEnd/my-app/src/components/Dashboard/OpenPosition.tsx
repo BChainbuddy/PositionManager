@@ -1,4 +1,4 @@
-import LogoWrapper from "./LogoWrapper";
+import LogoWrapper from "../../ui/LogoWrapper";
 import { Position } from "./OpenPositions";
 
 interface OpenPositionProps {

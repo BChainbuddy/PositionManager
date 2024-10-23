@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AvailableDexes from "./AvailableDexes";
-import { useForge } from "./ForgeContext";
+import { useForge } from "../../context/ForgeContext";
 
 interface Step2Props {
   nextStep: () => void;

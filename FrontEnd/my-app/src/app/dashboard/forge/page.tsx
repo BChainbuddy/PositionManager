@@ -1,5 +1,5 @@
-import ForgeCard from "@/components/ForgeCard";
-import { ForgeContextProvider } from "@/components/ForgeContext";
+import ForgeCard from "@/components/Forge/ForgeCard";
+import { ForgeContextProvider } from "@/context/ForgeContext";
 
 export default function Forge() {
   return (

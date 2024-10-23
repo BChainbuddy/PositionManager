@@ -1,5 +1,5 @@
-import { Position } from "./OpenPositions";
-import LogoWrapper from "./LogoWrapper";
+import { Position } from "../Dashboard/OpenPositions";
+import LogoWrapper from "../../ui/LogoWrapper";
 
 interface OpenPositionProps {
   position: Position;

@@ -1,11 +1,11 @@
 import Image from "next/image";
-import LogoCarousel from "@/components/LogoCarousel";
-import StepCard from "@/components/StepCard";
-import ShadowBars from "@/components/ShadowBars";
-import LineScroll from "@/components/LineScroll";
-import IconText from "@/components/IconText";
-import Footer from "@/components/Footer";
-import Background from "@/components/Background";
+import LogoCarousel from "@/components/Home/LogoCarousel";
+import StepCard from "@/components/Home/StepCard";
+import ShadowBars from "@/components/Home/ShadowBars";
+import LineScroll from "@/components/Home/LineScroll";
+import IconText from "@/components/Home/IconText";
+import Footer from "@/components/Home/Footer";
+import Background from "@/components/Home/Background";
 import Link from "next/link";
 
 export default function Home() {

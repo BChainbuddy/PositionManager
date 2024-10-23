@@ -1,10 +1,10 @@
 "use client";
 
-import PageTransition from "@/components/PageTransition";
-import Header from "@/components/Header";
+import PageTransition from "@/ui/PageTransition";
+import Header from "@/components/Header/Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThirdwebProvider } from "thirdweb/react";
-import { PageTransitionProvider } from "@/components/PageTransitionContext";
+import { PageTransitionProvider } from "@/context/PageTransitionContext";
 
 // const smartWalletOptions = {
 //   factoryAddress: "0x48000619893550507CB323Cc42838f370fAB1B84",

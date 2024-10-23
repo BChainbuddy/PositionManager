@@ -1,5 +1,5 @@
 "use client";
-import { usePageTransition } from "@/components/PageTransitionContext";
+import { usePageTransition } from "@/context/PageTransitionContext";
 import { usePathname } from "next/navigation";
 
 export default function PageTransition() {
