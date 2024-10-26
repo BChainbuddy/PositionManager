@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useForge } from "../../context/ForgeContext";
+import { price } from "@/lib/price";
 
 interface Step3Props {
   nextStep: () => void;
@@ -8,7 +10,25 @@ interface Step3Props {
 }
 
 export default function Step3({ nextStep, previousStep }: Step3Props) {
-  //   const {} = useForge();
+  const { inputToken, outputToken, dex } = useForge();
+
+  const getPrice = async () => {
+    if (dex) {
+      await price(
+        inputToken.address,
+        outputToken.address,
+        dex.address,
+        dex.type,
+        dex.fee ? dex.fee : "0",
+        inputToken.decimals,
+        outputToken.decimals
+      );
+    } else {
+      
+    }
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <div className="h-full w-full flex flex-col text-white justify-center items-center font-juraBold">

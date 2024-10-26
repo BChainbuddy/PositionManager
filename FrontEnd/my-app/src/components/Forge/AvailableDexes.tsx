@@ -33,20 +33,18 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
 
   const getAvailableDexes = async () => {
     for (const dex of Dexes) {
-      console.log(dex);
       if (dex.type === "V3") {
-        const poolAddress = await getPoolAddress(
+        const feeTier = await getPoolAddress(
           dex.address,
           inputToken.address,
           outputToken.address
         );
-        console.log(poolAddress, dex);
-        if (
-          poolAddress !== "0x0000000000000000000000000000000000000000" &&
-          !dexes.some((d) => d.name === dex.name)
-        ) {
+        console.log(feeTier, dex);
+        if (feeTier !== "0" && !dexes.some((d) => d.name === dex.name)) {
           console.log("The pair is available on ", dex.name);
-          setDexes((oldArray) => [...oldArray, dex]);
+          let dexWithFee: any = dex;
+          dexWithFee.fee = feeTier;
+          setDexes((oldArray) => [...oldArray, dexWithFee]);
         }
       } else if (dex.type === "V2") {
         const poolAddress = await getPairAddress(
@@ -100,14 +98,14 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
 
           if (address !== "0x0000000000000000000000000000000000000000") {
             poolAddress = address;
-            break;
+            return fee;
           }
         } catch (error) {
           console.error(`Error for fee tier ${fee}:`, error);
         }
       }
 
-      return poolAddress;
+      return 0;
     } catch (err) {
       console.error("Error fetching pool address:", err);
       return "0x0000000000000000000000000000000000000000";
@@ -150,7 +148,7 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
       }`}
     >
       {dexes.length ? (
-        dexes.map((dex, i) => <Dex dex={dex} key={i} />)
+        dexes.map((dex, i) => <Dex dexInfo={dex} key={i} />)
       ) : (
         <div>No pool available</div>
       )}

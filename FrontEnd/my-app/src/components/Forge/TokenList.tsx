@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import { client } from "@/lib/client";
 import { polygon } from "thirdweb/chains";
 import ERC20Abi from "@/data/ERC20Abi.json";
-import { getContract, readContract, resolveMethod } from "thirdweb";
+import { getContract, readContract } from "thirdweb";
 import { Abi } from "thirdweb/utils";
 
 interface TokenListProps {

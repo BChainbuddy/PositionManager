@@ -9,20 +9,20 @@ interface DexProps {
   address: string;
 }
 
-export default function Dex({ dex }: { dex: DexProps }) {
-  const { setRouterAddress, routerAddress } = useForge();
+export default function Dex({ dexInfo }: { dexInfo: DexProps }) {
+  const { dex, setDex } = useForge();
 
   return (
     <div className="flex flex-col justify-center items-center w-[6rem] space-y-1">
       <div
         className={`relative h-12 w-12 rounded-2xl overflow-clip cursor-pointer ${
-          routerAddress === dex.address && "border-4 border-[#ffe500]"
+          dex.address === dexInfo.address && "border-4 border-[#ffe500]"
         }`}
-        onClick={() => setRouterAddress(dex.address)}
+        onClick={() => setDex(dexInfo)}
       >
-        <Image alt="dex logo" src={dex.logo} fill className="bg-white" />
+        <Image alt="dex logo" src={dexInfo.logo} fill className="bg-white" />
       </div>
-      <p className="text-xs">{dex.name}</p>
+      <p className="text-xs">{dexInfo.name}</p>
     </div>
   );
 }

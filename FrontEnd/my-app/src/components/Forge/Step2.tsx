@@ -12,11 +12,11 @@ interface Step2Props {
 export default function Step2({ nextStep, previousStep }: Step2Props) {
   const [automatic, setAutomatic] = useState(true);
 
-  const { setRouterAddress } = useForge();
+  const { setDex } = useForge();
 
   useEffect(() => {
     if (automatic) {
-      setRouterAddress("");
+      setDex("");
     }
   }, [automatic]);
 
