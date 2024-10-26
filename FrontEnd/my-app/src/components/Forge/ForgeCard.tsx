@@ -6,7 +6,7 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 
 export default function ForgeCard() {
-  const [step, setStep] = useState<number>(2);
+  const [step, setStep] = useState<number>(0);
 
   const nextStep = () => {
     setStep(step + 1);

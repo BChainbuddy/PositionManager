@@ -12,14 +12,6 @@ interface Step2Props {
 export default function Step2({ nextStep, previousStep }: Step2Props) {
   const [automatic, setAutomatic] = useState(true);
 
-  const { setDex } = useForge();
-
-  useEffect(() => {
-    if (automatic) {
-      setDex("");
-    }
-  }, [automatic]);
-
   return (
     <div className="h-full w-full flex flex-col text-white justify-center items-center font-juraBold">
       <p className="text-center text-[#01FF39] text-xl">CHOOSE LIQUIDITY</p>

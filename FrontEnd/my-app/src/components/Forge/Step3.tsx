@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForge } from "../../context/ForgeContext";
 import { price } from "@/lib/price";
 
@@ -23,12 +23,12 @@ export default function Step3({ nextStep, previousStep }: Step3Props) {
         inputToken.decimals,
         outputToken.decimals
       );
-    } else {
-      
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("Dex", dex);
+  }, []);
 
   return (
     <div className="h-full w-full flex flex-col text-white justify-center items-center font-juraBold">

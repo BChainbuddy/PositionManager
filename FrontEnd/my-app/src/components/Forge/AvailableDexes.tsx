@@ -29,7 +29,7 @@ interface AvailableDexesProps {
 export default function AvailableDexes({ automatic }: AvailableDexesProps) {
   const [dexes, setDexes] = useState<any[]>([]);
 
-  const { inputToken, outputToken } = useForge();
+  const { inputToken, outputToken, setDex } = useForge();
 
   const getAvailableDexes = async () => {
     for (const dex of Dexes) {
@@ -124,15 +124,17 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
         provider
       );
       const factoryAddress = await routerContract.factory();
+
       const factoryContract = new ethers.Contract(
         factoryAddress,
         UniswapV2FactoryABI,
         provider
       );
+
       const pairAddress = await factoryContract.getPair(tokenA, tokenB);
       return pairAddress;
     } catch (err) {
-      console.error("Error fetching pool address:", err);
+      console.error("Error fetching pair address:", err);
       return "0x0000000000000000000000000000000000000000";
     }
   }
@@ -141,6 +143,12 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
     getAvailableDexes();
   }, []);
 
+  useEffect(() => {
+    if (automatic && dexes.length) {
+      setDex(dexes[0]);
+    }
+  }, [automatic, dexes]);
+
   return (
     <div
       className={`dexGrid mt-6 transition-all duration-1000 ${
@@ -148,7 +156,9 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
       }`}
     >
       {dexes.length ? (
-        dexes.map((dex, i) => <Dex dexInfo={dex} key={i} />)
+        dexes.map((dex, i) => (
+          <Dex dexInfo={dex} key={i} automatic={automatic} />
+        ))
       ) : (
         <div>No pool available</div>
       )}

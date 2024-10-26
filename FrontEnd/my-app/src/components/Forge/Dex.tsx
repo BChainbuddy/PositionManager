@@ -9,14 +9,22 @@ interface DexProps {
   address: string;
 }
 
-export default function Dex({ dexInfo }: { dexInfo: DexProps }) {
+export default function Dex({
+  dexInfo,
+  automatic,
+}: {
+  dexInfo: DexProps;
+  automatic: boolean;
+}) {
   const { dex, setDex } = useForge();
 
   return (
     <div className="flex flex-col justify-center items-center w-[6rem] space-y-1">
       <div
         className={`relative h-12 w-12 rounded-2xl overflow-clip cursor-pointer ${
-          dex.address === dexInfo.address && "border-4 border-[#ffe500]"
+          dex?.address === dexInfo?.address &&
+          !automatic &&
+          "border-4 border-[#ffe500]"
         }`}
         onClick={() => setDex(dexInfo)}
       >
