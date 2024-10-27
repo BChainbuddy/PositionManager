@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForge } from "../../context/ForgeContext";
-import { price } from "@/lib/price";
+import { useState } from "react";
+import PairPrice from "./PairPrice";
+import { ethers } from "ethers";
 
 interface Step3Props {
   nextStep: () => void;
@@ -10,38 +10,22 @@ interface Step3Props {
 }
 
 export default function Step3({ nextStep, previousStep }: Step3Props) {
-  const { inputToken, outputToken, dex } = useForge();
-
-  const getPrice = async () => {
-    if (dex) {
-      await price(
-        inputToken.address,
-        outputToken.address,
-        dex.address,
-        dex.type,
-        dex.fee ? dex.fee : "0",
-        inputToken.decimals,
-        outputToken.decimals
-      );
-    }
-  };
-
-  useEffect(() => {
-    console.log("Dex", dex);
-  }, []);
+  const [days, setDays] = useState<number>(0);
+  const [executionPrice, setExecutionPrice] = useState<number>(0);
 
   return (
     <div className="h-full w-full flex flex-col text-white justify-center items-center font-juraBold">
       <p className="text-center text-[#01FF39] text-xl">
         CHOOSE TRADE PARAMETERS
       </p>
-      <p className="mt-8">Current Price: 0</p>
+      <PairPrice />
       <div className="flex flex-row space-x-2 mt-4">
-        <p>Execution price:</p>
+        <p className="">Execution price:</p>
         <input
           placeholder="0.003"
           className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
           type="number"
+          onChange={(e) => setExecutionPrice(Number(e.target.value))}
         />
       </div>
       <div className="flex flex-row mt-4">
@@ -50,8 +34,14 @@ export default function Step3({ nextStep, previousStep }: Step3Props) {
           placeholder="1"
           className="w-12 ml-2 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
           type="number"
+          onChange={(e) => setDays(Number(e.target.value))}
         />
         <p className="ml-0.5">Days</p>
+      </div>
+      <div className="flex flex-col mt-4 text-center relative group">
+        <p className="text-center">Expected Fee</p>
+        <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
+        <p>{days * Number(ethers.formatEther(1000000000000000))}</p>
       </div>
       <button className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6">
         FORGE
