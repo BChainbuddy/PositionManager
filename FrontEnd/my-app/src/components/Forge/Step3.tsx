@@ -32,7 +32,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
           <p className="text-center text-[#01FF39] text-xl">
             CHOOSE TRADE PARAMETERS
           </p>
-          <PairPrice />
+          <PairPrice step={step} />
           <div className="flex flex-row space-x-2 mt-4">
             <p className="">Execution price:</p>
             <input

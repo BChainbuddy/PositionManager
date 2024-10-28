@@ -23,7 +23,13 @@ export async function price(
     );
   } else {
     console.log("V2");
-    price = await getV2Price(dexRouter, token1, token2);
+    price = await getV2Price(
+      dexRouter,
+      token1,
+      token2,
+      decimalsIn,
+      decimalsOut
+    );
   }
 
   return price;

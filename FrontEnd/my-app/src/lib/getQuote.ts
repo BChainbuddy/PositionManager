@@ -49,9 +49,11 @@ async function getPairAddress(routerAddress: any, tokenA: any, tokenB: any) {
 
 // Function to fetch the price
 export async function getV2Price(
-  routerAddress: any,
-  tokenAddress1: any,
-  tokenAddress2: any
+  routerAddress: string,
+  tokenAddress1: string,
+  tokenAddress2: string,
+  decimalsIn: number,
+  decimalsOut: number
 ) {
   const pairAddress = await getPairAddress(
     routerAddress,
@@ -63,16 +65,18 @@ export async function getV2Price(
     UniswapV2PairABI,
     provider
   );
+
   try {
-    const reserves = await pairContract.getReserves();
-    const reserve0 = ethers.formatUnits(reserves[0].toString(), 18); // Assuming token0 has 18 decimals
-    const reserve1 = ethers.formatUnits(reserves[1].toString(), 18); // Adjust decimals as needed
+    const { reserve0, reserve1 } = await pairContract.getReserves();
 
-    console.log(reserve0);
-    console.log(reserve1);
-    console.log(reserves);
+    // Determine token order and calculate price accordingly
+    let price;
+    if (tokenAddress1.toLowerCase() < tokenAddress2.toLowerCase()) {
+      price = (reserve1 / reserve0) * 10 ** (decimalsIn - decimalsOut);
+    } else {
+      price = (reserve0 / reserve1) * 10 ** (decimalsOut - decimalsIn);
+    }
 
-    const price = Number(reserve0) / Number(reserve1);
     console.log(`Uniswap V2 Price: ${price}`);
     return price;
   } catch (error) {

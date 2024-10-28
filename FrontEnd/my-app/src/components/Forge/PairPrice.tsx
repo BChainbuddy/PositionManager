@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useForge } from "../../context/ForgeContext";
 import { price } from "@/lib/price";
 
-export default function PairPrice() {
+export default function PairPrice({ step }: any) {
   const [tokenPrice, setTokenPrice] = useState<number>(0);
 
   const { inputToken, outputToken, dex } = useForge();
@@ -20,6 +20,8 @@ export default function PairPrice() {
         inputToken.decimals,
         outputToken.decimals
       );
+      console.log("FEE TIER", dex.fee);
+      console.log(returnedPrice);
       if (returnedPrice) {
         setTokenPrice(returnedPrice);
       }
@@ -27,9 +29,10 @@ export default function PairPrice() {
   };
 
   useEffect(() => {
-    // console.log("Dex", dex);
+    console.log("Dex", dex);
+    console.log("FETCHING PRICE");
     getPrice();
-  }, []);
+  }, [step]);
 
   return (
     <div className="flex flex-col mt-5 text-center relative group">

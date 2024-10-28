@@ -43,7 +43,7 @@ export default function Step2({ nextStep, previousStep, step }: Step2Props) {
               ></div>
             </div>
           </div>
-          <AvailableDexes automatic={automatic} />
+          <AvailableDexes automatic={automatic} step={step} />
           <button
             className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6"
             onClick={nextStep}

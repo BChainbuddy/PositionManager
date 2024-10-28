@@ -24,9 +24,13 @@ const provider = new ethers.JsonRpcProvider(
 
 interface AvailableDexesProps {
   automatic: boolean;
+  step: number;
 }
 
-export default function AvailableDexes({ automatic }: AvailableDexesProps) {
+export default function AvailableDexes({
+  automatic,
+  step,
+}: AvailableDexesProps) {
   const [dexes, setDexes] = useState<any[]>([]);
 
   const { inputToken, outputToken, setDex } = useForge();
@@ -40,9 +44,10 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
           outputToken.address
         );
         console.log(feeTier, dex);
-        if (feeTier !== "0" && !dexes.some((d) => d.name === dex.name)) {
+        if (feeTier != "0") {
           console.log("The pair is available on ", dex.name);
           let dexWithFee: any = dex;
+          console.log("THIS IS WHAT THE FEE TIER SHOULD BE", feeTier);
           dexWithFee.fee = feeTier;
           setDexes((oldArray) => [...oldArray, dexWithFee]);
         }
@@ -52,11 +57,8 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
           inputToken.address,
           outputToken.address
         );
-        console.log(poolAddress, dex);
-        if (
-          poolAddress !== "0x0000000000000000000000000000000000000000" &&
-          !dexes.some((d) => d.name === dex.name)
-        ) {
+        // console.log(poolAddress, dex);
+        if (poolAddress !== "0x0000000000000000000000000000000000000000") {
           console.log("The pair is available on ", dex.name);
           setDexes((oldArray) => [...oldArray, dex]);
         }
@@ -140,8 +142,10 @@ export default function AvailableDexes({ automatic }: AvailableDexesProps) {
   }
 
   useEffect(() => {
+    setDexes([]);
+    setDex("");
     getAvailableDexes();
-  }, []);
+  }, [inputToken, outputToken]);
 
   useEffect(() => {
     if (automatic && dexes.length) {
