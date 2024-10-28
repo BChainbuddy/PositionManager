@@ -21,16 +21,10 @@ export default function ForgeCard() {
   }, [step]);
 
   return (
-    <div className="w-96 h-96 forgeCard">
-      {step == 0 ? (
-        <Step1 nextStep={nextStep} />
-      ) : step == 1 ? (
-        <Step2 nextStep={nextStep} previousStep={previousStep} />
-      ) : step == 2 ? (
-        <Step3 nextStep={nextStep} previousStep={previousStep} />
-      ) : (
-        <></>
-      )}
+    <div className="w-96 h-96 forgeCard flex justify-center items-center">
+      <Step1 nextStep={nextStep} step={step} />
+      <Step2 nextStep={nextStep} previousStep={previousStep} step={step} />
+      <Step3 nextStep={nextStep} previousStep={previousStep} step={step} />
     </div>
   );
 }

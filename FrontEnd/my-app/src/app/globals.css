@@ -483,3 +483,43 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.stepIn {
+  animation: stepInAnimation 3s ease-out forwards;
+}
+
+.stepOut {
+  animation: stepOutAnimation 3s ease-out forwards;
+}
+
+@keyframes stepInAnimation {
+  0% {
+    transform: translateX(-5rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* @keyframes stepOutAnimation {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(5rem);
+    opacity: 0;
+  }
+}
+
+@keyframes nextStep {
+
+}
+
+@keyframes currentStep {
+
+} */
