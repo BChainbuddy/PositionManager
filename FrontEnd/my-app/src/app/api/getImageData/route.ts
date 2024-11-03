@@ -1,4 +1,3 @@
-// pages/api/getImageData.ts
 import { getImage } from "@/lib/getImage";
 import { NextResponse } from "next/server";
 
