@@ -12,7 +12,7 @@ export default function PositionInfo() {
     <div className="flex flex-col">
       {address == activeAccount?.address ? (
         <>
-          <div>Position Number: {"1"}</div>
+          <div className="text-white">Position Number: {"1"}</div>
           <div></div>
         </>
       ) : (
