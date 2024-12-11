@@ -73,7 +73,7 @@ module.exports = {
   etherscan: {
     apiKey: {
       goerli: ETHERSCAN_API_KEY,
-      sepolia: POLYSCAN_API_KEY,
+      sepolia: ETHERSCAN_API_KEY,
       polygonAmoy: POLYSCAN_API_KEY,
     },
   },

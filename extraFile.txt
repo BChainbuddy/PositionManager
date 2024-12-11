@@ -1,0 +1,169 @@
+  // PLAN:
+  // 1. HAVE CONTRACT ADDRESSS
+  // 2. ADD SYMBOL AND NAMES TO OBJECTS BASED ON CONTRACT ADDRESSES WITH THIRDWEB(getCurrency Metadata)
+  // 3. FETCH COINGECKO LIST, ADD IMAGES AND PRICE TO EACH OBJECT BASED, FILTER THROUGH LIST TO MATCH name and symbol
+  // 4. SHOWCASE PROPS IN POSITIONS
+
+  async function fetchTokenMetaData() {
+    const mockPositionsWithMetadata = [];
+
+    for (const position of mockPositions) {
+      try {
+        // Get the token contract for `tokenIn`
+        const contractIn = getContract({
+          client,
+          address: position.tokenIn,
+          chain: polygon,
+          abi: ERC20ABI,
+        });
+
+        // Read the symbol and name from the token contract
+        const inSymbol = await readContract({
+          contract: contractIn,
+          method: resolveMethod("symbol"),
+          params: [],
+        });
+
+        const inName = await readContract({
+          contract: contractIn,
+          method: resolveMethod("name"),
+          params: [],
+        });
+
+        // Get the token contract for `tokenIn`
+        const contractOut = getContract({
+          client,
+          address: position.tokenOut,
+          chain: polygon,
+          abi: ERC20ABI,
+        });
+
+        // Read the symbol and name from the token contract
+        const outSymbol = await readContract({
+          contract: contractOut,
+          method: resolveMethod("symbol"),
+          params: [],
+        });
+
+        const outName = await readContract({
+          contract: contractOut,
+          method: resolveMethod("name"),
+          params: [],
+        });
+
+        // Add symbol and name to the position object
+        mockPositionsWithMetadata.push({
+          ...position,
+          inSymbol,
+          inName,
+          outSymbol,
+          outName,
+        });
+      } catch (error) {
+        console.error("Error reading contract:", error);
+      }
+    }
+    return mockPositionsWithMetadata;
+  }
+
+  async function getIdList() {
+    const responseList = await fetch(`/api/coinList`);
+    const data = (await responseList.json()).data;
+    return data;
+  }
+
+  async function setTokensIds() {
+    const idList = await getIdList();
+    const tokens = await fetchTokenMetaData();
+    const tokensWithIds: any[] = [];
+    for (const token of tokens) {
+      // Token in
+      const foundIdIn = idList.find(
+        (element: any) =>
+          element.symbol.toLowerCase() === token.inSymbol.toLowerCase()
+      );
+      // Token out
+      const foundIdOut = idList.find(
+        (element: any) =>
+          element.symbol.toLowerCase() === token.outSymbol.toLowerCase()
+      );
+      // console.log(
+      //   `Token with symbol ${token.inSymbol.toLowerCase()}: ${foundIdIn}`
+      // );
+      // console.log(
+      //   `Token with symbol ${token.outSymbol.toLowerCase()}: ${foundIdOut}`
+      // );
+      // Add ids
+      tokensWithIds.push({
+        ...token,
+        idIn: foundIdIn ? foundIdIn.id : 0,
+        idOut: foundIdOut ? foundIdOut.id : 0,
+      });
+    }
+    return tokensWithIds;
+  }
+
+  async function addTokenImage() {
+    const tokens = await setTokensIds();
+    const contractIds: string[] = [];
+    tokens.forEach((token) => {
+      if (!contractIds.includes(token.idIn) && token.idIn !== 0) {
+        contractIds.push(token.idIn);
+      }
+      if (!contractIds.includes(token.idOut) && token.idOut !== 0) {
+        contractIds.push(token.idOut);
+      }
+    });
+    console.log(`Contract ids: `, contractIds);
+
+    const response = await fetch(`/api/coinData?ids=${contractIds}`);
+    const data = await response.json();
+
+    console.log(data);
+
+    tokens.forEach((token, i) => {
+      const foundIn = data.data.find(
+        (element: any) => element.id == token.idIn
+      );
+      tokens[i].imageIn = foundIn ? foundIn.image : "";
+      const foundOut = data.data.find(
+        (element: any) => element.id == token.idOut
+      );
+      tokens[i].imageOut = foundOut ? foundOut.image : "";
+    });
+
+    console.log(tokens);
+    // {
+    //   "id": "chainlink",
+    //   "symbol": "link",
+    //   "name": "Chainlink",
+    //   "image": "https://coin-images.coingecko.com/coins/images/877/large/chainlink-new-logo.png?1696502009",
+    //   "current_price": 11.27,
+    //   "market_cap": 7065915276,
+    //   "market_cap_rank": 18,
+    //   "fully_diluted_valuation": 11272099544,
+    //   "total_volume": 251849442,
+    //   "high_24h": 11.39,
+    //   "low_24h": 11.09,
+    //   "price_change_24h": -0.05381450854241443,
+    //   "price_change_percentage_24h": -0.47515,
+    //   "market_cap_change_24h": -34383983.07187462,
+    //   "market_cap_change_percentage_24h": -0.48426,
+    //   "circulating_supply": 626849971.3083414,
+    //   "total_supply": 1000000000,
+    //   "max_supply": 1000000000,
+    //   "ath": 52.7,
+    //   "ath_change_percentage": -78.61141,
+    //   "ath_date": "2021-05-10T00:13:57.214Z",
+    //   "atl": 0.148183,
+    //   "atl_change_percentage": 7506.16538,
+    //   "atl_date": "2017-11-29T00:00:00.000Z",
+    //   "roi": null,
+    //   "last_updated": "2024-10-06T11:43:55.854Z"
+    // }
+    console.log(data);
+  }
+
+  useEffect(() => {
+    addTokenImage();
+  }, []);

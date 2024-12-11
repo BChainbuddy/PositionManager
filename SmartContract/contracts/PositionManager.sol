@@ -230,11 +230,11 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
     function seePositionAttributes(
         uint256 positionId
     ) external view returns (Position memory) {
-        require(
-            msg.sender == positionAttributes[positionId].wallet ||
-                msg.sender == s_tradeExecutor,
-            "Not authorized to view this position"
-        );
+        // require(
+        //     msg.sender == positionAttributes[positionId].wallet ||
+        //         msg.sender == s_tradeExecutor,
+        //     "Not authorized to view this position"
+        // ); Relevant for ZkSync
         return positionAttributes[positionId];
     }
 

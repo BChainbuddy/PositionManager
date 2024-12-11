@@ -1,0 +1,59 @@
+type DexRouterWhitelisted @entity(immutable: true) {
+  id: Bytes!
+  dexRouter: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogBytes @entity(immutable: true) {
+  id: Bytes!
+  data: Bytes! # bytes
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PositionCreated @entity(immutable: true) {
+  id: Bytes!
+  wallet: Bytes! # address
+  positionId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PositionExecuted @entity(immutable: true) {
+  id: Bytes!
+  positionId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PositionProlonged @entity(immutable: true) {
+  id: Bytes!
+  positionId: BigInt! # uint256
+  duration: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PositionWithdrawn @entity(immutable: true) {
+  id: Bytes!
+  wallet: Bytes! # address
+  positionId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
