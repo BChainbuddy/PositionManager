@@ -192,6 +192,7 @@ describe("PositionManager", () => {
           "1",
           uniswapV2.target,
           duration,
+          0,
           { value: "1" }
         )
       ).to.be.revertedWith("Insufficient fee");
@@ -205,6 +206,7 @@ describe("PositionManager", () => {
           "1",
           uniswapV2.target,
           duration,
+          0,
           { value: expectedFee }
         )
       ).to.be.revertedWith("Insufficient token balance");
@@ -218,6 +220,7 @@ describe("PositionManager", () => {
           "1",
           uniswapV2.target,
           duration,
+          0,
           { value: expectedFee }
         )
       ).to.be.revertedWith("Dex router not whitelisted");
@@ -234,6 +237,7 @@ describe("PositionManager", () => {
           "1",
           uniswapV2.target,
           duration,
+          0,
           { value: expectedFee }
         )
       ).to.be.revertedWith("The pool doesn't exist");
@@ -280,6 +284,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV2.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -298,7 +303,8 @@ describe("PositionManager", () => {
       expect(Number(positionInfo[6])).to.equal(blockTimestamp + 259200);
       expect(positionInfo[7]).to.equal("0");
       expect(positionInfo[8]).to.be.false;
-      expect(positionInfo[9]).to.equal("1");
+      expect(positionInfo[9]).to.equal("0");
+      expect(positionInfo[10]).to.equal("1");
       expect(await token1.balanceOf(owner.address)).to.equal(
         ethers.parseEther("998")
       );
@@ -340,6 +346,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV3.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -359,6 +366,7 @@ describe("PositionManager", () => {
       expect(positionInfo[7]).to.equal("3000");
       expect(positionInfo[8]).to.be.false;
       expect(positionInfo[9]).to.equal("0");
+      expect(positionInfo[10]).to.equal("0");
       expect(await token1.balanceOf(owner.address)).to.equal(
         ethers.parseEther("999")
       );
@@ -392,6 +400,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV3.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -440,6 +449,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV3.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -497,6 +507,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV3.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -552,6 +563,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV2.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -607,6 +619,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV2.target,
         duration,
+        0,
         { value: expectedFee }
       );
 
@@ -663,6 +676,7 @@ describe("PositionManager", () => {
         "1",
         uniswapV2.target,
         duration,
+        0,
         { value: expectedFee }
       );
 

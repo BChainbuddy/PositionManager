@@ -1,50 +1,86 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "tradeExecutor", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "tradeExecutor",
+        "type": "address"
+      },
       {
         "internalType": "uint64",
         "name": "dailyPositionFee",
         "type": "uint64"
       },
-      { "internalType": "uint64", "name": "executionFee", "type": "uint64" }
+      {
+        "internalType": "uint64",
+        "name": "executionFee",
+        "type": "uint64"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "target", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
     ],
     "name": "AddressEmptyCode",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "AddressInsufficientBalance",
     "type": "error"
   },
-  { "inputs": [], "name": "FailedInnerCall", "type": "error" },
+  {
+    "inputs": [],
+    "name": "FailedInnerCall",
+    "type": "error"
+  },
   {
     "inputs": [
-      { "internalType": "address", "name": "owner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
     ],
     "name": "OwnableInvalidOwner",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "OwnableUnauthorizedAccount",
     "type": "error"
   },
-  { "inputs": [], "name": "ReentrancyGuardReentrantCall", "type": "error" },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
   {
     "inputs": [
-      { "internalType": "address", "name": "token", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
     ],
     "name": "SafeERC20FailedOperation",
     "type": "error"
@@ -104,10 +140,64 @@
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "positionId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "dexRouter",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenIn",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenOut",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "quantity",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "executionValue",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "endTimestamp",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint24",
+        "name": "fee",
+        "type": "uint24"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum PositionManager.ExecutionCondition",
+        "name": "condition",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum DexChecker.UniswapABI",
+        "name": "forkABI",
+        "type": "uint8"
       }
     ],
     "name": "PositionCreated",
@@ -117,7 +207,7 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "positionId",
         "type": "uint256"
@@ -130,7 +220,7 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "positionId",
         "type": "uint256"
@@ -138,7 +228,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "duration",
+        "name": "newEndTimestamp",
         "type": "uint256"
       }
     ],
@@ -155,7 +245,7 @@
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "positionId",
         "type": "uint256"
@@ -166,7 +256,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint64", "name": "newFee", "type": "uint64" }
+      {
+        "internalType": "uint64",
+        "name": "newFee",
+        "type": "uint64"
+      }
     ],
     "name": "changeDailyPositionFee",
     "outputs": [],
@@ -175,7 +269,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint64", "name": "newFee", "type": "uint64" }
+      {
+        "internalType": "uint64",
+        "name": "newFee",
+        "type": "uint64"
+      }
     ],
     "name": "changeExecutionFee",
     "outputs": [],
@@ -184,12 +282,41 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "tokenIn", "type": "address" },
-      { "internalType": "address", "name": "tokenOut", "type": "address" },
-      { "internalType": "uint256", "name": "quantity", "type": "uint256" },
-      { "internalType": "uint256", "name": "swapPrice", "type": "uint256" },
-      { "internalType": "address", "name": "dexRouter", "type": "address" },
-      { "internalType": "uint32", "name": "duration", "type": "uint32" }
+      {
+        "internalType": "address",
+        "name": "tokenIn",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenOut",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "quantity",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "swapPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "dexRouter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint32",
+        "name": "duration",
+        "type": "uint32"
+      },
+      {
+        "internalType": "enum PositionManager.ExecutionCondition",
+        "name": "condition",
+        "type": "uint8"
+      }
     ],
     "name": "createPosition",
     "outputs": [],
@@ -198,26 +325,50 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "dexRouter", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "dexRouter",
+        "type": "address"
+      },
       {
         "internalType": "enum DexChecker.UniswapABI",
         "name": "dexType",
         "type": "uint8"
       },
-      { "internalType": "address", "name": "tokenIn", "type": "address" },
-      { "internalType": "address", "name": "tokenOut", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "tokenIn",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenOut",
+        "type": "address"
+      }
     ],
     "name": "doesPoolExist",
     "outputs": [
-      { "internalType": "bool", "name": "", "type": "bool" },
-      { "internalType": "uint24", "name": "", "type": "uint24" }
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint24",
+        "name": "",
+        "type": "uint24"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "positionId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
     ],
     "name": "executeSwap",
     "outputs": [],
@@ -227,28 +378,56 @@
   {
     "inputs": [],
     "name": "getDailyPositionFee",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getExecutionFee",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "duration", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "duration",
+        "type": "uint256"
+      }
     ],
     "name": "getExpectedFee",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "dex", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "dex",
+        "type": "address"
+      }
+    ],
     "name": "isValidUniswapFork",
     "outputs": [
       {
@@ -263,14 +442,28 @@
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "positionId", "type": "uint256" },
-      { "internalType": "uint32", "name": "duration", "type": "uint32" }
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "duration",
+        "type": "uint32"
+      }
     ],
     "name": "prolongPosition",
     "outputs": [],
@@ -287,23 +480,53 @@
   {
     "inputs": [],
     "name": "s_positionId",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "positionId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
     ],
     "name": "seePositionAttributes",
     "outputs": [
       {
         "components": [
-          { "internalType": "address", "name": "wallet", "type": "address" },
-          { "internalType": "address", "name": "dexRouter", "type": "address" },
-          { "internalType": "address", "name": "tokenIn", "type": "address" },
-          { "internalType": "address", "name": "tokenOut", "type": "address" },
-          { "internalType": "uint256", "name": "quantity", "type": "uint256" },
+          {
+            "internalType": "address",
+            "name": "wallet",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "dexRouter",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenIn",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenOut",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "quantity",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "executionValue",
@@ -314,8 +537,21 @@
             "name": "endTimestamp",
             "type": "uint32"
           },
-          { "internalType": "uint24", "name": "fee", "type": "uint24" },
-          { "internalType": "bool", "name": "executed", "type": "bool" },
+          {
+            "internalType": "uint24",
+            "name": "fee",
+            "type": "uint24"
+          },
+          {
+            "internalType": "bool",
+            "name": "executed",
+            "type": "bool"
+          },
+          {
+            "internalType": "enum PositionManager.ExecutionCondition",
+            "name": "condition",
+            "type": "uint8"
+          },
           {
             "internalType": "enum DexChecker.UniswapABI",
             "name": "forkABI",
@@ -345,7 +581,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -354,7 +594,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "dexRouter", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "dexRouter",
+        "type": "address"
+      }
     ],
     "name": "whitelistDexRouter",
     "outputs": [],
@@ -362,10 +606,20 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "name": "whitelistedDexes",
     "outputs": [
-      { "internalType": "bool", "name": "isWhitelisted", "type": "bool" },
+      {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      },
       {
         "internalType": "enum DexChecker.UniswapABI",
         "name": "dexType",
@@ -377,7 +631,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "positionId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "positionId",
+        "type": "uint256"
+      }
     ],
     "name": "withdrawPosition",
     "outputs": [],

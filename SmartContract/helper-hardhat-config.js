@@ -19,7 +19,7 @@ const networkConfig = {
 };
 
 const DECIMALS = "18";
-const DAILY_FEE = "1000000000000000";
+const DAILY_FEE = "10000000000000";
 const developmentChains = ["hardhat", "localhost"];
 
 module.exports = {

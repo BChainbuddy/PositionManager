@@ -13,4 +13,4 @@ module.exports = buildModule("Deploy", (m) => {
 
 //command
 //npx hardhat ignition deploy ignition/modules/Deploy.js --network sepolia --verify
-//npx hardhat verify --network sepolia 0x0C317c7fD3670B21Ae6Bd407cA7C7531611E6f35 1000000000000000 1000000000000000
+//npx hardhat verify --network sepolia 0x0C317c7fD3670B21Ae6Bd407cA7C7531611E6f35 10000000000000 10000000000000

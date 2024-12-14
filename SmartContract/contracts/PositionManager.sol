@@ -16,14 +16,35 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
     using SafeERC20 for IERC20;
 
     // Events
-    event PositionCreated(address indexed wallet, uint256 positionId);
-    event PositionWithdrawn(address indexed wallet, uint256 positionId);
-    event PositionExecuted(uint256 positionId);
-    event PositionProlonged(uint256 positionId, uint256 duration);
+    event PositionCreated(
+        address indexed wallet,
+        uint256 indexed positionId,
+        address dexRouter,
+        address tokenIn,
+        address tokenOut,
+        uint256 quantity,
+        uint256 executionValue,
+        uint32 endTimestamp,
+        uint24 fee,
+        ExecutionCondition condition,
+        UniswapABI forkABI
+    );
+    event PositionWithdrawn(address indexed wallet, uint256 indexed positionId);
+    event PositionExecuted(uint256 indexed positionId);
+    event PositionProlonged(
+        uint256 indexed positionId,
+        uint256 newEndTimestamp
+    );
 
     // Storage variables
     uint256 public s_positionId;
     address private s_tradeExecutor;
+
+    // Enum for execution condition
+    enum ExecutionCondition {
+        Above,
+        Below
+    }
 
     // Struct representing trading position
     struct Position {
@@ -36,6 +57,7 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
         uint32 endTimestamp;
         uint24 fee;
         bool executed;
+        ExecutionCondition condition;
         UniswapABI forkABI;
     }
 
@@ -71,6 +93,7 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
      * @param swapPrice Desired swap price. Multiply it by 10 ** 18, so 1USD is 1000000000000000000.
      * @param dexRouter Address of the DEX router.
      * @param duration Duration of the position in days.
+     * @param condition When to swap above/below executionPrice
      */
     function createPosition(
         address tokenIn,
@@ -78,7 +101,8 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
         uint256 quantity,
         uint256 swapPrice,
         address dexRouter,
-        uint32 duration
+        uint32 duration,
+        ExecutionCondition condition
     ) external payable nonReentrant {
         require(
             msg.value >= getDailyPositionFee() * duration,
@@ -101,6 +125,9 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
         );
         require(exists, "The pool doesn't exist");
 
+        uint32 endTimestamp = uint32(block.timestamp) + (1 days) * duration;
+        UniswapABI dexType = whitelistedDexes[dexRouter].dexType;
+
         IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), quantity);
 
         positionAttributes[s_positionId] = Position(
@@ -110,13 +137,26 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
             tokenOut,
             quantity,
             swapPrice,
-            uint32(block.timestamp) + (1 days) * duration,
+            endTimestamp,
             whitelistedDexes[dexRouter].dexType == UniswapABI.V3 ? fee : 0,
             false,
-            whitelistedDexes[dexRouter].dexType
+            condition,
+            dexType
         );
 
-        emit PositionCreated(msg.sender, s_positionId);
+        emit PositionCreated(
+            msg.sender,
+            s_positionId,
+            dexRouter,
+            tokenIn,
+            tokenOut,
+            quantity,
+            swapPrice,
+            endTimestamp,
+            positionAttributes[s_positionId].fee,
+            condition,
+            dexType
+        );
         s_positionId++;
 
         distributeFee(msg.value);
@@ -157,7 +197,7 @@ contract PositionManager is ReentrancyGuard, DexChecker, FeeManager {
 
         distributeFee(msg.value);
 
-        emit PositionProlonged(positionId, duration);
+        emit PositionProlonged(positionId, position.endTimestamp);
     }
 
     /**
