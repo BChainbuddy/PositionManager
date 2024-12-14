@@ -1,3 +1,13 @@
+enum ExecutionCondition {
+  Above
+  Below
+}
+
+enum UniswapABI {
+  V2
+  V3
+}
+
 type DexRouterWhitelisted @entity(immutable: true) {
   id: Bytes!
   dexRouter: Bytes! # address
@@ -6,39 +16,29 @@ type DexRouterWhitelisted @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type LogBytes @entity(immutable: true) {
-  id: Bytes!
-  data: Bytes! # bytes
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type PositionCreated @entity(immutable: true) {
-  id: Bytes!
-  wallet: Bytes! # address
-  positionId: BigInt! # uint256
-  dexRouter: Bytes! # address
-  tokenIn: Bytes! # address
-  tokenOut: Bytes! # address
-  quantity: BigInt! # uint256
-  executionValue: BigInt! # uint256
-  endTimestamp: BigInt! # uint32
-  fee: Int! # uint24
-  condition: Int! # uint8
-  forkABI: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type PositionCreated @entity(immutable: false) {
+  id: Bytes! # Unique identifier combining transaction hash and log index
+  wallet: Bytes! # Address of the user who created the position
+  positionId: BigInt! # Unique identifier for the position
+  dexRouter: Bytes! # Address of the DEX router used
+  tokenIn: Bytes! # Address of the input token
+  tokenOut: Bytes! # Address of the output token
+  quantity: BigInt! # Quantity of input tokens
+  executionValue: BigInt! # Desired swap price
+  endTimestamp: BigInt! # Timestamp when the position ends
+  fee: Int! # Fee associated with the position (in basis points)
+  condition: ExecutionCondition! # Condition for executing the swap (Above or Below)
+  forkABI: UniswapABI! # Specifies whether Uniswap V2 or V3 is used
+  executed: Boolean! # Indicates whether the position has been executed
+  blockNumber: BigInt! # Block number when the position was created
+  blockTimestamp: BigInt! # Timestamp of the block when the position was created
+  transactionHash: Bytes # Hash of the transaction that created the position
+  tokenInName: String! # Name of the input token
+  tokenOutName: String! # Name of the output token
+  tokenInSymbol: String! # Symbol of the input token
+  tokenOutSymbol: String! # Symbol of the output token
+  tokenInDecimals: BigInt! # Decimals of the input token
+  tokenOutDecimals: BigInt! # Decimals of the output token
 }
 
 type PositionExecuted @entity(immutable: true) {
