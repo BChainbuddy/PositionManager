@@ -17,12 +17,11 @@ type DexRouterWhitelisted @entity(immutable: true) {
 }
 
 type PositionCreated @entity(immutable: false) {
-  id: Bytes! # Unique identifier combining transaction hash and log index
+  id: String! # Position ID, unique identifier
   wallet: Bytes! # Address of the user who created the position
-  positionId: BigInt! # Unique identifier for the position
   dexRouter: Bytes! # Address of the DEX router used
-  tokenIn: Bytes! # Address of the input token
-  tokenOut: Bytes! # Address of the output token
+  tokenIn: Token! # Input Token referencing Token Type
+  tokenOut: Token! # Output Token referencing Token Type
   quantity: BigInt! # Quantity of input tokens
   executionValue: BigInt! # Desired swap price
   endTimestamp: BigInt! # Timestamp when the position ends
@@ -30,20 +29,14 @@ type PositionCreated @entity(immutable: false) {
   condition: ExecutionCondition! # Condition for executing the swap (Above or Below)
   forkABI: UniswapABI! # Specifies whether Uniswap V2 or V3 is used
   executed: Boolean! # Indicates whether the position has been executed
+  withdrawn: Boolean! # Indicates whether the position has been withdrawn
   blockNumber: BigInt! # Block number when the position was created
   blockTimestamp: BigInt! # Timestamp of the block when the position was created
-  transactionHash: Bytes # Hash of the transaction that created the position
-  tokenInName: String! # Name of the input token
-  tokenOutName: String! # Name of the output token
-  tokenInSymbol: String! # Symbol of the input token
-  tokenOutSymbol: String! # Symbol of the output token
-  tokenInDecimals: BigInt! # Decimals of the input token
-  tokenOutDecimals: BigInt! # Decimals of the output token
+  transactionHash: Bytes # Hash of the transaction that created the positio
 }
 
 type PositionExecuted @entity(immutable: true) {
-  id: Bytes!
-  positionId: BigInt! # uint256
+  id: String! # Position ID, unique identifier
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -59,10 +52,17 @@ type PositionProlonged @entity(immutable: true) {
 }
 
 type PositionWithdrawn @entity(immutable: true) {
-  id: Bytes!
-  wallet: Bytes! # address
-  positionId: BigInt! # uint256
+  id: String! # Position ID, unique identifier
+  wallet: Bytes! # addres
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type Token @entity(immutable: true) {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  address: Bytes!
 }
