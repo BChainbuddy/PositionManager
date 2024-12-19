@@ -27,15 +27,13 @@ dataSources:
       abis:
         - name: PositionManager
           file: ./abis/PositionManager.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: DexRouterRemoved(address)
           handler: handleDexRouterRemoved
         - event: DexRouterWhitelisted(address)
           handler: handleDexRouterWhitelisted
-        - event: LogBytes(bytes)
-          handler: handleLogBytes
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
         - event: PositionCreated(indexed address,indexed uint256,address,address,address,uint256,uint256,uint32,uint24,uint8,uint8)
           handler: handlePositionCreated
         - event: PositionExecuted(indexed uint256)

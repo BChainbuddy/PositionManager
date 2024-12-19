@@ -1,60 +1,60 @@
-type DexRouterRemoved @entity(immutable: true) {
-  id: Bytes!
-  dexRouter: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+enum ExecutionCondition {
+  Above
+  Below
 }
 
-type DexRouterWhitelisted @entity(immutable: true) {
-  id: Bytes!
-  dexRouter: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+enum UniswapABI {
+  V2
+  V3
 }
 
-type LogBytes @entity(immutable: true) {
-  id: Bytes!
-  data: Bytes! # bytes
+type WhitelistedDexRouter @entity(immutable: false) {
+  id: ID! # Address of the DexRouter
+  isActive: Boolean!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+
+  positions: [Position!]! @derivedFrom(field: "dexRouter")
 }
 
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type PositionCreated @entity(immutable: true) {
-  id: Bytes!
-  wallet: Bytes! # address
-  positionId: BigInt! # uint256
-  dexRouter: Bytes! # address
-  tokenIn: Bytes! # address
-  tokenOut: Bytes! # address
-  quantity: BigInt! # uint256
-  executionValue: BigInt! # uint256
-  endTimestamp: BigInt! # uint32
-  fee: Int! # uint24
-  condition: Int! # uint8
-  forkABI: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Position @entity(immutable: false) {
+  id: String! # Position ID, unique identifier
+  wallet: Bytes! # Address of the user who created the position
+  tokenIn: Token! # Input Token referencing Token Type
+  tokenOut: Token! # Output Token referencing Token Type
+  quantity: BigInt! # Quantity of input tokens
+  executionValue: BigInt! # Desired swap price
+  endTimestamp: BigInt! # Timestamp when the position ends
+  fee: Int! # Fee associated with the position (in basis points)
+  condition: ExecutionCondition! # Condition for executing the swap (Above or Below)
+  forkABI: UniswapABI! # Specifies whether Uniswap V2 or V3 is used
+  blockNumber: BigInt! # Block number when the position was created
+  blockTimestamp: BigInt! # Timestamp of the block when the position was created
+  transactionHash: Bytes # Hash of the transaction that created the position
+  executedEvent: PositionExecuted @derivedFrom(field: "executedPosition")
+  withdrawnEvent: PositionWithdrawn @derivedFrom(field: "withdrawnPosition")
+  dexRouter: WhitelistedDexRouter!
+  prolongations: [PositionProlonged!]! @derivedFrom(field: "position")
 }
 
 type PositionExecuted @entity(immutable: true) {
-  id: Bytes!
-  positionId: BigInt! # uint256
+  id: String! # Position ID, unique identifier
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+
+  executedPosition: Position!
+}
+
+type PositionWithdrawn @entity(immutable: true) {
+  id: String! # Position ID, unique identifier
+  wallet: Bytes! # addres
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+
+  withdrawnPosition: Position!
 }
 
 type PositionProlonged @entity(immutable: true) {
@@ -64,13 +64,17 @@ type PositionProlonged @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+
+  position: Position!
 }
 
-type PositionWithdrawn @entity(immutable: true) {
-  id: Bytes!
-  wallet: Bytes! # address
-  positionId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Token @entity(immutable: true) {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  address: Bytes!
+
+  inputPositions: [Position!]! @derivedFrom(field: "tokenIn")
+  outputPositions: [Position!]! @derivedFrom(field: "tokenOut")
 }

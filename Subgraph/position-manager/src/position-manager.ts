@@ -1,141 +1,192 @@
 import {
-  DexRouterRemoved as DexRouterRemovedEvent,
   DexRouterWhitelisted as DexRouterWhitelistedEvent,
-  LogBytes as LogBytesEvent,
-  OwnershipTransferred as OwnershipTransferredEvent,
   PositionCreated as PositionCreatedEvent,
   PositionExecuted as PositionExecutedEvent,
   PositionProlonged as PositionProlongedEvent,
-  PositionWithdrawn as PositionWithdrawnEvent
-} from "../generated/PositionManager/PositionManager"
+  PositionWithdrawn as PositionWithdrawnEvent,
+  DexRouterRemoved as DexRouterRemoved,
+} from "../generated/PositionManager/PositionManager";
 import {
-  DexRouterRemoved,
-  DexRouterWhitelisted,
-  LogBytes,
-  OwnershipTransferred,
-  PositionCreated,
+  WhitelistedDexRouter,
+  Position,
   PositionExecuted,
   PositionProlonged,
-  PositionWithdrawn
-} from "../generated/schema"
+  PositionWithdrawn,
+  Token,
+} from "../generated/schema";
 
-export function handleDexRouterRemoved(event: DexRouterRemovedEvent): void {
-  let entity = new DexRouterRemoved(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.dexRouter = event.params.dexRouter
+import { ERC20 } from "../generated/PositionManager/ERC20"; // Import ERC20 binding
+import { Address, BigInt, log } from "@graphprotocol/graph-ts"; // Import necessary types
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+/**
+ * Helper function to map ExecutionCondition enum from Solidity to GraphQL string.
+ */
+function getExecutionCondition(condition: i32): string {
+  switch (condition) {
+    case 0:
+      return "Above";
+    case 1:
+      return "Below";
+    default:
+      return "Unknown"; // Handle unexpected values
+  }
+}
 
-  entity.save()
+/**
+ * Helper function to map UniswapABI enum from Solidity to GraphQL string.
+ */
+function getUniswapABI(forkABI: i32): string {
+  switch (forkABI) {
+    case 0:
+      return "V3";
+    case 1:
+      return "V2";
+    default:
+      return "Unknown"; // Handle unexpected values
+  }
 }
 
 export function handleDexRouterWhitelisted(
   event: DexRouterWhitelistedEvent
 ): void {
-  let entity = new DexRouterWhitelisted(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.dexRouter = event.params.dexRouter
+  let entity = new WhitelistedDexRouter(event.params.dexRouter.toString());
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.isActive = true;
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
-  entity.save()
+  entity.save();
 }
 
-export function handleLogBytes(event: LogBytesEvent): void {
-  let entity = new LogBytes(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.data = event.params.data
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleOwnershipTransferred(
-  event: OwnershipTransferredEvent
-): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+export function handleDexRouterRemoved(event: DexRouterRemoved): void {
+  let entity = WhitelistedDexRouter.load(event.params.dexRouter.toString());
+  if (entity) {
+    entity.isActive = false;
+    entity.save();
+  } else {
+    log.warning("Attempted to remove non-whitelisted DexRouter: {}", [
+      event.params.dexRouter.toString(),
+    ]);
+  }
 }
 
 export function handlePositionCreated(event: PositionCreatedEvent): void {
-  let entity = new PositionCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.wallet = event.params.wallet
-  entity.positionId = event.params.positionId
-  entity.dexRouter = event.params.dexRouter
-  entity.tokenIn = event.params.tokenIn
-  entity.tokenOut = event.params.tokenOut
-  entity.quantity = event.params.quantity
-  entity.executionValue = event.params.executionValue
-  entity.endTimestamp = event.params.endTimestamp
-  entity.fee = event.params.fee
-  entity.condition = event.params.condition
-  entity.forkABI = event.params.forkABI
+  let entity = new Position(event.params.positionId.toString());
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.wallet = event.params.wallet;
+  entity.tokenIn = fetchOrCreateToken(event.params.tokenIn).id;
+  entity.tokenOut = fetchOrCreateToken(event.params.tokenOut).id;
+  entity.quantity = event.params.quantity;
+  entity.executionValue = event.params.executionValue;
+  entity.endTimestamp = event.params.endTimestamp;
+  entity.fee = event.params.fee;
+  entity.condition = getExecutionCondition(event.params.condition);
+  entity.forkABI = getUniswapABI(event.params.forkABI);
 
-  entity.save()
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+
+  let dexRouter = WhitelistedDexRouter.load(event.params.dexRouter.toString());
+  if (dexRouter) {
+    entity.dexRouter = dexRouter.id;
+  } else {
+    log.warning("WhitelistedDexRouter {} not found for Position {}", [
+      event.params.dexRouter.toHex(),
+      event.params.positionId.toString(),
+    ]);
+  }
+
+  entity.save();
 }
 
 export function handlePositionExecuted(event: PositionExecutedEvent): void {
-  let entity = new PositionExecuted(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.positionId = event.params.positionId
+  let entity = new PositionExecuted(event.params.positionId.toString());
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+  entity.executedPosition = event.params.positionId.toString();
 
-  entity.save()
+  entity.save();
 }
 
 export function handlePositionProlonged(event: PositionProlongedEvent): void {
   let entity = new PositionProlonged(
     event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.positionId = event.params.positionId
-  entity.newEndTimestamp = event.params.newEndTimestamp
+  );
+  entity.positionId = event.params.positionId;
+  entity.newEndTimestamp = event.params.newEndTimestamp;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
-  entity.save()
+  let position = Position.load(event.params.positionId.toString());
+
+  if (position) {
+    position.endTimestamp = event.params.newEndTimestamp;
+    position.save();
+  }
+
+  entity.position = event.params.positionId.toString();
+
+  entity.save();
 }
 
 export function handlePositionWithdrawn(event: PositionWithdrawnEvent): void {
-  let entity = new PositionWithdrawn(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.wallet = event.params.wallet
-  entity.positionId = event.params.positionId
+  let entity = new PositionWithdrawn(event.params.positionId.toString());
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.wallet = event.params.wallet;
 
-  entity.save()
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+  entity.withdrawnPosition = event.params.positionId.toString();
+
+  entity.save();
+}
+
+function fetchOrCreateToken(tokenAddress: Address): Token {
+  let tokenId = tokenAddress.toHex();
+  let token = Token.load(tokenId);
+
+  if (token === null) {
+    token = new Token(tokenId);
+    let contract = ERC20.bind(tokenAddress);
+
+    // Fetch name
+    let nameResult = contract.try_name();
+    if (!nameResult.reverted) {
+      token.name = nameResult.value;
+    } else {
+      log.warning("Failed to fetch name for token {}", [tokenId]);
+      token.name = "Unknown";
+    }
+
+    // Fetch symbol
+    let symbolResult = contract.try_symbol();
+    if (!symbolResult.reverted) {
+      token.symbol = symbolResult.value;
+    } else {
+      log.warning("Failed to fetch symbol for token {}", [tokenId]);
+      token.symbol = "UNKNOWN";
+    }
+
+    // Fetch decimals
+    let decimalsResult = contract.try_decimals();
+    if (!decimalsResult.reverted) {
+      token.decimals = new BigInt(decimalsResult.value);
+    } else {
+      log.warning("Failed to fetch decimals for token {}", [tokenId]);
+      token.decimals = new BigInt(18); // Default to 18 if failed
+    }
+
+    token.address = tokenAddress;
+
+    token.save();
+  }
+
+  return token as Token;
 }
