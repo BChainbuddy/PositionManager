@@ -95,36 +95,13 @@ describe("PositionManager", () => {
     });
   });
   describe("Whitelist a uniswap router", () => {
-    it("Revert address is a wallet", async () => {
-      const { positionManager, owner } = await loadFixture(
-        deployContractFixture
-      );
-
-      // Check if the address is a valid Uniswap fork
-      await expect(positionManager.isValidUniswapFork(owner.address)).to.be
-        .reverted;
-
-      // Whitelist the address
-      await expect(positionManager.whitelistDexRouter(owner.address)).to.be
-        .reverted;
-
-      // Verify whitelisting
-      const dexInfo = await positionManager.whitelistedDexes(owner.address);
-      expect(dexInfo[0]).to.be.false;
-      expect(Number(dexInfo[1])).to.equal(0);
-    });
     it("Should whitelist Uniswap V2 router", async () => {
       const { positionManager, uniswapV2 } = await loadFixture(
         deployContractFixture
       );
-      // Check if the router is a valid Uniswap V2 fork
-      const dexType = await positionManager.isValidUniswapFork(
-        uniswapV2.target
-      );
-      expect(Number(dexType)).to.equal(1); // 0 corresponds to UniswapABI.V2
 
       // Whitelist the router
-      await positionManager.whitelistDexRouter(uniswapV2.target);
+      await positionManager.whitelistDexRouter(uniswapV2.target, 1);
 
       // Verify whitelisting
       const dexInfo = await positionManager.whitelistedDexes(uniswapV2.target);
@@ -137,14 +114,8 @@ describe("PositionManager", () => {
         deployContractFixture
       );
 
-      // Check if the router is a valid Uniswap V3 fork
-      const dexType = await positionManager.isValidUniswapFork(
-        uniswapV3.target
-      );
-      expect(Number(dexType)).to.equal(0); // 1 corresponds to UniswapABI.V3
-
       // Whitelist the router
-      await positionManager.whitelistDexRouter(uniswapV3.target);
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
 
       // Verify whitelisting
       const dexInfo = await positionManager.whitelistedDexes(uniswapV3.target);
@@ -152,25 +123,48 @@ describe("PositionManager", () => {
       expect(Number(dexInfo[1])).to.equal(0);
     });
 
-    it("Should revert because the contract doesnt include V2 or V3 interface", async () => {
-      const { positionManager, mockContract } = await loadFixture(
+    it("Should remove Dex from the whitelist", async () => {
+      const { positionManager, uniswapV3 } = await loadFixture(
         deployContractFixture
       );
 
-      // Check if the address is a valid Uniswap fork
-      await expect(positionManager.isValidUniswapFork(mockContract.target)).to
-        .be.reverted;
-
-      // Whitelist the address
-      await expect(positionManager.whitelistDexRouter(mockContract.target)).to
-        .be.reverted;
+      // Whitelist the router
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
 
       // Verify whitelisting
-      const dexInfo = await positionManager.whitelistedDexes(
-        mockContract.target
-      );
-      expect(dexInfo[0]).to.be.false;
+      let dexInfo = await positionManager.whitelistedDexes(uniswapV3.target);
+      expect(dexInfo[0]).to.be.true;
       expect(Number(dexInfo[1])).to.equal(0);
+
+      // Remove the router from the whitelist
+      await positionManager.removeDexRouter(uniswapV3.target);
+
+      // Verify removal
+      dexInfo = await positionManager.whitelistedDexes(uniswapV3.target);
+      expect(dexInfo[0]).to.be.false;
+    });
+    it("Should revert when whitelisting if router is already whitelist", async () => {
+      const { positionManager, uniswapV3 } = await loadFixture(
+        deployContractFixture
+      );
+
+      // Whitelist the router
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
+
+      // Revert if whitelisted
+      await expect(
+        positionManager.whitelistDexRouter(uniswapV3.target, 0)
+      ).to.be.revertedWith("Dex router is already whitelisted");
+    });
+    it("Should revert when removing if the router is not on the whitelist", async () => {
+      const { positionManager, uniswapV3 } = await loadFixture(
+        deployContractFixture
+      );
+
+      // Remove from whitelist
+      await expect(
+        positionManager.removeDexRouter(uniswapV3.target)
+      ).to.be.revertedWith("The dex is not on the whitelist");
     });
   });
   describe("Positions", () => {
@@ -226,7 +220,7 @@ describe("PositionManager", () => {
       ).to.be.revertedWith("Dex router not whitelisted");
 
       // Whitelist address
-      await positionManager.whitelistDexRouter(uniswapV2.target);
+      await positionManager.whitelistDexRouter(uniswapV2.target, 1);
 
       // Desired pool doesn't exist
       await expect(
@@ -263,7 +257,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV2.target);
+      await positionManager.whitelistDexRouter(uniswapV2.target, 1);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -325,7 +319,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV3.target);
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -387,7 +381,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV3.target);
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -436,7 +430,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV3.target);
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -494,7 +488,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV3.target);
+      await positionManager.whitelistDexRouter(uniswapV3.target, 0);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -542,7 +536,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV2.target);
+      await positionManager.whitelistDexRouter(uniswapV2.target, 1);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -598,7 +592,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV2.target);
+      await positionManager.whitelistDexRouter(uniswapV2.target, 1);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
@@ -655,7 +649,7 @@ describe("PositionManager", () => {
       const duration = 3; //days
 
       // Whitelist a dex router
-      await positionManager.whitelistDexRouter(uniswapV2.target);
+      await positionManager.whitelistDexRouter(uniswapV2.target, 1);
 
       const expectedFee = await positionManager.getExpectedFee(duration);
 
