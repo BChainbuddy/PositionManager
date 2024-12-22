@@ -49,7 +49,7 @@ function getUniswapABI(forkABI: i32): string {
 export function handleDexRouterWhitelisted(
   event: DexRouterWhitelistedEvent
 ): void {
-  let entity = new WhitelistedDexRouter(event.params.dexRouter.toString());
+  let entity = new WhitelistedDexRouter(event.params.dexRouter.toHex());
 
   entity.isActive = true;
   entity.blockNumber = event.block.number;
@@ -60,13 +60,13 @@ export function handleDexRouterWhitelisted(
 }
 
 export function handleDexRouterRemoved(event: DexRouterRemoved): void {
-  let entity = WhitelistedDexRouter.load(event.params.dexRouter.toString());
+  let entity = WhitelistedDexRouter.load(event.params.dexRouter.toHex());
   if (entity) {
     entity.isActive = false;
     entity.save();
   } else {
     log.warning("Attempted to remove non-whitelisted DexRouter: {}", [
-      event.params.dexRouter.toString(),
+      event.params.dexRouter.toHex(),
     ]);
   }
 }
