@@ -109,19 +109,6 @@ export default function OpenPositions() {
       executed: false,
       forkABI: 1,
     },
-    // {
-    //   // MANTRA/POL
-    //   wallet: "0xd2fdd21AC3553Ac578a69a64F833788f2581BF05",
-    //   dexRouter: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    //   tokenIn: "0xc3ec80343d2bae2f8e680fdadde7c17e71e114ea",
-    //   tokenOut: "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
-    //   quantity: 100000000000000000000,
-    //   executionValue: 20000000000000000000,
-    //   endTimestamp: 1730313600,
-    //   fee: "3000",
-    //   executed: false,
-    //   forkABI: 1,
-    // },
   ];
 
   const addTokenData = async () => {
