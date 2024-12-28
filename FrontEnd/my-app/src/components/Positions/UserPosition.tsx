@@ -1,5 +1,7 @@
 import { Position } from "../Dashboard/OpenPositions";
 import LogoWrapper from "../../ui/LogoWrapper";
+import formatNumber from "@/lib/formatNumber";
+import Link from "next/link";
 
 interface OpenPositionProps {
   position: Position;
@@ -32,23 +34,24 @@ export default function UserPosition({ position }: OpenPositionProps) {
           </div>
         </div>
       </div>
-      <div className="py-2 flex flex-col space-y-[0.1rem]">
+      <div className="py-2 flex flex-col space-y-[0.1rem] w-full px-0.5">
         <p className="text-[0.8rem]">
-          {position.symbolIn + "/" + position.symbolOut}
+          {position.tokenIn.symbol + "/" + position.tokenOut.symbol}
         </p>
-        <p className="text-[0.7rem]">
-          Price:{" "}
-          {position.price ? position.price.toString().substring(0, 7) : "0"}
+        <p className="text-[0.7rem] w-full overflow-hidden">
+          Price: {position.price ? formatNumber(position.price) : "0"}
         </p>
 
         <p className="text-[0.7rem]">
-          Target:{" "}
-          {(position.executionValue / 10 ** 18).toString().substring(0, 7)}
+          Target: {formatNumber(position.executionValue / 10 ** 18)}
         </p>
         <p className="text-[0.7rem]">{getDate()}</p>
-        <button className="bg-[#FFE500] rounded-2xl text-center px-0.5 text-[0.7rem]">
-          Add duration
-        </button>
+        <Link
+          className="bg-[#FFE500] rounded-2xl text-center px-0.5 text-[0.7rem] w-[90%] mx-auto"
+          href={`/dashboard/${position.wallet}/${position.id}`}
+        >
+          More info
+        </Link>
       </div>
     </div>
   );

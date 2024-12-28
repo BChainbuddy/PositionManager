@@ -16,8 +16,8 @@ export default function formatNumber(num: number) {
 
   // Decimals
   if (absNum < 1) {
-    return sign + absNum.toFixed(9).replace(/\.?0+$/, "");
+    return sign + absNum.toFixed(8).replace(/\.?0+$/, "");
   } else {
-    return sign + absNum.toFixed(6).replace(/\.?0+$/, "");
+    return sign + absNum.toFixed(5).replace(/\.?0+$/, "");
   }
 }

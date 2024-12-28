@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/client";
 import { GET_POSITIONS_BY_WALLET } from "@/lib/queries";
 import { useActiveAccount } from "thirdweb/react";
 import TOKEN_IMAGES from "@/data/tokenImages.json";
+import Link from "next/link";
 
 const TOKEN_IMAGES_TYPED: Record<string, string> = TOKEN_IMAGES as Record<
   string,
@@ -12,6 +13,7 @@ const TOKEN_IMAGES_TYPED: Record<string, string> = TOKEN_IMAGES as Record<
 >;
 
 export interface Position {
+  id: number;
   wallet: string;
   dexRouter: {
     id: string;
@@ -93,9 +95,12 @@ export default function OpenPositions() {
           ) : (
             <></>
           )}
-          <button className="col-span-3 w-[7rem] h-[1.5rem] bg-[#01FF39] rounded-xl text-xs flex justify-center items-center">
+          <Link
+            className="col-span-3 w-[7rem] h-[1.5rem] bg-[#01FF39] rounded-xl text-xs flex justify-center items-center"
+            href="/dashboard/positions"
+          >
             VIEW MORE
-          </button>
+          </Link>
         </div>
       ) : (
         <div className="positionsGrid w-[25rem] h-[21rem] flex items-center justify-center">
