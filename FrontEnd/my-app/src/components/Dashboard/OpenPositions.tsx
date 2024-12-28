@@ -6,11 +6,7 @@ import { GET_POSITIONS_BY_WALLET } from "@/lib/queries";
 import { useActiveAccount } from "thirdweb/react";
 import TOKEN_IMAGES from "@/data/tokenImages.json";
 import Link from "next/link";
-
-const TOKEN_IMAGES_TYPED: Record<string, string> = TOKEN_IMAGES as Record<
-  string,
-  string
->;
+import addTokenData from "@/lib/addTokenData";
 
 export interface Position {
   id: number;
@@ -49,35 +45,14 @@ export default function OpenPositions() {
     skip: !activeAccount?.address,
   });
 
-  const addTokenData = async () => {
-    const updatedPositions = await Promise.all(
-      data.positions.map(async (position: Position) => {
-        return {
-          ...position,
-          imgIn: TOKEN_IMAGES_TYPED[position.tokenIn.address]
-            ? TOKEN_IMAGES_TYPED[position.tokenIn.address]
-            : "",
-          imgOut: TOKEN_IMAGES_TYPED[position.tokenOut.address]
-            ? TOKEN_IMAGES_TYPED[position.tokenOut.address]
-            : "",
-          price: await price(
-            position.tokenIn.address,
-            position.tokenOut.address,
-            position.dexRouter.id,
-            position.forkABI,
-            position.fee,
-            position.tokenIn.decimals,
-            position.tokenOut.decimals
-          ),
-        };
-      })
-    );
+  const getTokenInfo = async () => {
+    const updatedPositions: any = await addTokenData(data);
     setPositions(updatedPositions);
   };
 
   useEffect(() => {
     if (data) {
-      addTokenData();
+      getTokenInfo();
     }
   }, [data]);
 

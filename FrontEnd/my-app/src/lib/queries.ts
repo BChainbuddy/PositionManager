@@ -38,3 +38,42 @@ export const GET_POSITIONS_BY_WALLET = gql`
     }
   }
 `;
+
+export const GET_POSITIONS_BY_ID = gql`
+  query GetPositionsById($id: Bytes!) {
+    positions(where: { id: $id }) {
+      id
+      wallet
+      tokenIn {
+        id
+        name
+        symbol
+        decimals
+        address
+      }
+      tokenOut {
+        id
+        name
+        symbol
+        decimals
+        address
+      }
+      quantity
+      executionValue
+      endTimestamp
+      fee
+      condition
+      forkABI
+      blockNumber
+      blockTimestamp
+      transactionHash
+      dexRouter {
+        id
+        isActive
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+    }
+  }
+`;

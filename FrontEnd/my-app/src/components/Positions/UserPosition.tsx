@@ -13,7 +13,6 @@ export default function UserPosition({ position }: OpenPositionProps) {
     return myDate.toDateString();
   };
 
-  // console.log(position);
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[7rem] font-juraBold">
       <div className="relative h-[4rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
