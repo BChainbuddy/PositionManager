@@ -11,7 +11,7 @@ export async function price(
 ) {
   let price;
 
-  if (ABIType == 1) {
+  if (ABIType == 0) {
     console.log("V3");
     price = await getV3Price(
       dexRouter,

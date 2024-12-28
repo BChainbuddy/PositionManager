@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 
 // Connect to Ethereum node
 const provider = new ethers.JsonRpcProvider(
-  process.env.NEXT_PUBLIC_POLYGON_RPC_URL
+  process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL
 );
 
 // Uniswap V2 Factory contract ABI
@@ -65,16 +65,18 @@ export async function getV2Price(
     UniswapV2PairABI,
     provider
   );
-
   try {
     const { reserve0, reserve1 } = await pairContract.getReserves();
-
     // Determine token order and calculate price accordingly
     let price;
     if (tokenAddress1.toLowerCase() < tokenAddress2.toLowerCase()) {
-      price = (reserve1 / reserve0) * 10 ** (decimalsIn - decimalsOut);
+      price =
+        (Number(reserve1) / Number(reserve0)) *
+        10 ** (Number(decimalsIn) - Number(decimalsOut));
     } else {
-      price = (reserve0 / reserve1) * 10 ** (decimalsOut - decimalsIn);
+      price =
+        (Number(reserve0) / Number(reserve1)) *
+        10 ** (Number(decimalsOut) - Number(decimalsIn));
     }
 
     console.log(`Uniswap V2 Price: ${price}`);

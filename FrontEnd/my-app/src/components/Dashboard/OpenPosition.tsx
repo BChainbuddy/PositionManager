@@ -33,7 +33,7 @@ export default function OpenPosition({ position }: OpenPositionProps) {
       </div>
       <div className="py-1 flex flex-col">
         <p className="text-[0.7rem]">
-          {position.symbolIn + "/" + position.symbolOut}
+          {position.tokenIn.symbol + "/" + position.tokenOut.symbol}
         </p>
         <p className="text-[0.6rem]">
           Price:{" "}

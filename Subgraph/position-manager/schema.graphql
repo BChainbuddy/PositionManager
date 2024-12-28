@@ -34,7 +34,7 @@ type Position @entity(immutable: false) {
   transactionHash: Bytes # Hash of the transaction that created the position
   executedEvent: PositionExecuted @derivedFrom(field: "executedPosition")
   withdrawnEvent: PositionWithdrawn @derivedFrom(field: "withdrawnPosition")
-  dexRouter: WhitelistedDexRouter!
+  dexRouter: WhitelistedDexRouter
   prolongations: [PositionProlonged!]! @derivedFrom(field: "position")
 }
 

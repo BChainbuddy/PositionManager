@@ -88,7 +88,7 @@ export function handlePositionCreated(event: PositionCreatedEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 
-  let dexRouter = WhitelistedDexRouter.load(event.params.dexRouter.toString());
+  let dexRouter = WhitelistedDexRouter.load(event.params.dexRouter.toHex());
   if (dexRouter) {
     entity.dexRouter = dexRouter.id;
   } else {
