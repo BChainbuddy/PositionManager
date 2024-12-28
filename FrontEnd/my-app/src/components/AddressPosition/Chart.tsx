@@ -34,9 +34,9 @@ export default function Chart({
           toolbar_bg: "#f1f3f6",
           enable_publishing: false,
           hide_side_toolbar: false,
-          allow_symbol_change: true,
-          details: true,
-          hotlist: true,
+          allow_symbol_change: false,
+          details: false,
+          hotlist: false,
           calendar: true,
           autosize: true,
         });
@@ -47,7 +47,7 @@ export default function Chart({
   }, []);
 
   return (
-    <div className="h-[22rem] w-[33rem] border-2 border-[#01FF39] rounded-sm shadow-lg shadow-[#01FF39] ">
+    <div className="h-[22rem] w-[33rem] border-2 border-[#01FF39] rounded-sm shadow-lg shadow-[#01FF39] outline-none">
       <div id="tradingview_chart" className="h-full w-full"></div>
     </div>
   );

@@ -1,17 +1,13 @@
 import formatNumber from "@/lib/formatNumber";
 import LogoWrapper from "../../ui/LogoWrapper";
 import { Position } from "./OpenPositions";
+import getDate from "@/lib/getDate";
 
 interface OpenPositionProps {
   position: Position;
 }
 
 export default function OpenPosition({ position }: OpenPositionProps) {
-  const getDate = () => {
-    const myDate = new Date(position.endTimestamp * 1000);
-    return myDate.toDateString();
-  };
-
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[6.5rem]">
       <div className="relative h-[3.3rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
@@ -43,7 +39,7 @@ export default function OpenPosition({ position }: OpenPositionProps) {
         <p className="text-[0.6rem]">
           Target: {formatNumber(position.executionValue / 10 ** 18)}
         </p>
-        <p className="text-[0.6rem]">{getDate()}</p>
+        <p className="text-[0.6rem]">{getDate(position.endTimestamp)}</p>
       </div>
     </div>
   );

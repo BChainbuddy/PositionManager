@@ -8,6 +8,7 @@ import { Position } from "../Dashboard/OpenPositions";
 import addTokenData from "@/lib/addTokenData";
 import { useState, useEffect } from "react";
 import formatNumber from "@/lib/formatNumber";
+import getDate from "@/lib/getDate";
 
 export default function PositionInfo() {
   const [position, setPosition] = useState<Position | null>(null);
@@ -21,6 +22,15 @@ export default function PositionInfo() {
     skip: !positionId,
   });
 
+  function getTimeLeft(timestamp: number) {
+    const timeLeft = timestamp * 1000 - Date.now();
+    return `${Math.floor(timeLeft / 86400000)} days ${Math.floor(
+      (timeLeft % 86400000) / 3600000
+    )} hours left`;
+  }
+
+  const handleRemoveTrade = () => {};
+
   const getTokenInfo = async () => {
     const updatedPositions: any = await addTokenData(data);
     setPosition(updatedPositions[0]);
@@ -33,19 +43,40 @@ export default function PositionInfo() {
   }, [data]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col font-juraBold text-white h-[22rem] justify-between items-center">
       {address?.toString().toLowerCase() ==
         activeAccount?.address.toString().toLowerCase() && position ? (
-        <div className="flex flex-col items-center">
+        <>
           <div className="flex flex-row items-center justify-center space-x-1">
-            <p className="text-white font-juraBold text-3xl">
+            <p className="font-juraBold text-3xl">
               {position.tokenIn.symbol}/{position.tokenOut.symbol}
             </p>
           </div>
-          <div className="text-white">
-            Current Price: {position.price ? formatNumber(position.price) : 0}
+          <div className="flex flex-col">
+            <p>
+              Current Price: {position.price ? formatNumber(position.price) : 0}
+            </p>
+            <p>
+              Execution Price:{" "}
+              {formatNumber(position.executionValue / 10 ** 18)}
+            </p>
+            <p>End Date: {getDate(position.endTimestamp)}</p>
           </div>
-        </div>
+          <p>{getTimeLeft(position.endTimestamp)}</p>
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <p className="text-sm">Want to prolong the trade duration?</p>
+            <ProlongTrade />
+          </div>
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <p>Stop the trade, receive the tokens</p>
+            <button
+              className="py-2 px-3 w-fit bg-[#01FF39] rounded-lg text-black"
+              onClick={handleRemoveTrade}
+            >
+              REMOVE TRADE
+            </button>
+          </div>
+        </>
       ) : (
         <div>
           <p className="text-white">
@@ -56,3 +87,31 @@ export default function PositionInfo() {
     </div>
   );
 }
+
+const ProlongTrade = () => {
+  const [days, setDays] = useState<number>(1);
+
+  const handleProlongPosition = () => {};
+
+  return (
+    <div className="flex flex-row space-x-3 items-center justify-center">
+      <input
+        onChange={(e) => {
+          if (Number(e.target.value) > 0) {
+            setDays(Number(e.target.value));
+          }
+        }}
+        type="number"
+        value={days}
+        className="text-black w-[3rem] rounded-lg p-1 outline-none"
+      />
+      <p>days</p>
+      <button
+        className="py-1 px-4 bg-[#01FF39] rounded-lg text-black"
+        onClick={handleProlongPosition}
+      >
+        ADD
+      </button>
+    </div>
+  );
+};

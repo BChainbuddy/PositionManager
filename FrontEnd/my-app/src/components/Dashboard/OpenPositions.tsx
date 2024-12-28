@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import OpenPosition from "./OpenPosition";
-import { price } from "@/lib/price";
 import { useQuery } from "@apollo/client";
 import { GET_POSITIONS_BY_WALLET } from "@/lib/queries";
 import { useActiveAccount } from "thirdweb/react";
-import TOKEN_IMAGES from "@/data/tokenImages.json";
 import Link from "next/link";
 import addTokenData from "@/lib/addTokenData";
 

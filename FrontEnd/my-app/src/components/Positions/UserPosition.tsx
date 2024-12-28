@@ -2,17 +2,13 @@ import { Position } from "../Dashboard/OpenPositions";
 import LogoWrapper from "../../ui/LogoWrapper";
 import formatNumber from "@/lib/formatNumber";
 import Link from "next/link";
+import getDate from "@/lib/getDate";
 
 interface OpenPositionProps {
   position: Position;
 }
 
 export default function UserPosition({ position }: OpenPositionProps) {
-  const getDate = () => {
-    const myDate = new Date(position.endTimestamp * 1000);
-    return myDate.toDateString();
-  };
-
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[7rem] font-juraBold">
       <div className="relative h-[4rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
@@ -44,7 +40,7 @@ export default function UserPosition({ position }: OpenPositionProps) {
         <p className="text-[0.7rem]">
           Target: {formatNumber(position.executionValue / 10 ** 18)}
         </p>
-        <p className="text-[0.7rem]">{getDate()}</p>
+        <p className="text-[0.7rem]">{getDate(position.endTimestamp)}</p>
         <Link
           className="bg-[#FFE500] rounded-2xl text-center px-0.5 text-[0.7rem] w-[90%] mx-auto"
           href={`/dashboard/${position.wallet}/${position.id}`}
