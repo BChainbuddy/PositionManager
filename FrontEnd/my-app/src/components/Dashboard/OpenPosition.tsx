@@ -1,3 +1,4 @@
+import formatNumber from "@/lib/formatNumber";
 import LogoWrapper from "../../ui/LogoWrapper";
 import { Position } from "./OpenPositions";
 
@@ -36,13 +37,11 @@ export default function OpenPosition({ position }: OpenPositionProps) {
           {position.tokenIn.symbol + "/" + position.tokenOut.symbol}
         </p>
         <p className="text-[0.6rem]">
-          Price:{" "}
-          {position.price ? position.price.toString().substring(0, 7) : "0"}
+          Price: {position.price ? formatNumber(position.price) : "0"}
         </p>
 
         <p className="text-[0.6rem]">
-          Target:{" "}
-          {(position.executionValue / 10 ** 18).toString().substring(0, 7)}
+          Target: {formatNumber(position.executionValue / 10 ** 18)}
         </p>
         <p className="text-[0.6rem]">{getDate()}</p>
       </div>
