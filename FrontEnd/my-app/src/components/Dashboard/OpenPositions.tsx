@@ -17,11 +17,15 @@ export interface Position {
     symbol: string;
     address: string;
     decimals: number;
+    img: string;
+    blurImg: string;
   };
   tokenOut: {
     symbol: string;
     address: string;
     decimals: number;
+    img: string;
+    blurImg: string;
   };
   quantity: number;
   executionValue: number;

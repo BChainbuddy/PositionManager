@@ -8,13 +8,15 @@ interface OpenPositionProps {
 }
 
 export default function OpenPosition({ position }: OpenPositionProps) {
+  console.log(position);
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[6.5rem]">
       <div className="relative h-[3.3rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
         <div className="absolute -translate-x-3 rounded-full overflow-hidden z-10">
           <div className="relative h-[2.3rem] w-[2.3rem]">
             <LogoWrapper
-              src={position.imgIn ? position.imgIn : "/unknownToken.png"}
+              src={position.tokenIn.img}
+              blurImg={position.tokenIn.blurImg}
               alt="Token logo"
             />
           </div>
@@ -22,7 +24,8 @@ export default function OpenPosition({ position }: OpenPositionProps) {
         <div className="absolute translate-x-3 rounded-full overflow-hidden z-20">
           <div className="relative h-[2.3rem] w-[2.3rem]">
             <LogoWrapper
-              src={position.imgOut ? position.imgOut : "/unknownToken.png"}
+              src={position.tokenOut.img}
+              blurImg={position.tokenOut.blurImg}
               alt="Token logo"
             />
           </div>

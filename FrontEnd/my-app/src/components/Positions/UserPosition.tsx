@@ -15,7 +15,8 @@ export default function UserPosition({ position }: OpenPositionProps) {
         <div className="absolute -translate-x-3 rounded-full overflow-hidden z-10">
           <div className="relative h-[2.7rem] w-[2.7rem]">
             <LogoWrapper
-              src={position.imgIn ? position.imgIn : "/unknownToken.png"}
+              src={position.tokenIn.img}
+              blurImg={position.tokenIn.blurImg}
               alt="Token logo"
             />
           </div>
@@ -23,7 +24,8 @@ export default function UserPosition({ position }: OpenPositionProps) {
         <div className="absolute translate-x-3 rounded-full overflow-hidden z-20">
           <div className="relative h-[2.7rem] w-[2.7rem]">
             <LogoWrapper
-              src={position.imgOut ? position.imgOut : "/unknownToken.png"}
+              src={position.tokenOut.img}
+              blurImg={position.tokenOut.img}
               alt="Token logo"
             />
           </div>
