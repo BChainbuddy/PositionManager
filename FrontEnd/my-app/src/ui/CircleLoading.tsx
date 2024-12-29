@@ -32,7 +32,7 @@ export default function CircleLoading({
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading...</span>
     </div>
   );
 }
+

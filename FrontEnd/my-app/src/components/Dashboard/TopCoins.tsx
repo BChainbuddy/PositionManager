@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import CircleLoading from "../../ui/CircleLoading";
+import Link from "next/link";
 
 export default function TopCoins() {
   const [coins, setCoins] = useState<any[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -13,7 +14,7 @@ export default function TopCoins() {
         throw new Error("Failed to fetch data from API");
       }
       const data = await response.json();
-      // console.log(data.data);
+
       setCoins(data.data);
     } catch (error) {
       console.error("Error:", error);
@@ -32,9 +33,13 @@ export default function TopCoins() {
       <div className="grid grid-cols-5 gap-3 mt-6">
         {coins &&
           coins.map((coin, i) => (
-            <div
+            <a
               key={i}
-              className="relative h-[4.5rem] w-[4.5rem] bg-white rounded-lg overflow-hidden shadow-md group"
+              className="relative h-[4.5rem] w-[4.5rem] bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer"
+              href={`https://www.coingecko.com/en/coins/${
+                coin.id ? coin.id : ""
+              }`}
+              target="_blank"
             >
               {coin.symbol ? (
                 <>
@@ -56,7 +61,7 @@ export default function TopCoins() {
                   innerColor="fill-[#01FF39]"
                 />
               )}
-            </div>
+            </a>
           ))}
       </div>
     </div>
