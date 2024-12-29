@@ -42,7 +42,7 @@ export default function UserPosition({ position }: OpenPositionProps) {
         </p>
         <p className="text-[0.7rem]">{getDate(position.endTimestamp)}</p>
         <Link
-          className="bg-[#FFE500] rounded-2xl text-center px-0.5 text-[0.7rem] w-[90%] mx-auto"
+          className="bg-[#FFE500] rounded-2xl text-center px-0.5 text-[0.7rem] w-[90%] mx-auto cursor-pointer"
           href={`/dashboard/${position.wallet}/${position.id}`}
         >
           More info

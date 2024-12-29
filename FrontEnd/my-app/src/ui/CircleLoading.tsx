@@ -2,23 +2,23 @@ interface CircleLoadingProps {
   height: string; // h-4
   width: string; // w-4
   innerColor: string; // fill-blue-600
+  label?: string;
 }
 
 export default function CircleLoading({
   height,
   width,
   innerColor,
+  label,
 }: CircleLoadingProps) {
   return (
     <div
       role="status"
-      className="w-full h-full flex justify-center items-center"
+      className="w-full h-full flex justify-center items-center flex-col"
     >
       <svg
         aria-hidden="true"
-        className={`text-gray-200 animate-spin dark:text-gray-600 ${
-          height + " " + width + " " + innerColor
-        }`}
+        className={`text-gray-200 animate-spin dark:text-gray-600 ${height} ${width} ${innerColor}`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@ export default function CircleLoading({
           fill="currentFill"
         />
       </svg>
+      {label ? <p className="text-sm mt-1">{label}</p> : <></>}
     </div>
   );
 }
-

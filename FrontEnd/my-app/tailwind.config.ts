@@ -5,6 +5,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/ui/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -16,7 +17,7 @@ const config: Config = {
         interBold: ["var(--font-interBold)"],
         inter: ["var(--font-inter)"],
         jura: ["var(--font-jura)"],
-        juraBold: ["var(--font-juraBold)"]
+        juraBold: ["var(--font-juraBold)"],
       },
     },
   },

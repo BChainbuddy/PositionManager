@@ -5,6 +5,7 @@ import { GET_POSITIONS_BY_WALLET } from "@/lib/queries";
 import { useActiveAccount } from "thirdweb/react";
 import Link from "next/link";
 import addTokenData from "@/lib/addTokenData";
+import CircleLoading from "@/ui/CircleLoading";
 
 export interface Position {
   id: number;
@@ -34,7 +35,7 @@ export interface Position {
 }
 
 export default function OpenPositions() {
-  const [positions, setPositions] = useState<any[]>([]);
+  const [positions, setPositions] = useState<any[] | null>(null);
 
   const activeAccount = useActiveAccount();
 
@@ -61,19 +62,31 @@ export default function OpenPositions() {
       </p>
       {activeAccount?.address ? (
         <div className="positionsGrid grid grid-cols-3 w-[25rem] gap-[1.5rem] place-items-center h-[21rem]">
-          {positions.length ? (
-            positions.map((position: any, i: number) => (
-              <OpenPosition position={position} key={i} />
-            ))
+          {!positions ? (
+            <div className="flex justify-center items-center h-full col-span-3">
+              <CircleLoading
+                height="h-10"
+                width="w-10"
+                innerColor="fill-[#01FF39]"
+              />
+            </div>
+          ) : positions.length ? (
+            <>
+              {positions.map((position: any, i: number) => (
+                <OpenPosition position={position} key={i} />
+              ))}
+              <Link
+                className="col-span-3 w-[7rem] h-[1.5rem] bg-[#01FF39] rounded-xl text-xs flex justify-center items-center"
+                href="/dashboard/positions"
+              >
+                VIEW MORE
+              </Link>
+            </>
           ) : (
-            <></>
+            <div className="flex justify-center items-center h-full col-span-3">
+              <p>No positions yet!</p>
+            </div>
           )}
-          <Link
-            className="col-span-3 w-[7rem] h-[1.5rem] bg-[#01FF39] rounded-xl text-xs flex justify-center items-center"
-            href="/dashboard/positions"
-          >
-            VIEW MORE
-          </Link>
         </div>
       ) : (
         <div className="positionsGrid w-[25rem] h-[21rem] flex items-center justify-center">

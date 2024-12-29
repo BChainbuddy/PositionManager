@@ -9,6 +9,7 @@ import addTokenData from "@/lib/addTokenData";
 import { useState, useEffect } from "react";
 import formatNumber from "@/lib/formatNumber";
 import getDate from "@/lib/getDate";
+import CircleLoading from "@/ui/CircleLoading";
 
 export default function PositionInfo() {
   const [position, setPosition] = useState<Position | null>(null);
@@ -45,37 +46,51 @@ export default function PositionInfo() {
   return (
     <div className="flex flex-col font-juraBold text-white h-[22rem] justify-between items-center">
       {address?.toString().toLowerCase() ==
-        activeAccount?.address.toString().toLowerCase() && position ? (
+      activeAccount?.address.toString().toLowerCase() ? (
         <>
-          <div className="flex flex-row items-center justify-center space-x-1">
-            <p className="font-juraBold text-3xl">
-              {position.tokenIn.symbol}/{position.tokenOut.symbol}
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <p>
-              Current Price: {position.price ? formatNumber(position.price) : 0}
-            </p>
-            <p>
-              Execution Price:{" "}
-              {formatNumber(position.executionValue / 10 ** 18)}
-            </p>
-            <p>End Date: {getDate(position.endTimestamp)}</p>
-          </div>
-          <p>{getTimeLeft(position.endTimestamp)}</p>
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <p className="text-sm">Want to prolong the trade duration?</p>
-            <ProlongTrade />
-          </div>
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <p>Stop the trade, receive the tokens</p>
-            <button
-              className="py-2 px-3 w-fit bg-[#01FF39] rounded-lg text-black"
-              onClick={handleRemoveTrade}
-            >
-              REMOVE TRADE
-            </button>
-          </div>
+          {!data.positions.length && !loading ? (
+            <div>This position doesnt exist!</div>
+          ) : position ? (
+            <>
+              <div className="flex flex-row items-center justify-center space-x-1">
+                <p className="font-juraBold text-3xl">
+                  {position.tokenIn.symbol}/{position.tokenOut.symbol}
+                </p>
+              </div>
+              <div className="flex flex-col">
+                <p>
+                  Current Price:{" "}
+                  {position.price ? formatNumber(position.price) : 0}
+                </p>
+                <p>
+                  Execution Price:{" "}
+                  {formatNumber(position.executionValue / 10 ** 18)}
+                </p>
+                <p>End Date: {getDate(position.endTimestamp)}</p>
+              </div>
+              <p>{getTimeLeft(position.endTimestamp)}</p>
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <p className="text-sm">Want to prolong the trade duration?</p>
+                <ProlongTrade />
+              </div>
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <p className="text-sm">Stop the trade, receive the tokens</p>
+                <button
+                  className="py-2 px-3 w-fit bg-[#01FF39] rounded-lg text-black"
+                  onClick={handleRemoveTrade}
+                >
+                  REMOVE TRADE
+                </button>
+              </div>
+            </>
+          ) : (
+            <CircleLoading
+              height="h-7"
+              width="w-7"
+              innerColor="fill-[#01FF39]"
+              label="Loading information"
+            />
+          )}
         </>
       ) : (
         <div>
