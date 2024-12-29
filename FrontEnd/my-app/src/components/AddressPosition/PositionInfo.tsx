@@ -44,14 +44,16 @@ export default function PositionInfo() {
   }, [data]);
 
   return (
-    <div className="flex flex-col font-juraBold text-white h-[22rem] justify-between items-center">
+    <div className="w-fit font-juraBold text-white h-[22rem]">
       {address?.toString().toLowerCase() ==
       activeAccount?.address.toString().toLowerCase() ? (
         <>
-          {!data.positions.length && !loading ? (
-            <div>This position doesnt exist!</div>
+          {!data?.positions.length && !loading ? (
+            <div className="flex h-full justify-center items-center">
+              This position doesnt exist!
+            </div>
           ) : position ? (
-            <>
+            <div className="flex flex-col font-juraBold h-full justify-between items-center">
               <div className="flex flex-row items-center justify-center space-x-1">
                 <p className="font-juraBold text-3xl">
                   {position.tokenIn.symbol}/{position.tokenOut.symbol}
@@ -82,7 +84,7 @@ export default function PositionInfo() {
                   REMOVE TRADE
                 </button>
               </div>
-            </>
+            </div>
           ) : (
             <CircleLoading
               height="h-7"
@@ -93,7 +95,7 @@ export default function PositionInfo() {
           )}
         </>
       ) : (
-        <div>
+        <div className="flex h-full justify-center items-center">
           <p className="text-white">
             Address not able to see info to this position
           </p>
