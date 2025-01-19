@@ -21,11 +21,27 @@ export default function Home() {
               <span className="trade">TRADE </span>
               <span className="forge">FORGE</span>
             </p>
-            <p>Make trading on blockchain great again.</p>
-            <p className="mt-2">
-              Start being the owner of your time and stop looking at
+            <p className="text-sm text-[#d5d2d2]">
+              Make trading on{" "}
+              <span className="text-base text-[#01FF39] font-juraBold">
+                BLOCKCHAIN
+              </span>{" "}
+              great again.
             </p>
-            <p className="mt-2">charts, keep that to the computers.</p>
+            <p className="mt-2 text-sm text-[#d5d2d2]">
+              Start being the owner of{" "}
+              <span className="text-base text-[#01FF39] font-juraBold">
+                YOUR TIME
+              </span>{" "}
+              and stop looking at
+            </p>
+            <p className="mt-2 text-sm text-[#d5d2d2]">
+              charts, keep that to the{" "}
+              <span className="text-base text-[#01FF39] font-juraBold">
+                COMPUTERS
+              </span>
+              .
+            </p>
             <Button
               className="mt-10 w-52 h-10 rounded-2xl text-xl"
               title="START TRADING"
