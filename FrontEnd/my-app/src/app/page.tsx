@@ -7,6 +7,7 @@ import IconText from "@/components/Home/IconText";
 import Footer from "@/components/Home/Footer";
 import Background from "@/components/Home/Background";
 import Link from "next/link";
+import Button from "@/ui/Button";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
       <div className="relative z-20">
         <ShadowBars />
         <div className="relative h-[100vh] w-[100vw] overflow-x-hidden flex justify-center items-center">
-          <div className="text-center text-white font-inter title">
+          <div className="text-center text-white font-inter title flex flex-col items-center justify-center">
             <p className="text-5xl text-[#01FF39] tracking-[0.6rem] mb-6 font-juraBold">
               <span className="trade">TRADE </span>
               <span className="forge">FORGE</span>
@@ -25,11 +26,11 @@ export default function Home() {
               Start being the owner of your time and stop looking at
             </p>
             <p className="mt-2">charts, keep that to the computers.</p>
-            <Link href="/dashboard">
-              <button className="text-black bg-[#01FF39] mt-10 w-52 h-10 rounded-2xl text-xl font-juraBold">
-                START TRADING
-              </button>
-            </Link>
+            <Button
+              className="mt-10 w-52 h-10 rounded-2xl text-xl"
+              title="START TRADING"
+              href="/dashboard"
+            />
           </div>
           <LogoCarousel up={false} />
           <LogoCarousel up={true} />
@@ -126,11 +127,11 @@ export default function Home() {
           <p className="text-center font-juraBold text-white text-2xl">
             LIKE WHAT YOU SEE?
           </p>
-          <Link href="/dashboard">
-            <button className="text-black bg-[#01FF39] w-72 h-14 rounded-2xl text-2xl font-juraBold">
-              START TRADING
-            </button>
-          </Link>
+          <Button
+            className="w-72 h-14 rounded-2xl text-2xl"
+            title="START TRADING"
+            href="/dashboard"
+          />
         </div>
         <Footer />
       </div>

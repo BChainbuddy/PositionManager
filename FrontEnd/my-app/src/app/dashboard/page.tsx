@@ -3,6 +3,7 @@
 import MarketCap from "@/components/Dashboard/MarketCap";
 import OpenPositions from "@/components/Dashboard/OpenPositions";
 import TopCoins from "@/components/Dashboard/TopCoins";
+import Button from "@/ui/Button";
 import Link from "next/link";
 import { useActiveAccount } from "thirdweb/react";
 
@@ -35,11 +36,11 @@ export default function Dashboard() {
       <div className="flex flex-col h-full pt-12">
         <MarketCap />
         <TopCoins />
-        <Link href="/dashboard/positions" className="mt-16 self-center">
-          <div className="bg-[#01ff39] text-black font-juraBold w-[14rem] h-[3rem] text-xl flex justify-center items-center rounded-xl">
-            START TRADING
-          </div>
-        </Link>
+        <Button
+          className="w-[14rem] h-[3rem] text-xl mt-16 self-center rounded-xl"
+          title="FORGE TRADE"
+          href="/dashboard/forge"
+        />
       </div>
     </div>
   );
