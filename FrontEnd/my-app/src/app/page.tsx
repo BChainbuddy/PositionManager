@@ -6,7 +6,6 @@ import LineScroll from "@/components/Home/LineScroll";
 import IconText from "@/components/Home/IconText";
 import Footer from "@/components/Home/Footer";
 import Background from "@/components/Home/Background";
-import Link from "next/link";
 import Button from "@/ui/Button";
 
 export default function Home() {
@@ -45,7 +44,7 @@ export default function Home() {
             <Button
               className="mt-10 w-52 h-10 rounded-2xl text-xl"
               title="START TRADING"
-              href="/dashboard"
+              href="/app/dashboard"
             />
           </div>
           <LogoCarousel up={false} />
@@ -146,7 +145,7 @@ export default function Home() {
           <Button
             className="w-72 h-14 rounded-2xl text-2xl"
             title="START TRADING"
-            href="/dashboard"
+            href="/app/dashboard"
           />
         </div>
         <Footer />

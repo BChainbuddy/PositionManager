@@ -39,7 +39,7 @@ export default function Dashboard() {
         <Button
           className="w-[14rem] h-[3rem] text-xl mt-16 self-center rounded-xl"
           title="FORGE TRADE"
-          href="/dashboard/forge"
+          href="/app/forge"
         />
       </div>
     </div>

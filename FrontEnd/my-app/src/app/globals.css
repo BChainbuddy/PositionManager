@@ -4,7 +4,7 @@
 
 @media (min-width: 2560px) and (max-width: 2999px) {
   html {
-    font-size: clamp(0.8rem, 0.7vw + 0.6rem, 5rem);
+    font-size: clamp(0.8rem, 0.7vw + 0.6rem, 3rem);
   }
 }
 
@@ -22,7 +22,7 @@
 
 @media (min-width: 3000px) {
   html {
-    font-size: clamp(0.8rem, 0.7vw + 0.8rem, 5rem);
+    font-size: clamp(0.8rem, 0.7vw + 0.8rem, 3rem);
   }
 }
 
@@ -504,22 +504,30 @@ input[type="number"] {
   }
 }
 
-/* @keyframes stepOutAnimation {
-  0% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateX(5rem);
-    opacity: 0;
-  }
+.navOption {
+  position: relative;
 }
 
-@keyframes nextStep {
-
+.navOption::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -10%;
+  width: 100%;
+  height: 0.2rem;
+  background: #ffe500;
+  border-radius: 0.1rem;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s;
 }
 
-@keyframes currentStep {
+.navOption:hover::after {
+  transform-origin: left;
+  transform: scaleX(1);
+}
 
-} */
+.navOption.active::after {
+  transform-origin: left;
+  transform: scaleX(1);
+}
