@@ -1,10 +1,9 @@
 "use client";
 
-import PageTransition from "@/ui/PageTransition";
+import ShadowBorders from "@/ui/ShadowBorders";
 import Header from "@/components/Header/Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThirdwebProvider } from "thirdweb/react";
-import { PageTransitionProvider } from "@/context/PageTransitionContext";
 import { ApolloProvider } from "@apollo/client";
 import apolloClient from "@/lib/ApolloClient";
 
@@ -25,11 +24,9 @@ export default function DashboardLayout({
     <QueryClientProvider client={queryClient}>
       <ThirdwebProvider>
         <ApolloProvider client={apolloClient}>
-          <PageTransitionProvider>
-            <Header />
-            {children}
-            <PageTransition />
-          </PageTransitionProvider>
+          <Header />
+          {children}
+          <ShadowBorders />
         </ApolloProvider>
       </ThirdwebProvider>
     </QueryClientProvider>

@@ -12,6 +12,7 @@
     "@plaiceholder/next": "^3.0.0",
     "@tanstack/react-query": "^4.36.1",
     "ethers": "^6.13.3",
+    "framer-motion": "^11.15.0",
     "next": "14.2.10",
     "plaiceholder": "^3.0.0",
     "react": "^18",

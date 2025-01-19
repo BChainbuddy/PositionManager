@@ -1,10 +1,8 @@
 "use client";
-import { usePageTransition } from "@/context/PageTransitionContext";
+
 import { usePathname } from "next/navigation";
 
-export default function PageTransition() {
-  const { showTransition } = usePageTransition();
-
+export default function ShadowBorders() {
   const pathname = usePathname();
 
   return (
@@ -12,12 +10,12 @@ export default function PageTransition() {
       <div
         className={`absolute top-[11vh] w-[100vw] ${
           pathname.includes("positions") ? "topShadowYellow" : "topShadow"
-        } z-40 ${showTransition && "topTransition"}`}
+        } z-40`}
       ></div>
       <div
         className={`absolute bottom-0 w-[100vw] ${
           pathname.includes("positions") ? "bottomShadowYellow" : "bottomShadow"
-        } z-40 ${showTransition && "bottomTransition"}`}
+        } z-40`}
       ></div>
     </>
   );

@@ -10,7 +10,6 @@ export default function MarketCap() {
         throw new Error("Failed to fetch data from API");
       }
       const data = await response.json();
-      //   console.log(data.data.data);
 
       const totalMarketcap = data.data.data.total_market_cap.usd;
       const loops = 50;

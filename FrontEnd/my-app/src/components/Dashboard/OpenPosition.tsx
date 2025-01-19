@@ -8,7 +8,6 @@ interface OpenPositionProps {
 }
 
 export default function OpenPosition({ position }: OpenPositionProps) {
-  console.log(position);
   return (
     <div className="flex flex-col items-center justify-center text-center rounded-xl overflow-hidden bg-white w-[6.5rem]">
       <div className="relative h-[3.3rem] w-full bg-[#FFE500] flex flex-row items-center justify-center">
