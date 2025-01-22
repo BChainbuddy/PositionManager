@@ -73,11 +73,11 @@ export default function StepCard({
             Seamless Trading in Three Easy Steps
           </p>
         )}
-        <div className="w-[20rem] mt-10">
-          <p className="font-inter">
+        <div className="w-[20rem] mt-10 card p-5 border-2 border-[#777777] rounded-2xl">
+          <p className="font-inter text-base">
             <span className="text-[#01FF39]">{stepNumber}:</span> {title}
           </p>
-          <p className="font-inter text-white/65">{description}</p>
+          <p className="font-inter text-white/80 text-sm">{description}</p>
         </div>
       </div>
       {!left && (

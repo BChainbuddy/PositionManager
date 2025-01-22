@@ -531,3 +531,9 @@ input[type="number"] {
   transform-origin: left;
   transform: scaleX(1);
 }
+
+.card {
+  background: linear-gradient(135deg, #041516, #013731);
+  opacity: 0.95;
+  /* background: #0a1c1e; */
+}

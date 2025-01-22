@@ -24,14 +24,15 @@ export default function IconText({ src, text, alt, delay }: IconTextProps) {
       }`}
       ref={ref}
     >
-      <Image
-        src={src}
-        alt={alt}
-        height={100}
-        width={100}
-        style={{ animationDelay: delay }}
-        className={`${inView && "iconImageFinished"}`}
-      />
+      <div className="relative w-[5rem] h-[5rem]">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          style={{ animationDelay: delay }}
+          className={`${inView && "iconImageFinished"}`}
+        />
+      </div>
       <div className="font-juraBold text-white w-[10rem] text-center">
         {text}
       </div>

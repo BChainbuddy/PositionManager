@@ -47,20 +47,21 @@ export default function LogoCarousel({ up }: { up: boolean }) {
         } `}
       >
         {[...Array(20)].map((_, i) => (
-          <Image
-            key={i}
-            src={`${
-              [
-                "/BNB_zelen.png",
-                "/BTC_zelen.png",
-                "/ETH_zelen.png",
-                "/SOL_zelen.png",
-              ][i % 4]
-            }`}
-            height={100}
-            width={100}
-            alt={`Logo ${i}`}
-          />
+          <div className="w-[4rem] h-[4rem] relative">
+            <Image
+              key={i}
+              src={`${
+                [
+                  "/BNB_zelen.png",
+                  "/BTC_zelen_Big.png",
+                  "/ETH_zelen.png",
+                  "/SOL_zelen.png",
+                ][i % 4]
+              }`}
+              fill
+              alt={`Logo ${i}`}
+            />
+          </div>
         ))}
       </div>
     </div>

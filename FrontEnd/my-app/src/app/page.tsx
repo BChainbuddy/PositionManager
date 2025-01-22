@@ -5,7 +5,7 @@ import ShadowBars from "@/components/Home/ShadowBars";
 import LineScroll from "@/components/Home/LineScroll";
 import IconText from "@/components/Home/IconText";
 import Footer from "@/components/Home/Footer";
-import Background from "@/components/Home/Background";
+// import Background from "@/components/Home/Background";
 import Button from "@/ui/Button";
 
 export default function Home() {
@@ -59,7 +59,7 @@ export default function Home() {
             Unlock the Power of Decentralized Trading
           </p>
           <div className="flex flex-row bg-gradient-to-br from-[#01FF39] to-[#FFE500] justify-evenly items-center py-10 mt-10">
-            <div className="text-black">
+            <div className="text-[#041516]">
               <p className="w-[30rem] text-xl">
                 <span className="font-interBold">Trade Forge</span> is a
                 cutting-edge decentralized application (dApp) designed to{" "}
@@ -82,7 +82,7 @@ export default function Home() {
                 automating the heavy lifting.
               </p>
             </div>
-            <div className="relative h-[25rem] w-[25rem]">
+            <div className="relative h-[25rem] w-[25rem] rounded-md overflow-hidden">
               <Image src="/TradeForge.webp" alt="Trade Forge" fill />
             </div>
           </div>
@@ -149,6 +149,37 @@ export default function Home() {
           />
         </div>
         <Footer />
+      </div>
+      {/* Background */}
+      <div className="absolute top-[45%] left-[-10rem] z-0 rotate-[30deg]">
+        <div className="h-[20rem] w-[20rem] relative">
+          <Image src={"/tokenImages/bitcoin-logo.svg"} alt="BTC logo" fill />
+        </div>
+      </div>
+      <div className="absolute top-[55%] right-[-14rem] z-0 rotate-[-30deg]">
+        <div className="h-[28rem] w-[25rem] relative">
+          <Image src={"/tokenImages/solana-logo.svg"} alt="SOL logo" fill />
+        </div>
+      </div>
+      <div className="absolute top-[70%] left-[-10%] z-0 rotate-[0deg]">
+        <div className="h-[15rem] w-[18rem] relative">
+          <Image src={"/tokenImages/binance-logo.svg"} alt="BNB logo" fill />
+        </div>
+      </div>
+      <div className="absolute top-[70%] left-[-10%] z-0 rotate-[0deg]">
+        <div className="h-[15rem] w-[18rem] relative">
+          <Image src={"/tokenImages/binance-logo.svg"} alt="BNB logo" fill />
+        </div>
+      </div>
+      <div className="absolute top-[85%] right-[-11rem] z-0 rotate-[-20deg]">
+        <div className="h-[25rem] w-[25rem] relative">
+          <Image src={"/tokenImages/ethereum-logo.svg"} alt="ETH logo" fill />
+        </div>
+      </div>
+      <div className="absolute top-[85%] left-[-11rem] z-0 rotate-[20deg]">
+        <div className="h-[25rem] w-[25rem] relative">
+          <Image src={"/tokenImages/ethereum-logo.svg"} alt="ETH logo" fill />
+        </div>
       </div>
     </>
   );

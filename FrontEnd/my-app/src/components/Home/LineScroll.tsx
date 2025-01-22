@@ -59,7 +59,7 @@ export default function LineScroll() {
   }, [ref, ref2]);
 
   return (
-    <div className="absolute left-1/2 transform -translate-x-1/2 top-[10rem] bottom-[10rem] w-[100px]">
+    <div className="absolute left-1/2 transform -translate-x-1/2 top-[10rem] bottom-[10rem]">
       <div className="relative h-full w-[2rem] z-10" ref={ref}>
         <Image src="/UnionLine.png" alt="Line" fill className="z-10" />
         <div

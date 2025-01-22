@@ -14,8 +14,8 @@ const NavOptions: navOption[] = [
 export default function NavBar() {
   return (
     <div className="flex flex-row gap-x-4">
-      {NavOptions.map((element) => (
-        <NavOption href={element.href} name={element.name} />
+      {NavOptions.map((element, i) => (
+        <NavOption href={element.href} name={element.name} key={i} />
       ))}
     </div>
   );
