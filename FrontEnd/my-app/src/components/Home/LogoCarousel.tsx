@@ -37,7 +37,7 @@ export default function LogoCarousel({ up }: { up: boolean }) {
   }, []);
   return (
     <div
-      className={`max-w-[300px] overflow-hidden max-h-[100vh] absolute ${
+      className={`overflow-hidden max-h-[100vh] absolute ${
         up ? "top-0 left-[20%] scrollerUp" : "bottom-0 right-[20%] scrollerDown"
       }`}
     >
@@ -47,7 +47,7 @@ export default function LogoCarousel({ up }: { up: boolean }) {
         } `}
       >
         {[...Array(20)].map((_, i) => (
-          <div className="w-[4rem] h-[4rem] relative">
+          <div className="w-[4.7rem] h-[4rem] relative">
             <Image
               key={i}
               src={`${

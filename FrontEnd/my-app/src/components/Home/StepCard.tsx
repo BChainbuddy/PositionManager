@@ -49,7 +49,7 @@ export default function StepCard({
 
   return (
     <div
-      className="flex flex-row justify-around items-center mt-32"
+      className="flex flex-row justify-around items-center mt-32 font-inter"
       ref={cardRef}
     >
       {left && (
@@ -73,11 +73,10 @@ export default function StepCard({
             Seamless Trading in Three Easy Steps
           </p>
         )}
-        <div className="w-[20rem] mt-10 card p-5 border-2 border-[#777777] rounded-2xl">
-          <p className="font-inter text-base">
-            <span className="text-[#01FF39]">{stepNumber}:</span> {title}
-          </p>
-          <p className="font-inter text-white/80 text-sm">{description}</p>
+        <div className="w-[20rem] mt-10 card p-5 border-2 border-[#01FF39] rounded-2xl">
+          <p className="text-sm text-[#01FF39] font-jura">{stepNumber}</p>
+          <p className="text-xl font-interBold">{title}</p>
+          <p className="text-white/80 text-sm mt-1">{description}</p>
         </div>
       </div>
       {!left && (

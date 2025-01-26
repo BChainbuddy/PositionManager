@@ -151,32 +151,27 @@ export default function Home() {
         <Footer />
       </div>
       {/* Background */}
-      <div className="absolute top-[45%] left-[-10rem] z-0 rotate-[30deg]">
+      <div className="absolute top-[45%] left-[-10rem] z-0 rotate-[30deg] opacity-50 blur-sm ">
         <div className="h-[20rem] w-[20rem] relative">
           <Image src={"/tokenImages/bitcoin-logo.svg"} alt="BTC logo" fill />
         </div>
       </div>
-      <div className="absolute top-[55%] right-[-14rem] z-0 rotate-[-30deg]">
+      <div className="absolute top-[55%] right-[-14rem] z-0 rotate-[-30deg] opacity-50 blur-sm">
         <div className="h-[28rem] w-[25rem] relative">
           <Image src={"/tokenImages/solana-logo.svg"} alt="SOL logo" fill />
         </div>
       </div>
-      <div className="absolute top-[70%] left-[-10%] z-0 rotate-[0deg]">
+      <div className="absolute top-[70%] left-[-10%] z-0 rotate-[0deg] opacity-50 blur-sm">
         <div className="h-[15rem] w-[18rem] relative">
           <Image src={"/tokenImages/binance-logo.svg"} alt="BNB logo" fill />
         </div>
       </div>
-      <div className="absolute top-[70%] left-[-10%] z-0 rotate-[0deg]">
-        <div className="h-[15rem] w-[18rem] relative">
-          <Image src={"/tokenImages/binance-logo.svg"} alt="BNB logo" fill />
-        </div>
-      </div>
-      <div className="absolute top-[85%] right-[-11rem] z-0 rotate-[-20deg]">
+      <div className="absolute top-[85%] right-[-11rem] z-0 rotate-[-20deg] opacity-50 blur-sm">
         <div className="h-[25rem] w-[25rem] relative">
           <Image src={"/tokenImages/ethereum-logo.svg"} alt="ETH logo" fill />
         </div>
       </div>
-      <div className="absolute top-[85%] left-[-11rem] z-0 rotate-[20deg]">
+      <div className="absolute top-[85%] left-[-11rem] z-0 rotate-[20deg] opacity-50 blur-sm">
         <div className="h-[25rem] w-[25rem] relative">
           <Image src={"/tokenImages/ethereum-logo.svg"} alt="ETH logo" fill />
         </div>
