@@ -26,7 +26,7 @@ export default function TopCoins() {
   }, []);
 
   return (
-    <div className="mt-10">
+    <div className="flex flex-col">
       <h2 className="text-center font-interBold text-[#FFE500]">
         Top 10 Cryptocurrencies by Price Change
       </h2>

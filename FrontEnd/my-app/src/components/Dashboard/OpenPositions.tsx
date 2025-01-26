@@ -60,7 +60,7 @@ export default function OpenPositions() {
   }, [data]);
 
   return (
-    <div className="flex flex-col mt-10">
+    <div className="flex flex-col">
       <p className="text-white mb-3 ml-2 font-interBold text-sm">
         Your open positions
       </p>
