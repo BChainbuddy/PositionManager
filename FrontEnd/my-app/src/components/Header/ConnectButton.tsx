@@ -1,7 +1,7 @@
 "use client";
 
 import { client } from "@/lib/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { polygonAmoy } from "thirdweb/chains";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 
@@ -34,7 +34,7 @@ export default function ConnectButton({
     <>
       {account && data ? (
         <div
-          className="h-[4rem] w-[15rem] walletBackground text-white flex flex-col justify-evenly px-4 rounded-xl border-2 border-gray-600 cursor-pointer"
+          className="text-white flex flex-col justify-evenly rounded-xl border-2 cursor-pointer connectButton w-[11rem] h-[3.5rem] items-center"
           onClick={() => {
             setViewModal2(!viewModal2);
           }}
@@ -42,8 +42,8 @@ export default function ConnectButton({
           {viewModal2 ? (
             <p className="text-center">X</p>
           ) : (
-            <>
-              <p>
+            <div className="w-fit gap-1 flex flex-col">
+              <p className="text-xs">
                 Address:{" "}
                 {account?.address.substring(0, 8) +
                   "..." +
@@ -52,16 +52,15 @@ export default function ConnectButton({
                     account?.address.length
                   )}
               </p>
-              <p>
+              <p className="text-xs">
                 Balance:{" "}
                 {data.displayValue.toString().length > 9
                   ? data.displayValue.toString().substring(0, 8) +
-                    "..." +
                     " " +
                     data.symbol
                   : data.displayValue + " " + data.symbol}
               </p>
-            </>
+            </div>
           )}
         </div>
       ) : (

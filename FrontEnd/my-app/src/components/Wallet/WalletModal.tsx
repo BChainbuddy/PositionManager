@@ -18,7 +18,7 @@ export default function WalletModal({
     showModal &&
     wallet && (
       <div
-        className={`fixed z-20 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 flex flex-col ${
+        className={`fixed z-30 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 flex flex-col ${
           showModal ? "block connectModal" : "hidden"
         }`}
       >

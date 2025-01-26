@@ -18,6 +18,6 @@ export default function formatNumber(num: number) {
   if (absNum < 1) {
     return sign + absNum.toFixed(8).replace(/\.?0+$/, "");
   } else {
-    return sign + absNum.toFixed(5).replace(/\.?0+$/, "");
+    return sign + absNum.toFixed(4).replace(/\.?0+$/, "");
   }
 }
