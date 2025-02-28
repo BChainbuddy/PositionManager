@@ -81,7 +81,7 @@ export default function OpenPositions() {
               ))}
               <Link
                 className="col-span-3 w-[7rem] h-[1.5rem] bg-[#01FF39] rounded-xl text-xs flex justify-center items-center"
-                href="/dashboard/positions"
+                href="/app/positions"
               >
                 VIEW MORE
               </Link>
