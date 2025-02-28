@@ -88,7 +88,7 @@ export default function OpenPositions() {
             </>
           ) : (
             <div className="flex justify-center items-center h-full col-span-3">
-              <p>No positions yet!</p>
+              <p className="text-white">No positions yet!</p>
             </div>
           )}
         </div>
