@@ -116,12 +116,29 @@ const Transfer = ({
           value={address}
           setValue={setAddress}
         />
-        <Input
-          label="Amount"
-          placeholder="0.0"
-          value={amount}
-          setValue={setAmount}
-        />
+        <div className="relative w-fit mx-auto">
+          <Input
+            label="Amount"
+            placeholder="0.0"
+            value={amount}
+            setValue={setAmount}
+            className="pr-[2.3rem]"
+          />
+          <div
+            className="absolute right-2 top-[1.6rem] z-40"
+            onClick={() => {
+              setAmount(
+                selectedToken?.balance
+                  ? selectedToken?.balance / 10 ** selectedToken?.decimals
+                  : 0
+              );
+            }}
+          >
+            <p className="text-xs cursor-pointer text-green-600 font-semibold">
+              max
+            </p>
+          </div>
+        </div>
         <ActionButton text="Transfer" onClick={() => {}} />
       </div>
       <ActionButton
@@ -256,17 +273,19 @@ const Input = ({
   placeholder,
   value,
   setValue,
+  className,
 }: {
   label: string;
   placeholder: string;
   value: any;
   setValue: (any: any) => void;
+  className?: string;
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative z-20">
       <p className="font-juraBold text-sm">{label}</p>
       <input
-        className="w-[12rem] rounded-lg mx-auto px-2 py-1 text-black outline-none focus:outline-green-500 focus:outline-1 text-sm"
+        className={`w-[12rem] rounded-md mx-auto px-2 py-1 text-black outline-none focus:outline-green-500 focus:outline-1 text-sm ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
