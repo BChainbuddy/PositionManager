@@ -25,8 +25,8 @@ export default function TopCoins() {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-center font-interBold text-[#FFE500]">
-        Top Cryptocurrencies by Price Change
+      <h2 className="text-center font-juraBold text-[#FFE500]">
+        TOP CRYPTOCURRENCIES BY PRICE CHANGE
       </h2>
       <div className="grid grid-cols-5 gap-3 mt-6">
         {coins &&
