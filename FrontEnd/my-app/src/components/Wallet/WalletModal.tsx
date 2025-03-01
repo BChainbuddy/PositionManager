@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
+import { sepolia } from "thirdweb/chains";
 import {
   useActiveAccount,
   useActiveWallet,
   useDisconnect,
+  useWalletBalance,
 } from "thirdweb/react";
+import { client } from "@/lib/client";
+import { FaRegCopy } from "react-icons/fa";
+import { AiOutlineCheck } from "react-icons/ai";
 
 interface WalletModalProps {
   showModal: boolean;
@@ -34,6 +39,12 @@ export default function WalletModal({
 
   const { disconnect } = useDisconnect();
 
+  const { data, isLoading } = useWalletBalance({
+    chain: sepolia,
+    address: account?.address,
+    client: client,
+  });
+
   useEffect(() => {
     async function getBalances() {
       const response = await fetch(`/api/walletBalances/${account?.address}`);
@@ -42,7 +53,7 @@ export default function WalletModal({
         throw new Error("Failed to fetch data from API");
       }
       const data = await response.json();
-      console.log(data);
+
       const tokenArray: Token[] = data.data.map((token: any) => {
         return {
           symbol: token.symbol,
@@ -60,6 +71,13 @@ export default function WalletModal({
     }
   }, [account]);
 
+  const formatBalance = (balance: number) => {
+    if (balance < 1) {
+      return balance.toFixed(8);
+    }
+    return balance.toFixed(4);
+  };
+
   return (
     showModal &&
     wallet && (
@@ -70,17 +88,39 @@ export default function WalletModal({
       >
         <h1 className="text-3xl font-juraBold">WALLET</h1>
         {!transfer && !balance ? (
-          <>
-            <ActionButton text="Transfer" onClick={() => setTransfer(true)} />
-            <ActionButton text="Balance" onClick={() => setBalance(true)} />
-            <ActionButton
-              text="Disconnect"
-              onClick={() => {
-                disconnect(wallet);
-                setViewModal(false);
-              }}
-            />
-          </>
+          <div className="flex flex-col justify-between flex-1 h-full">
+            <div className="mt-7">
+              <p className="border-b border-white w-fit px-2 text-center mx-auto">
+                ETH balance
+              </p>
+              <p>{formatBalance(Number(data?.displayValue) ?? 0)}</p>
+              <p className="border-b border-white w-fit px-2 text-center mx-auto mt-5">
+                Address
+              </p>
+              <div className="flex flex-row justify-center mt-1">
+                <p className="text-xs">
+                  {account?.address.substring(0, 12) +
+                    "..." +
+                    account?.address.substring(
+                      account?.address.length - 6,
+                      account.address.length
+                    )}
+                </p>
+                <CopyWalletAddress walletAddress={account?.address ?? ""} />
+              </div>
+            </div>
+            <div className="flex flex-col gap-y-2 mt-2">
+              <ActionButton text="Transfer" onClick={() => setTransfer(true)} />
+              <ActionButton text="Balance" onClick={() => setBalance(true)} />
+              <ActionButton
+                text="Disconnect"
+                onClick={() => {
+                  disconnect(wallet);
+                  setViewModal(false);
+                }}
+              />
+            </div>
+          </div>
         ) : transfer ? (
           <Transfer setIsVisible={setTransfer} tokens={tokens} />
         ) : (
@@ -290,6 +330,32 @@ const Input = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
+    </div>
+  );
+};
+
+const CopyWalletAddress = ({ walletAddress }: { walletAddress: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(walletAddress)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 5000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
+
+  return (
+    <div className={`cursor-pointer ml-2`} onClick={copyToClipboard}>
+      {copied ? (
+        <AiOutlineCheck className="text-green-500 text-sm" />
+      ) : (
+        <FaRegCopy className="text-white text-sm" />
+      )}
     </div>
   );
 };

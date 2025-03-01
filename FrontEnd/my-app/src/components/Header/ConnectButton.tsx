@@ -1,8 +1,7 @@
 "use client";
 
 import { client } from "@/lib/client";
-import { useState } from "react";
-import { polygonAmoy } from "thirdweb/chains";
+import { sepolia } from "thirdweb/chains";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 
 interface ConnectButtonProps {
@@ -20,12 +19,10 @@ export default function ConnectButton({
   setViewModal2,
   viewModal2,
 }: ConnectButtonProps) {
-  const [balance, setBalance] = useState<number>(0);
-
   const account = useActiveAccount();
 
   const { data, isLoading } = useWalletBalance({
-    chain: polygonAmoy,
+    chain: sepolia,
     address: account?.address,
     client: client,
   });
