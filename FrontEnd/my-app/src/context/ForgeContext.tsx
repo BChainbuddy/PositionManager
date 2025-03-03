@@ -8,7 +8,6 @@ import {
   SetStateAction,
 } from "react";
 
-// Define types for the context
 interface ForgeContextType {
   inputToken: any;
   setInputToken: Dispatch<SetStateAction<any>>;
@@ -18,10 +17,8 @@ interface ForgeContextType {
   setDex: Dispatch<SetStateAction<any>>;
 }
 
-// Initialize context with undefined as the default value
 const ForgeContext = createContext<ForgeContextType | undefined>(undefined);
 
-// Provider to wrap your app and share the transition state
 export function ForgeContextProvider({ children }: { children: ReactNode }) {
   const [inputToken, setInputToken] = useState<any>("");
   const [outputToken, setOutputToken] = useState<any>("");
@@ -43,7 +40,7 @@ export function ForgeContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook to use the context in any component
+// Hook
 export function useForge() {
   const context = useContext(ForgeContext);
 

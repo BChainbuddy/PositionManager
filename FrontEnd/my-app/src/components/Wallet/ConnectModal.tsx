@@ -96,7 +96,12 @@ export default function ConnectModal({
           }}
           className="rounded-xl bg-white overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
-          <Image src="/metamaskLogo.png" alt="metamask logo" fill />
+          <Image
+            src="/metamaskLogo.png"
+            alt="metamask logo"
+            fill
+            className="bg-white"
+          />
         </div>
         <div
           onClick={() => {
@@ -111,6 +116,7 @@ export default function ConnectModal({
           <Image
             src="/coinbaseWalletLogo.svg"
             alt="coinbase wallet logo"
+            className="bg-blue-500"
             fill
           />
         </div>
@@ -118,7 +124,12 @@ export default function ConnectModal({
           onClick={handleLogin}
           className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
-          <Image src="/gmailLogo.png" alt="gmail logo" fill />
+          <Image
+            src="/gmailLogo.png"
+            alt="gmail logo"
+            fill
+            className="bg-white"
+          />
         </div>
       </div>
     </div>

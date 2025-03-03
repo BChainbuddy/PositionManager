@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TokenList from "./TokenList";
 import { shortenSymbol } from "@/lib/shortenSymbol";
 import { useForge } from "../../context/ForgeContext";

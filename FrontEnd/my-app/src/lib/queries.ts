@@ -77,3 +77,15 @@ export const GET_POSITIONS_BY_ID = gql`
     }
   }
 `;
+
+export const GET_TOKENS = gql`
+  query GetTokensAll {
+    tokens {
+      id
+      name
+      symbol
+      decimals
+      address
+    }
+  }
+`;

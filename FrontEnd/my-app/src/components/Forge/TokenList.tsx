@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import tokenList from "@/data/coinlist.json";
 import Image from "next/image";
 import { useForge } from "../../context/ForgeContext";
 import { ethers } from "ethers";
 import { client } from "@/lib/client";
-import { polygon } from "thirdweb/chains";
+import { sepolia } from "thirdweb/chains";
 import ERC20Abi from "@/data/ERC20Abi.json";
 import { getContract, readContract } from "thirdweb";
 import { Abi } from "thirdweb/utils";
+import { GET_TOKENS } from "@/lib/queries";
+import { useQuery } from "@apollo/client";
+import { TOKEN_IMAGES } from "@/data/tokenImages";
 
 interface TokenListProps {
   showModal: (arg1: boolean) => void;
@@ -31,16 +33,18 @@ export default function TokenList({ input, showModal }: TokenListProps) {
     }
   };
 
+  const { loading, error, data } = useQuery(GET_TOKENS);
+
   async function filterTokenList(text: string | undefined) {
     if (ethers.isAddress(text)) {
       findToken(text);
     } else {
       const filterTokens =
         text !== ""
-          ? tokenList.tokens.filter((token) =>
+          ? data.tokens.filter((token: any) =>
               token.symbol.toLowerCase().includes((text || "").toLowerCase())
             )
-          : tokenList.tokens;
+          : data.tokens;
       setFilteredTokens(filterTokens);
     }
   }
@@ -50,7 +54,7 @@ export default function TokenList({ input, showModal }: TokenListProps) {
       const contract = getContract({
         client,
         address: address,
-        chain: polygon,
+        chain: sepolia,
         abi: ERC20Abi as Abi, // Cast ABI as object[],
       });
 
@@ -74,6 +78,7 @@ export default function TokenList({ input, showModal }: TokenListProps) {
         method: "function decimals() view returns (uint256)",
         params: [],
       });
+
       setFilteredTokens([{ symbol: Symbol, name: Name, decimals: Decimals }]);
     } catch (err) {
       console.log(err);
@@ -81,8 +86,10 @@ export default function TokenList({ input, showModal }: TokenListProps) {
   }
 
   useEffect(() => {
-    setFilteredTokens(tokenList.tokens);
-  }, []);
+    if (data) {
+      setFilteredTokens(data.tokens);
+    }
+  }, [data]);
 
   return (
     <div
@@ -108,7 +115,7 @@ export default function TokenList({ input, showModal }: TokenListProps) {
           className="bg-amber-50 rounded-b-md text-center text-black flex flex-col overflow-y-auto h-80"
         >
           {filteredTokens.length ? (
-            filteredTokens.map((token, index) => (
+            filteredTokens.map((token: any, index: number) => (
               <div
                 className="hover:bg-zinc-300 cursor-pointer transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
                 key={`${token.symbol}-${index}`}
@@ -120,10 +127,19 @@ export default function TokenList({ input, showModal }: TokenListProps) {
                 <p>{token.symbol}</p>
                 <div className="relative h-6 w-6">
                   <Image
-                    src={token.logoURI ? token.logoURI : "/unknownToken.png"}
+                    src={
+                      TOKEN_IMAGES[token.address]
+                        ? TOKEN_IMAGES[token.address].image
+                        : "/unknownToken.png"
+                    }
                     alt={`${token.symbol} symbol`}
                     fill
                     className="bg-white rounded-full overflow-clip"
+                    onBlur={() => {
+                      TOKEN_IMAGES[token.address]
+                        ? TOKEN_IMAGES[token.address].placeholder
+                        : "/unknownToken.png";
+                    }}
                   />
                 </div>
               </div>
