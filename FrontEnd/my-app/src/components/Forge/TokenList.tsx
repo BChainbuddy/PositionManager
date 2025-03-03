@@ -120,7 +120,25 @@ export default function TokenList({ input, showModal }: TokenListProps) {
                 className="hover:bg-zinc-300 cursor-pointer transition-colors duration-100 ease-out flex justify-center items-center border border-gray-600 py-2 space-x-2"
                 key={`${token.symbol}-${index}`}
                 onClick={() => {
-                  input ? setInputToken(token) : setOutputToken(token);
+                  input
+                    ? setInputToken({
+                        ...token,
+                        image:
+                          TOKEN_IMAGES[token.address].image ??
+                          "/unknownToken.png",
+                        placeholder:
+                          TOKEN_IMAGES[token.address].placeholder ??
+                          "/unknownToken.png",
+                      })
+                    : setOutputToken({
+                        ...token,
+                        image:
+                          TOKEN_IMAGES[token.address].image ??
+                          "/unknownToken.png",
+                        placeholder:
+                          TOKEN_IMAGES[token.address].placeholder ??
+                          "/unknownToken.png",
+                      });
                   closeModal();
                 }}
               >

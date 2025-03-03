@@ -27,11 +27,7 @@ export default function InputToken({ input }: { input: boolean }) {
           ? inputToken.symbol && (
               <div className="relative h-5 w-5">
                 <Image
-                  src={
-                    inputToken.logoURI
-                      ? inputToken.logoURI
-                      : "/unknownToken.png"
-                  }
+                  src={inputToken.image ?? "/unknownToken.png"}
                   alt={`${inputToken.symbol} symbol`}
                   fill
                   className="bg-white rounded-full overflow-clip"
@@ -41,11 +37,7 @@ export default function InputToken({ input }: { input: boolean }) {
           : outputToken.symbol && (
               <div className="relative h-5 w-5">
                 <Image
-                  src={
-                    outputToken.logoURI
-                      ? outputToken.logoURI
-                      : "/unknownToken.png"
-                  }
+                  src={outputToken.image ?? "/unknownToken.png"}
                   alt={`${outputToken.symbol} symbol`}
                   fill
                   className="bg-white rounded-full overflow-clip"
