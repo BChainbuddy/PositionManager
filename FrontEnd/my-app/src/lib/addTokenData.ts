@@ -1,4 +1,4 @@
-import TOKEN_IMAGES from "@/data/tokenImages";
+import { TOKEN_IMAGES } from "@/data/tokenImages";
 import { Position } from "@/components/Dashboard/OpenPositions";
 import { price } from "./price";
 

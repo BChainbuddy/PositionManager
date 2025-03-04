@@ -1,20 +1,8 @@
 [
   {
     "name": "uniswapV3",
-    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+    "address": "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
     "logo": "/uniswapLogo.png",
     "type": "V3"
-  },
-  {
-    "name": "quickswap",
-    "address": "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
-    "logo": "/quickswapLogo.png",
-    "type": "V2"
-  },
-  {
-    "name": "sushiswap",
-    "address": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
-    "logo": "/sushiswapLogo.png",
-    "type": "V2"
   }
 ]

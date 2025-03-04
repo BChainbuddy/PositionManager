@@ -19,7 +19,7 @@ const UniswapV3FactoryABI = [
 const UniswapRouterABI = ["function factory() external view returns (address)"];
 
 const provider = new ethers.JsonRpcProvider(
-  process.env.NEXT_PUBLIC_POLYGON_RPC_URL
+  process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL
 );
 
 interface AvailableDexesProps {
@@ -92,12 +92,9 @@ export default function AvailableDexes({
         console.log(
           `Trying fee tier: ${fee} for tokens ${tokenA} and ${tokenB}`
         );
-
         try {
           const address = await factoryContract.getPool(tokenA, tokenB, fee);
-
           console.log(`Pool address returned for fee tier ${fee}: ${address}`);
-
           if (address !== "0x0000000000000000000000000000000000000000") {
             poolAddress = address;
             return fee;
