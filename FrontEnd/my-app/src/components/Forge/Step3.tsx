@@ -57,7 +57,12 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
             <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
             <p>{days * Number(ethers.formatEther(1000000000000000))}</p>
           </div>
-          <button className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6">
+          <button
+            disabled={!executionPrice || !days}
+            className={`flex items-center justify-center h-8 w-24 rounded-2xl text-black mt-6 transition-all duration-300 ease-in ${
+              executionPrice && days ? "bg-[#01FF39]" : "bg-[#01FF3980]"
+            }`}
+          >
             FORGE
           </button>
           <button
