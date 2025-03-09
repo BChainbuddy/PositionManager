@@ -4,6 +4,7 @@ import { useState } from "react";
 import PairPrice from "./PairPrice";
 import { ethers } from "ethers";
 import { useForge } from "@/context/ForgeContext";
+import ForgeButton from "./ForgeButton";
 
 interface Step3Props {
   nextStep: () => void;
@@ -57,14 +58,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
             <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
             <p>{days * Number(ethers.formatEther(1000000000000000))}</p>
           </div>
-          <button
-            disabled={!executionPrice || !days}
-            className={`flex items-center justify-center h-8 w-24 rounded-2xl text-black mt-6 transition-all duration-300 ease-in ${
-              executionPrice && days ? "bg-[#01FF39]" : "bg-[#01FF3980]"
-            }`}
-          >
-            FORGE
-          </button>
+          <ForgeButton days={days} executionPrice={executionPrice} />
           <button
             className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
             onClick={previousStep}
