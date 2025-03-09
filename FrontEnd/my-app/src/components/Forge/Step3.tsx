@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import PairPrice from "./PairPrice";
 import { ethers } from "ethers";
 import { useForge } from "@/context/ForgeContext";
@@ -13,11 +12,7 @@ interface Step3Props {
 }
 
 export default function Step3({ nextStep, previousStep, step }: Step3Props) {
-  const [days, setDays] = useState<number>(0);
-  const [executionPrice, setExecutionPrice] = useState<number>(0);
-  const [quantity, setQuantity] = useState<number>(0);
-
-  const { dex } = useForge();
+  const { dex, setParameters, parameters } = useForge();
 
   return (
     <>
@@ -41,7 +36,13 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               placeholder="0.003"
               className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
               type="number"
-              onChange={(e) => setExecutionPrice(Number(e.target.value))}
+              onChange={(e) => {
+                const price = Number(e.target.value);
+                setParameters((prev) => ({
+                  ...prev,
+                  executionPrice: price,
+                }));
+              }}
             />
           </div>
           <div className="flex flex-row space-x-2 mt-4">
@@ -50,7 +51,13 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               placeholder="1000"
               className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
               type="number"
-              onChange={(e) => setQuantity(Number(e.target.value))}
+              onChange={(e) => {
+                const quantity = Number(e.target.value);
+                setParameters((prev) => ({
+                  ...prev,
+                  quantity: quantity,
+                }));
+              }}
             />
           </div>
           <div className="flex flex-row mt-4">
@@ -59,20 +66,25 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               placeholder="1"
               className="w-12 ml-2 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
               type="number"
-              onChange={(e) => setDays(Number(e.target.value))}
+              onChange={(e) => {
+                const days = Number(e.target.value);
+                setParameters((prev) => ({
+                  ...prev,
+                  days: days,
+                }));
+              }}
             />
             <p className="ml-0.5">Days</p>
           </div>
           <div className="flex flex-col mt-4 text-center relative group">
             <p className="text-center">Expected Fee</p>
             <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
-            <p>{days * Number(ethers.formatEther(1000000000000000))}</p>
+            <p>
+              {parameters?.days ??
+                0 * Number(ethers.formatEther(1000000000000000))}
+            </p>
           </div>
-          <ForgeButton
-            days={days}
-            executionPrice={executionPrice}
-            quantity={quantity}
-          />
+          <ForgeButton />
           <button
             className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
             onClick={previousStep}
