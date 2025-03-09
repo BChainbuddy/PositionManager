@@ -15,6 +15,7 @@ interface Step3Props {
 export default function Step3({ nextStep, previousStep, step }: Step3Props) {
   const [days, setDays] = useState<number>(0);
   const [executionPrice, setExecutionPrice] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(0);
 
   const { dex } = useForge();
 
@@ -43,6 +44,15 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               onChange={(e) => setExecutionPrice(Number(e.target.value))}
             />
           </div>
+          <div className="flex flex-row space-x-2 mt-4">
+            <p className="">Quantity:</p>
+            <input
+              placeholder="1000"
+              className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
+              type="number"
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            />
+          </div>
           <div className="flex flex-row mt-4">
             <p>Duration:</p>
             <input
@@ -58,7 +68,11 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
             <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
             <p>{days * Number(ethers.formatEther(1000000000000000))}</p>
           </div>
-          <ForgeButton days={days} executionPrice={executionPrice} />
+          <ForgeButton
+            days={days}
+            executionPrice={executionPrice}
+            quantity={quantity}
+          />
           <button
             className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
             onClick={previousStep}
