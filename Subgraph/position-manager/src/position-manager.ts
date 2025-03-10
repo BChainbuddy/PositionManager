@@ -37,7 +37,7 @@ function getExecutionCondition(condition: i32): string {
  */
 function getUniswapABI(forkABI: i32): string {
   switch (forkABI) {
-    case 0:
+    case 0: 
       return "V3";
     case 1:
       return "V2";
@@ -177,10 +177,10 @@ function fetchOrCreateToken(tokenAddress: Address): Token {
     // Fetch decimals
     let decimalsResult = contract.try_decimals();
     if (!decimalsResult.reverted) {
-      token.decimals = new BigInt(decimalsResult.value);
+      token.decimals = BigInt.fromI32(decimalsResult.value);
     } else {
       log.warning("Failed to fetch decimals for token {}", [tokenId]);
-      token.decimals = new BigInt(18); // Default to 18 if failed
+      token.decimals = BigInt.fromI32(18);
     }
 
     token.address = tokenAddress;
