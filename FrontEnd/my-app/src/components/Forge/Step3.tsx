@@ -3,7 +3,7 @@
 import PairPrice from "./PairPrice";
 import { ethers } from "ethers";
 import { useForge } from "@/context/ForgeContext";
-import ForgeButton from "./ForgeButton";
+import TransactionButton from "./TransactionButton";
 
 interface Step3Props {
   nextStep: () => void;
@@ -84,7 +84,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
                 0 * Number(ethers.formatEther(1000000000000000))}
             </p>
           </div>
-          <ForgeButton />
+          <TransactionButton />
           <button
             className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
             onClick={previousStep}

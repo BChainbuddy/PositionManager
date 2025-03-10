@@ -12,8 +12,9 @@ import { useForge } from "@/context/ForgeContext";
 export default function ForgeButton() {
   const controls = useAnimationControls();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     controls.start("forge");
+    await createPosition();
   };
 
   const buttonVariants = {
@@ -87,12 +88,16 @@ export default function ForgeButton() {
   }
 
   return (
-    <div className="relative w-24">
+    <>
       <motion.button
         variants={buttonVariants}
         initial="initial"
         animate={controls}
-        disabled={!parameters?.executionPrice || !parameters?.days}
+        disabled={
+          !parameters?.executionPrice ||
+          !parameters?.days ||
+          !parameters.quantity
+        }
         className={`flex items-center justify-center h-8 w-24 rounded-2xl text-black mt-3 ${
           parameters?.executionPrice && parameters?.days
             ? "bg-[#01FF39]"
@@ -103,6 +108,6 @@ export default function ForgeButton() {
         FORGE
       </motion.button>
       <ForgeHammers controls={controls} />
-    </div>
+    </>
   );
 }
