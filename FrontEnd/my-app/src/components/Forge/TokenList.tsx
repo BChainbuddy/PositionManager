@@ -87,6 +87,7 @@ export default function TokenList({ input, showModal }: TokenListProps) {
 
   useEffect(() => {
     if (data) {
+      console.log("tokens", data);
       setFilteredTokens(data.tokens);
     }
   }, [data]);

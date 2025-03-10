@@ -1,17 +1,23 @@
-import { getContract, prepareContractCall, sendTransaction } from "thirdweb";
+import {
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
 import { sepolia } from "thirdweb/chains";
-import { ethers } from "ethers";
 import { client } from "@/lib/client";
-import { Abi } from "thirdweb/utils";
 import { useActiveAccount } from "thirdweb/react";
 import { useForge } from "@/context/ForgeContext";
-import ERC20Abi from "@/data/ERC20Abi.json";
 import CONTRACT_ADDRESSES from "@/data/contractAddresses.json";
+import CircleLoading from "@/ui/CircleLoading";
+import { useState } from "react";
 
 export default function ApproveButton() {
   const account = useActiveAccount();
 
   const { inputToken, parameters } = useForge();
+
+  const [txStatus, setTxStatus] = useState("idle");
 
   async function approve() {
     if (!account || !inputToken || !parameters?.quantity) return;
@@ -22,32 +28,47 @@ export default function ApproveButton() {
         client: client,
         address: inputToken.address,
         chain: sepolia,
-        abi: ERC20Abi as Abi,
       });
 
       // 2. Calculate required allowance
-      const requiredAllowance = ethers.parseUnits(
-        parameters.quantity.toString(),
-        inputToken.decimals
-      );
+      const requiredAllowance = parameters.quantity * 10 ** inputToken.decimals;
 
-      // 3. If insufficient allowance, create approval
+      // 3. Create approval
       const approveTx = prepareContractCall({
         contract: tokenContract,
         method: "function approve(address spender, uint256 amount)",
         params: [
           CONTRACT_ADDRESSES["11155111"] as unknown as string,
-          requiredAllowance,
+          BigInt(requiredAllowance),
         ],
+        value: BigInt(0),
       });
+      setTxStatus("pending");
 
-      const approvalResult = await sendTransaction({
+      const result = await sendTransaction({
         transaction: approveTx,
         account: account,
       });
 
-      console.log("Approval tx hash:", approvalResult.transactionHash);
+      console.log("Transaction sent, hash:", result.transactionHash);
+
+      // 4. Wait for receipt
+      const receipt = await waitForReceipt({
+        client,
+        chain: sepolia,
+        transactionHash: result.transactionHash,
+      });
+
+      if (receipt.status === "success") {
+        setTxStatus("success");
+        console.log("Transaction confirmed:", receipt);
+      } else {
+        setTxStatus("failed");
+        console.error("Transaction failed:", receipt);
+      }
     } catch (error) {
+      setTxStatus("idle");
+
       console.error("Approval failed:", error);
       throw error;
     }
@@ -59,7 +80,8 @@ export default function ApproveButton() {
         disabled={
           !parameters?.executionPrice ||
           !parameters?.days ||
-          !parameters.quantity
+          !parameters.quantity ||
+          txStatus === "pending"
         }
         className={`flex items-center justify-center h-8 w-24 rounded-2xl text-black mt-3 ${
           parameters?.executionPrice && parameters?.days && parameters.quantity
@@ -68,7 +90,11 @@ export default function ApproveButton() {
         }`}
         onClick={approve}
       >
-        APPROVE
+        {txStatus != "pending" ? (
+          <span>APPROVE</span>
+        ) : (
+          <CircleLoading height="h-4" width="w-4" innerColor="fill-[#FFFFFF]" />
+        )}
       </button>
     </div>
   );

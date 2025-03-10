@@ -55,7 +55,8 @@ export default function TransactionButton() {
 
   return (
     <div className="relative w-24">
-      {parameters?.quantity && allowance > parameters?.quantity ? (
+      {parameters?.quantity &&
+      Number(allowance) >= parameters?.quantity * 10 ** inputToken.decimals ? (
         <ForgeButton />
       ) : (
         <ApproveButton />
