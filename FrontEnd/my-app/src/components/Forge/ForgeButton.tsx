@@ -1,16 +1,24 @@
 import { useAnimationControls, motion } from "framer-motion";
-import { getContract, prepareContractCall, sendTransaction } from "thirdweb";
+import {
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+  readContract,
+} from "thirdweb";
 import { sepolia } from "thirdweb/chains";
-import { ethers } from "ethers";
 import { client } from "@/lib/client";
-import CONTRACT_ABI from "@/data/abi.json";
-import { Abi } from "thirdweb/utils";
 import { useActiveAccount } from "thirdweb/react";
 import ForgeHammers from "./ForgeHammers";
 import { useForge } from "@/context/ForgeContext";
+import { useState } from "react";
+import CONTRACT_ADDRESSES from "@/data/contractAddresses.json";
 
 export default function ForgeButton() {
   const controls = useAnimationControls();
+
+  const [txStatus, setTxStatus] = useState("idle");
+  useState;
 
   const handleClick = async () => {
     controls.start("forge");
@@ -48,39 +56,57 @@ export default function ForgeButton() {
       // 1. Get the contract instance
       const contract = getContract({
         client: client,
-        address: "YOUR_CONTRACT_ADDRESS",
+        address: CONTRACT_ADDRESSES["11155111"] as unknown as string,
         chain: sepolia,
-        abi: CONTRACT_ABI as Abi, // Import or define your contract ABI
       });
 
-      // 2. Prepare the transaction call
-      const transaction = prepareContractCall({
+      // 2. Get Fee
+      const dailyFee = await readContract({
+        contract: contract,
+        method: "function getDailyPositionFee() view returns (uint256)",
+      });
+
+      // 3. Prepare the transaction call
+      const forgeTransaction = prepareContractCall({
         contract,
         method:
           "function createPosition(address tokenIn, address tokenOut, uint256 quantity, uint256 swapPrice, address dexRouter, uint32 duration, uint8 condition) payable",
         params: [
           inputToken.address,
           outputToken.address,
-          ethers.parseUnits(
-            parameters?.quantity.toString() ?? "0",
-            inputToken.decimals
-          ), // quantity in wei
-          ethers.parseUnits(parameters?.executionPrice.toString() ?? "0", 18), // executionPrice in wei
-          dex, // dex router address
+          BigInt(parameters!.quantity * 10 ** inputToken.decimals),
+          BigInt(parameters?.executionPrice ?? 0), // executionPrice in wei
+          "0xee567fe1712faf6149d80da1e6934e354124cfe3", // dex router address
           parameters?.days ?? 0 * 86400, // duration in seconds
           parameters?.executionPrice ?? 0 > swapPrice ? 0 : 1, // 0 or 1 (enum index)
         ],
-        value: BigInt(1000000000000000) * BigInt(parameters?.days ?? 0),
+        value: dailyFee * BigInt(parameters?.days ?? 0),
       });
 
-      // 3. Send the transaction
+      // 4. Send the transaction
       const result = await sendTransaction({
-        transaction,
+        transaction: forgeTransaction,
         account: account,
       });
 
-      console.log("Transaction submitted:", result.transactionHash);
-      return result;
+      setTxStatus("pending");
+
+      console.log("Transaction sent, hash:", result.transactionHash);
+
+      // 5. Wait for receipt
+      const receipt = await waitForReceipt({
+        client,
+        chain: sepolia,
+        transactionHash: result.transactionHash,
+      });
+
+      if (receipt.status === "success") {
+        setTxStatus("success");
+        console.log("Transaction confirmed:", receipt);
+      } else {
+        setTxStatus("failed");
+        console.error("Transaction failed:", receipt);
+      }
     } catch (error) {
       console.error("Error creating position:", error);
       throw error;
