@@ -19,6 +19,8 @@ interface ForgeContextType {
   parameters: ParametersType | undefined;
   setSwapPrice: Dispatch<SetStateAction<number>>;
   swapPrice: number;
+  txHash: string;
+  setTxHash: Dispatch<SetStateAction<string>>;
 }
 
 interface ParametersType {
@@ -33,6 +35,7 @@ export function ForgeContextProvider({ children }: { children: ReactNode }) {
   const [inputToken, setInputToken] = useState<any>("");
   const [outputToken, setOutputToken] = useState<any>("");
   const [dex, setDex] = useState<any>("");
+  const [txHash, setTxHash] = useState<string>("");
   const [parameters, setParameters] = useState<ParametersType>({
     days: 0,
     executionPrice: 0,
@@ -53,6 +56,8 @@ export function ForgeContextProvider({ children }: { children: ReactNode }) {
         parameters,
         setSwapPrice,
         swapPrice,
+        txHash,
+        setTxHash,
       }}
     >
       {children}

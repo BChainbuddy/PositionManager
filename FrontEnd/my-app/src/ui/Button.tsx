@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface ButtonProps {
   href: string;
-  className: string;
+  className?: string;
   title: string;
 }
 

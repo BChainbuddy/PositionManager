@@ -3,22 +3,26 @@ import {
   getContract,
   prepareContractCall,
   sendTransaction,
-  waitForReceipt,
   readContract,
 } from "thirdweb";
+import { useSendTransaction } from "thirdweb/react";
 import { sepolia } from "thirdweb/chains";
 import { client } from "@/lib/client";
 import { useActiveAccount } from "thirdweb/react";
 import ForgeHammers from "./ForgeHammers";
 import { useForge } from "@/context/ForgeContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CONTRACT_ADDRESSES from "@/data/contractAddresses.json";
 
-export default function ForgeButton() {
+export default function ForgeButton({ nextStep }: { nextStep: () => void }) {
   const controls = useAnimationControls();
 
-  const [txStatus, setTxStatus] = useState("idle");
-  useState;
+  const account = useActiveAccount();
+
+  const { inputToken, outputToken, parameters, dex, swapPrice, setTxHash } =
+    useForge();
+
+  const { mutate: forgeTx, isSuccess, data } = useSendTransaction();
 
   const handleClick = async () => {
     controls.start("forge");
@@ -42,10 +46,6 @@ export default function ForgeButton() {
       },
     },
   };
-
-  const account = useActiveAccount();
-
-  const { inputToken, outputToken, parameters, dex, swapPrice } = useForge();
 
   async function createPosition() {
     try {
@@ -84,34 +84,21 @@ export default function ForgeButton() {
       });
 
       // 4. Send the transaction
-      const result = await sendTransaction({
-        transaction: forgeTransaction,
-        account: account,
-      });
-
-      setTxStatus("pending");
-
-      console.log("Transaction sent, hash:", result.transactionHash);
-
-      // 5. Wait for receipt
-      const receipt = await waitForReceipt({
-        client,
-        chain: sepolia,
-        transactionHash: result.transactionHash,
-      });
-
-      if (receipt.status === "success") {
-        setTxStatus("success");
-        console.log("Transaction confirmed:", receipt);
-      } else {
-        setTxStatus("failed");
-        console.error("Transaction failed:", receipt);
-      }
+      forgeTx(forgeTransaction);
     } catch (error) {
       console.error("Error creating position:", error);
       throw error;
     }
   }
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      console.log("Success");
+      console.log(data);
+      setTxHash(data.transactionHash);
+      nextStep();
+    }
+  }, [isSuccess, data]);
 
   return (
     <>

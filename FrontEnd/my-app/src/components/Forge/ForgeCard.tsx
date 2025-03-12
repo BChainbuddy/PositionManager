@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import Step4 from "./Step4";
 
 export default function ForgeCard() {
   const [step, setStep] = useState<number>(0);
@@ -25,6 +26,7 @@ export default function ForgeCard() {
       <Step1 nextStep={nextStep} step={step} />
       <Step2 nextStep={nextStep} previousStep={previousStep} step={step} />
       <Step3 nextStep={nextStep} previousStep={previousStep} step={step} />
+      <Step4 step={step} previousStep={previousStep} />
     </div>
   );
 }

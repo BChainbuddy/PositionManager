@@ -10,7 +10,11 @@ import { useEffect, useState } from "react";
 import ForgeButton from "./ForgeButton";
 import ApproveButton from "./ApproveButton";
 
-export default function TransactionButton() {
+export default function TransactionButton({
+  nextStep,
+}: {
+  nextStep: () => void;
+}) {
   const [allowance, setAllowance] = useState<number>(0);
 
   const account = useActiveAccount();
@@ -57,7 +61,7 @@ export default function TransactionButton() {
     <div className="relative w-24">
       {parameters?.quantity &&
       Number(allowance) >= parameters?.quantity * 10 ** inputToken.decimals ? (
-        <ForgeButton />
+        <ForgeButton nextStep={nextStep} />
       ) : (
         <ApproveButton />
       )}
