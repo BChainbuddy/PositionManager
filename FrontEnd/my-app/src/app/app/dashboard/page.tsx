@@ -4,7 +4,6 @@ import MarketCap from "@/components/Dashboard/MarketCap";
 import OpenPositions from "@/components/Dashboard/OpenPositions";
 import TopCoins from "@/components/Dashboard/TopCoins";
 import Button from "@/ui/Button";
-import Link from "next/link";
 import { useActiveAccount } from "thirdweb/react";
 
 export default function Dashboard() {

@@ -76,7 +76,7 @@ export default function OpenPositions() {
             </div>
           ) : positions.length ? (
             <>
-              {positions.map((position: any, i: number) => (
+              {positions.slice(0, 6).map((position: any, i: number) => (
                 <OpenPosition position={position} key={i} />
               ))}
               <Link
