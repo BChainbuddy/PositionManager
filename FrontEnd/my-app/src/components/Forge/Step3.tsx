@@ -1,9 +1,13 @@
 "use client";
 
 import PairPrice from "./PairPrice";
-import { ethers } from "ethers";
 import { useForge } from "@/context/ForgeContext";
 import TransactionButton from "./TransactionButton";
+import { useEffect } from "react";
+import CONTRACT_ADDRESSES from "@/data/contractAddresses.json";
+import { getContract, readContract } from "thirdweb";
+import { sepolia } from "thirdweb/chains";
+import { client } from "@/lib/client";
 
 interface Step3Props {
   nextStep: () => void;
@@ -13,6 +17,25 @@ interface Step3Props {
 
 export default function Step3({ nextStep, previousStep, step }: Step3Props) {
   const { dex, setParameters, parameters } = useForge();
+
+  useEffect(() => {
+    const getDailyFee = async () => {
+      const contract = getContract({
+        client: client,
+        address: CONTRACT_ADDRESSES["11155111"] as unknown as string,
+        chain: sepolia,
+      });
+      const dailyFee = await readContract({
+        contract: contract,
+        method: "function getDailyPositionFee() view returns (uint256)",
+      });
+      setParameters((prev) => ({
+        ...prev,
+        fee: dailyFee * BigInt(parameters?.days ?? 0),
+      }));
+    };
+    getDailyFee();
+  }, [parameters?.days]);
 
   return (
     <>
@@ -79,10 +102,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
           <div className="flex flex-col mt-4 text-center relative group">
             <p className="text-center">Expected Fee</p>
             <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
-            <p>
-              {parameters?.days ??
-                0 * Number(ethers.formatEther(1000000000000000))}
-            </p>
+            <p>{Number(parameters?.fee) / 10 ** 18} eth</p>
           </div>
           <TransactionButton nextStep={nextStep} />
           <button

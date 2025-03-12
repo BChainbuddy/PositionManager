@@ -70,7 +70,11 @@ export default function Step4({ step, previousStep }: Step4Props) {
             )}
           </div>
           {txStatus === "success" && (
-            <Button title="POSITIONS" href="/app/positions"></Button>
+            <Button
+              title="POSITIONS"
+              href="/app/positions"
+              className="w-[6.5rem] h-[1.7rem] mt-6 text-base self-center rounded-xl"
+            ></Button>
           )}
           {txStatus === "failed" && (
             <button

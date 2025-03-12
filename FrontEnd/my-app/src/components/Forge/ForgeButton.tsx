@@ -1,17 +1,12 @@
 import { useAnimationControls, motion } from "framer-motion";
-import {
-  getContract,
-  prepareContractCall,
-  sendTransaction,
-  readContract,
-} from "thirdweb";
+import { getContract, prepareContractCall } from "thirdweb";
 import { useSendTransaction } from "thirdweb/react";
 import { sepolia } from "thirdweb/chains";
 import { client } from "@/lib/client";
 import { useActiveAccount } from "thirdweb/react";
 import ForgeHammers from "./ForgeHammers";
 import { useForge } from "@/context/ForgeContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CONTRACT_ADDRESSES from "@/data/contractAddresses.json";
 
 export default function ForgeButton({ nextStep }: { nextStep: () => void }) {
@@ -60,13 +55,7 @@ export default function ForgeButton({ nextStep }: { nextStep: () => void }) {
         chain: sepolia,
       });
 
-      // 2. Get Fee
-      const dailyFee = await readContract({
-        contract: contract,
-        method: "function getDailyPositionFee() view returns (uint256)",
-      });
-
-      // 3. Prepare the transaction call
+      // 2. Prepare the transaction call
       const forgeTransaction = prepareContractCall({
         contract,
         method:
@@ -80,10 +69,10 @@ export default function ForgeButton({ nextStep }: { nextStep: () => void }) {
           parameters?.days ?? 0 * 86400, // duration in seconds
           parameters?.executionPrice ?? 0 > swapPrice ? 0 : 1, // 0 or 1 (enum index)
         ],
-        value: dailyFee * BigInt(parameters?.days ?? 0),
+        value: parameters?.fee,
       });
 
-      // 4. Send the transaction
+      // 3. Send the transaction
       forgeTx(forgeTransaction);
     } catch (error) {
       console.error("Error creating position:", error);

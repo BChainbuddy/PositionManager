@@ -27,6 +27,7 @@ interface ParametersType {
   days: number;
   executionPrice: number;
   quantity: number;
+  fee: bigint;
 }
 
 const ForgeContext = createContext<ForgeContextType | undefined>(undefined);
@@ -40,6 +41,7 @@ export function ForgeContextProvider({ children }: { children: ReactNode }) {
     days: 0,
     executionPrice: 0,
     quantity: 0,
+    fee: 0n,
   });
   const [swapPrice, setSwapPrice] = useState<number>(0);
 
