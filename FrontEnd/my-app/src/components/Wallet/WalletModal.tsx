@@ -9,6 +9,8 @@ import {
 import { client } from "@/lib/client";
 import { FaRegCopy } from "react-icons/fa";
 import { AiOutlineCheck } from "react-icons/ai";
+import Transfer from "./Transfer";
+import CircleLoading from "@/ui/CircleLoading";
 
 interface WalletModalProps {
   showModal: boolean;
@@ -16,7 +18,7 @@ interface WalletModalProps {
   setViewModal: (show: boolean) => any;
 }
 
-interface Token {
+export interface Token {
   symbol: string;
   balance: number;
   address: string;
@@ -131,115 +133,6 @@ export default function WalletModal({
   );
 }
 
-const Transfer = ({
-  setIsVisible,
-  tokens,
-}: {
-  setIsVisible: (is: boolean) => void;
-  tokens: Token[];
-}) => {
-  const [address, setAddress] = useState<string>("");
-  const [amount, setAmount] = useState<number>();
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
-
-  return (
-    <>
-      <div className="flex flex-col flex-1 justify-evenly">
-        <TokenSelector
-          tokens={tokens}
-          setSelectedToken={setSelectedToken}
-          selectedToken={selectedToken}
-        />
-        <Input
-          label="Address"
-          placeholder="0xd2fdd21AC3553Ac578a69a64F833788f2581BF05"
-          value={address}
-          setValue={setAddress}
-        />
-        <div className="relative w-fit mx-auto">
-          <Input
-            label="Amount"
-            placeholder="0.0"
-            value={amount}
-            setValue={setAmount}
-            className="pr-[2.3rem]"
-          />
-          <div
-            className="absolute right-2 top-[1.6rem] z-40"
-            onClick={() => {
-              setAmount(
-                selectedToken?.balance
-                  ? selectedToken?.balance / 10 ** selectedToken?.decimals
-                  : 0
-              );
-            }}
-          >
-            <p className="text-xs cursor-pointer text-green-600 font-semibold">
-              max
-            </p>
-          </div>
-        </div>
-        <ActionButton text="Transfer" onClick={() => {}} />
-      </div>
-      <ActionButton
-        text="Back"
-        className="w-[4rem]"
-        onClick={() => setIsVisible(false)}
-      />
-    </>
-  );
-};
-
-const TokenSelector = ({
-  tokens,
-  setSelectedToken,
-  selectedToken,
-}: {
-  tokens: Token[];
-  setSelectedToken: (token: Token) => void;
-  selectedToken: Token | null;
-}) => {
-  const [open, setOpen] = useState<boolean>(false);
-
-  return (
-    <div className="relative flex">
-      <button
-        className="w-[8rem] h-[2rem] border-2 border-white flex justify-center items-center rounded-xl mx-auto cursor-pointer"
-        onClick={() => setOpen(!open)}
-      >
-        <p>{selectedToken ? selectedToken.symbol : "Select Token"}</p>
-      </button>
-      {open && (
-        <div className="absolute flex flex-col border-white border-2 bg-black p-5 rounded-xl z-50 w-full h-[15rem]">
-          <div className="flex flex-row justify-between mb-1">
-            <p className="text-sm text-white font-juraBold">Symbol</p>
-            <p className="text-sm text-white font-juraBold">Balance</p>
-          </div>
-          <div className="overflow-y-scroll flex-1">
-            {tokens.map((token, i) => (
-              <div
-                key={i}
-                className="flex flex-row justify-between cursor-pointer mt-1 group pr-1"
-                onClick={() => {
-                  setSelectedToken(token);
-                  setOpen(false);
-                }}
-              >
-                <p className="text-sm group-hover:text-[#ffe500] transition-all duration-300 ease-out">
-                  {token.symbol}
-                </p>
-                <p className="text-sm group-hover:text-[#ffe500] transition-all duration-300 ease-out">
-                  {token.balance / 10 ** token.decimals}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const Balance = ({
   tokens,
   setIsVisible,
@@ -287,14 +180,18 @@ const Balance = ({
   );
 };
 
-const ActionButton = ({
+export const ActionButton = ({
   text,
   onClick,
   className,
+  disabled = false,
+  isPending = false,
 }: {
   text: string;
   onClick: () => void;
   className?: string;
+  disabled?: boolean;
+  isPending?: boolean;
 }) => {
   return (
     <button
@@ -302,35 +199,14 @@ const ActionButton = ({
         className ? className : "w-[8rem]"
       }`}
       onClick={onClick}
+      disabled={disabled}
     >
-      {text}
+      {!isPending ? (
+        <span>{text}</span>
+      ) : (
+        <CircleLoading height="h-4" width="w-4" innerColor="fill-[#FFFFFF]" />
+      )}
     </button>
-  );
-};
-
-const Input = ({
-  label,
-  placeholder,
-  value,
-  setValue,
-  className,
-}: {
-  label: string;
-  placeholder: string;
-  value: any;
-  setValue: (any: any) => void;
-  className?: string;
-}) => {
-  return (
-    <div className="flex flex-col relative z-20">
-      <p className="font-juraBold text-sm">{label}</p>
-      <input
-        className={`w-[12rem] rounded-md mx-auto px-2 py-1 text-black outline-none focus:outline-green-500 focus:outline-1 text-sm ${className}`}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </div>
   );
 };
 
