@@ -47,9 +47,8 @@ export default function LogoCarousel({ up }: { up: boolean }) {
         } `}
       >
         {[...Array(20)].map((_, i) => (
-          <div className="w-[4.7rem] h-[4rem] relative">
+          <div className="w-[4.7rem] h-[4rem] relative" key={i}>
             <Image
-              key={i}
               src={`${
                 [
                   "/BNB_zelen.png",
