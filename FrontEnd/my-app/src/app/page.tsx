@@ -161,7 +161,7 @@ export default function Home() {
           <Image src={"/tokenImages/solana-logo.svg"} alt="SOL logo" fill />
         </div>
       </div>
-      <div className="absolute top-[70%] left-[-10%] z-0 rotate-[0deg] opacity-50 blur-sm">
+      <div className="absolute top-[70%] left-[-6rem] z-0 rotate-[0deg] opacity-50 blur-sm">
         <div className="h-[15rem] w-[18rem] relative">
           <Image src={"/tokenImages/binance-logo.svg"} alt="BNB logo" fill />
         </div>

@@ -47,18 +47,23 @@ export default function LogoCarousel({ up }: { up: boolean }) {
         } `}
       >
         {[...Array(20)].map((_, i) => (
-          <div className="w-[4.7rem] h-[4rem] relative" key={i}>
+          <div
+            className="relative h-16 flex items-center justify-center"
+            key={i}
+          >
             <Image
               src={`${
                 [
-                  "/BNB_zelen.png",
-                  "/BTC_zelen_Big.png",
-                  "/ETH_zelen.png",
-                  "/SOL_zelen.png",
+                  "/tokenImages/binance-logo.svg",
+                  "/tokenImages/bitcoin-logo.svg",
+                  "/tokenImages/ethereum-logo.png",
+                  "/tokenImages/solana-logo.svg",
                 ][i % 4]
               }`}
-              fill
               alt={`Logo ${i}`}
+              width={128}
+              height={64}
+              className="h-16 w-auto object-contain"
             />
           </div>
         ))}
