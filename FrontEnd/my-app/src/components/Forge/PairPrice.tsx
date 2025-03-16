@@ -34,7 +34,10 @@ export default function PairPrice({ step }: any) {
     <div className="flex flex-col mt-5 text-center relative group">
       <p className="">Current Price</p>
       <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
-      <p className="">{formatNumber(swapPrice)}</p>
+      <p className="">
+        1 {inputToken.symbol} ={" "}
+        {formatNumber(swapPrice) + " " + outputToken.symbol}
+      </p>
     </div>
   );
 }
