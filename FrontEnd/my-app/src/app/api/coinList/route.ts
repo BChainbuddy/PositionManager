@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
  
-const API_KEY = process.env.NEXT_PUBLIC_COINGECKO_APIKEY || "";
+const API_KEY = process.env.COINGECKO_APIKEY || "";
 
 export async function GET(
     req: Request

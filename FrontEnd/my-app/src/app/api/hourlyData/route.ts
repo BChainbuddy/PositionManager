@@ -3,7 +3,7 @@ import { createClient, gql } from "urql";
 import { cacheExchange, fetchExchange } from "@urql/core";
 
 const client = createClient({
-  url: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_APIKEY}/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV`,
+  url: `https://gateway.thegraph.com/api/${process.env.GRAPH_APIKEY}/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV`,
 
   exchanges: [cacheExchange, fetchExchange],
 });
@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const token1 = searchParams.get("token1");
   const token2 = searchParams.get("token2");
-  console.log("key", process.env.NEXT_PUBLIC_GRAPH_APIKEY);
+  console.log("key", process.env.GRAPH_APIKEY);
   const skip = searchParams.get("skip") ? searchParams.get("skip") : 0;
 
   if (!token1 || !token2) {
