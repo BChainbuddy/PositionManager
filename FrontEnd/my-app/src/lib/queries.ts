@@ -68,6 +68,7 @@ export const GET_POSITIONS_BY_ID = gql`
       blockNumber
       blockTimestamp
       transactionHash
+      status
       dexRouter {
         id
         isActive

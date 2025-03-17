@@ -28,7 +28,7 @@ export default function PositionInfo() {
   function getTimeLeft(timestamp: number) {
     const timeLeft = timestamp * 1000 - Date.now();
     if (timeLeft < 0) {
-      return "Trade has ended";
+      return "Duration has ended";
     }
     return `${Math.floor(timeLeft / 86400000)} days ${Math.floor(
       (timeLeft % 86400000) / 3600000
@@ -73,15 +73,31 @@ export default function PositionInfo() {
                 </p>
                 <p>End Date: {getDate(position.endTimestamp)}</p>
               </div>
-              <p>{getTimeLeft(position.endTimestamp)}</p>
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <p className="text-sm">Want to prolong the trade duration?</p>
-                <ProlongTrade positionId={position.id} />
-              </div>
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <p className="text-sm">Stop the trade, receive the tokens</p>
-                <RemoveTrade positionId={position.id} />
-              </div>
+              {position.status === "EXECUTED" ||
+              position.status === "WITHDRAWN" ? (
+                <div>
+                  <p>
+                    Trade has been{" "}
+                    {position.status === "EXECUTED" ? "executed" : "withdrawn"}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p>{getTimeLeft(position.endTimestamp)}</p>
+                  <div className="flex flex-col items-center justify-center space-y-2">
+                    <p className="text-sm">
+                      Want to prolong the trade duration?
+                    </p>
+                    <ProlongTrade positionId={position.id} />
+                  </div>
+                  <div className="flex flex-col items-center justify-center space-y-2">
+                    <p className="text-sm">
+                      Stop the trade, receive the tokens
+                    </p>
+                    <RemoveTrade positionId={position.id} />
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <CircleLoading

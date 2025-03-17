@@ -27,6 +27,7 @@ export interface Position {
     img: string;
     blurImg: string;
   };
+  status: "EXECUTED" | "ACTIVE" | "WITHDRAWN";
   quantity: number;
   executionValue: number;
   endTimestamp: number;
