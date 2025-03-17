@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_POSITIONS_BY_WALLET = gql`
   query GetPositionsByWallet($walletAddress: Bytes!) {
-    positions(where: { wallet: $walletAddress }) {
+    positions(where: { wallet: $walletAddress, status: "ACTIVE" }) {
       id
       wallet
       tokenIn {
@@ -28,6 +28,7 @@ export const GET_POSITIONS_BY_WALLET = gql`
       blockNumber
       blockTimestamp
       transactionHash
+      status
       dexRouter {
         id
         isActive
