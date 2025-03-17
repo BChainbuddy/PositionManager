@@ -37,7 +37,7 @@ function getExecutionCondition(condition: i32): string {
  */
 function getUniswapABI(forkABI: i32): string {
   switch (forkABI) {
-    case 0: 
+    case 0:
       return "V3";
     case 1:
       return "V2";
@@ -87,6 +87,7 @@ export function handlePositionCreated(event: PositionCreatedEvent): void {
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
+  entity.status = "ACTIVE";
 
   let dexRouter = WhitelistedDexRouter.load(event.params.dexRouter.toHex());
   if (dexRouter) {
@@ -108,6 +109,13 @@ export function handlePositionExecuted(event: PositionExecutedEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
   entity.executedPosition = event.params.positionId.toString();
+
+  let position = Position.load(event.params.positionId.toString());
+
+  if (position) {
+    position.status = "EXECUTED";
+    position.save();
+  }
 
   entity.save();
 }
@@ -144,6 +152,13 @@ export function handlePositionWithdrawn(event: PositionWithdrawnEvent): void {
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
   entity.withdrawnPosition = event.params.positionId.toString();
+
+  let position = Position.load(event.params.positionId.toString());
+
+  if (position) {
+    position.status = "WITHDRAWN";
+    position.save();
+  }
 
   entity.save();
 }

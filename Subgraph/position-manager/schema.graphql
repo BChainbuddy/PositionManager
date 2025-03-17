@@ -8,6 +8,12 @@ enum UniswapABI {
   V3
 }
 
+enum PositionStatus {
+  ACTIVE
+  EXECUTED
+  WITHDRAWN
+}
+
 type WhitelistedDexRouter @entity(immutable: false) {
   id: ID! # Address of the DexRouter
   isActive: Boolean!
@@ -36,6 +42,7 @@ type Position @entity(immutable: false) {
   withdrawnEvent: PositionWithdrawn @derivedFrom(field: "withdrawnPosition")
   dexRouter: WhitelistedDexRouter
   prolongations: [PositionProlonged!]! @derivedFrom(field: "position")
+  status: PositionStatus!
 }
 
 type PositionExecuted @entity(immutable: true) {
