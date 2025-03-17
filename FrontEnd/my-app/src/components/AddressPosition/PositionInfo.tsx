@@ -11,6 +11,7 @@ import formatNumber from "@/lib/formatNumber";
 import getDate from "@/lib/getDate";
 import CircleLoading from "@/ui/CircleLoading";
 import ProlongTrade from "./ProlongTrade";
+import RemoveTrade from "./RemoveTrade";
 
 export default function PositionInfo() {
   const [position, setPosition] = useState<Position | null>(null);
@@ -33,8 +34,6 @@ export default function PositionInfo() {
       (timeLeft % 86400000) / 3600000
     )} hours left`;
   }
-
-  const handleRemoveTrade = () => {};
 
   const getTokenInfo = async () => {
     const updatedPositions: any = await addTokenData(data);
@@ -81,12 +80,7 @@ export default function PositionInfo() {
               </div>
               <div className="flex flex-col items-center justify-center space-y-2">
                 <p className="text-sm">Stop the trade, receive the tokens</p>
-                <button
-                  className="py-2 px-3 w-fit bg-[#01FF39] rounded-lg text-black"
-                  onClick={handleRemoveTrade}
-                >
-                  REMOVE TRADE
-                </button>
+                <RemoveTrade positionId={position.id} />
               </div>
             </div>
           ) : (
