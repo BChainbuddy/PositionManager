@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import formatNumber from "@/lib/formatNumber";
 import getDate from "@/lib/getDate";
 import CircleLoading from "@/ui/CircleLoading";
+import ProlongTrade from "./ProlongTrade";
 
 export default function PositionInfo() {
   const [position, setPosition] = useState<Position | null>(null);
@@ -25,6 +26,9 @@ export default function PositionInfo() {
 
   function getTimeLeft(timestamp: number) {
     const timeLeft = timestamp * 1000 - Date.now();
+    if (timeLeft < 0) {
+      return "Trade has ended";
+    }
     return `${Math.floor(timeLeft / 86400000)} days ${Math.floor(
       (timeLeft % 86400000) / 3600000
     )} hours left`;
@@ -73,7 +77,7 @@ export default function PositionInfo() {
               <p>{getTimeLeft(position.endTimestamp)}</p>
               <div className="flex flex-col items-center justify-center space-y-2">
                 <p className="text-sm">Want to prolong the trade duration?</p>
-                <ProlongTrade />
+                <ProlongTrade positionId={position.id} />
               </div>
               <div className="flex flex-col items-center justify-center space-y-2">
                 <p className="text-sm">Stop the trade, receive the tokens</p>
@@ -104,31 +108,3 @@ export default function PositionInfo() {
     </div>
   );
 }
-
-const ProlongTrade = () => {
-  const [days, setDays] = useState<number>(1);
-
-  const handleProlongPosition = () => {};
-
-  return (
-    <div className="flex flex-row space-x-3 items-center justify-center">
-      <input
-        onChange={(e) => {
-          if (Number(e.target.value) > 0) {
-            setDays(Number(e.target.value));
-          }
-        }}
-        type="number"
-        value={days}
-        className="text-black w-[3rem] rounded-lg p-1 outline-none"
-      />
-      <p>days</p>
-      <button
-        className="py-1 px-4 bg-[#01FF39] rounded-lg text-black"
-        onClick={handleProlongPosition}
-      >
-        ADD
-      </button>
-    </div>
-  );
-};

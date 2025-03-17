@@ -38,7 +38,6 @@ export default function UserPosition({ position }: OpenPositionProps) {
         <p className="text-[0.7rem] w-full overflow-hidden">
           Price: {position.price ? formatNumber(position.price) : "0"}
         </p>
-
         <p className="text-[0.7rem]">
           Target: {formatNumber(position.executionValue / 10 ** 18)}
         </p>
