@@ -537,3 +537,9 @@ input[type="number"] {
 .connectButton {
   background: linear-gradient(135deg, #041516, #013731);
 }
+
+::selection {
+  --tw-bg-opacity: 0.8;
+  background-color: #01ff39;
+  color: black;
+}
