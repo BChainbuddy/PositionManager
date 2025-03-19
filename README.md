@@ -74,7 +74,7 @@ For more detailed documentation on each part of the project, please refer to the
 - [Frontend README](/FrontEnd/my-app/README.md)  
   _Documentation for the Next.js frontend, including setup, structure, and component guides._
 
-- [Subgraph README](/SubGraph/README.md)  
+- [Subgraph README](/Subgraph/README.md)
   _Overview of the subgraph, its schema, mapping, and data indexing process using The Graph Protocol._
 
 - [BackEnd README](/BackEnd/README.md)  
