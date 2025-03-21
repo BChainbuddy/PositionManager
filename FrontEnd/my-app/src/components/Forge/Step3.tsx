@@ -60,7 +60,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
               type="number"
               onChange={(e) => {
-                const price = Number(e.target.value);
+                const price = Number(e.target.value) * 10 ** 18;
                 setParameters((prev) => ({
                   ...prev,
                   executionPrice: price,
