@@ -55,15 +55,20 @@ body {
 }
 
 .carouselUp {
-  display: flex;
-  flex-direction: column;
   animation: scrollUp 30s linear infinite; /* Adjust the timing to match the content height */
 }
 
 .carouselDown {
-  display: flex;
-  flex-direction: column;
   animation: scrollDown 30s linear infinite; /* Adjust the timing to match the content height */
+}
+
+@media (max-width: 768px) {
+  .carouselUp {
+    animation: scrollLeft 30s linear infinite;
+  }
+  .carouselDown {
+    animation: scrollRight 30s linear infinite;
+  }
 }
 
 .carouselDown:hover,
@@ -83,20 +88,54 @@ body {
   }
 }
 
+@keyframes scrollLeft {
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+@keyframes scrollRight {
+  to {
+    transform: translateX(calc(50% - 0.5rem));
+  }
+}
+
 .scrollerUp {
-  max-width: 600px;
+  /* max-width: 600px; */
   -webkit-mask: linear-gradient(transparent, white 20%, white 80%, transparent);
   mask: linear-gradient(transparent, white 20%, white 80%, transparent);
   overflow: hidden;
 }
 
 .scrollerDown {
-  max-width: 600px;
+  /* max-width: 600px; */
   display: flex;
   align-items: flex-end;
   -webkit-mask: linear-gradient(transparent, white 20%, white 80%, transparent);
   mask: linear-gradient(transparent, white 20%, white 80%, transparent);
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .scrollerUp,
+  .scrollerDown {
+    display: block;
+
+    -webkit-mask: linear-gradient(
+      to right,
+      transparent,
+      white 10%,
+      white 90%,
+      transparent
+    );
+    mask: linear-gradient(
+      to right,
+      transparent,
+      white 10%,
+      white 890%,
+      transparent
+    );
+  }
 }
 
 .scroller__inner {
