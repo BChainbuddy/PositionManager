@@ -27,7 +27,9 @@ export default function Step2({ nextStep, previousStep, step }: Step2Props) {
               : "opacity-0 translate-x-10 z-10"
           }`}
         >
-          <p className="text-center text-[#01FF39] text-xl">CHOOSE LIQUIDITY</p>
+          <p className="text-center text-[#01FF39] text-2xl">
+            CHOOSE LIQUIDITY
+          </p>
           <div className="flex flex-row space-x-2 mt-6">
             <p>Automatic</p>
             <div

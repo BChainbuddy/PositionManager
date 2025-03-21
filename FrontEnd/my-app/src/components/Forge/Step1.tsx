@@ -20,7 +20,9 @@ export default function Step1({ nextStep, step }: Step1Props) {
           : "opacity-0 translate-x-10 z-10"
       }`}
     >
-      <p className="text-center text-[#01FF39] text-xl">CREATE YOUR POSITION</p>
+      <p className="text-center text-[#01FF39] text-2xl">
+        CREATE YOUR POSITION
+      </p>
       <div className="flex flex-row items-center space-x-2 self-end mr-10 mt-6 text-lg">
         <p>INPUT TOKEN:</p>
         <InputToken input={true} />

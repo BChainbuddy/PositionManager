@@ -49,7 +49,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               : "opacity-0 translate-x-10 z-10"
           }`}
         >
-          <p className="text-center text-[#01FF39] text-xl">
+          <p className="text-center text-[#01FF39] text-2xl">
             CHOOSE TRADE PARAMETERS
           </p>
           <PairPrice step={step} />
