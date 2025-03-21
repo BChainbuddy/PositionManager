@@ -16,33 +16,33 @@ export default function Home() {
         <ShadowBars />
         <div className="relative h-[100vh] w-[100vw] overflow-x-hidden flex justify-center items-center">
           <div className="text-center text-white font-inter title flex flex-col items-center justify-center">
-            <p className="text-5xl text-[#01FF39] tracking-[0.6rem] mb-6 font-juraBold">
+            <p className="md:text-5xl text-2xl text-[#01FF39] tracking-[0.6rem] mb-6 font-juraBold">
               <span className="trade">TRADE </span>
               <span className="forge">FORGE</span>
             </p>
-            <p className="text-sm text-[#d5d2d2]">
+            <p className="md:text-sm text-xs text-[#d5d2d2]">
               Make trading on{" "}
-              <span className="text-base text-[#01FF39] font-juraBold">
+              <span className="md:text-base text-sm text-[#01FF39] font-juraBold">
                 BLOCKCHAIN
               </span>{" "}
               great again.
             </p>
-            <p className="mt-2 text-sm text-[#d5d2d2]">
+            <p className="mt-2 md:text-sm text-xs text-[#d5d2d2]">
               Start being the owner of{" "}
-              <span className="text-base text-[#01FF39] font-juraBold">
+              <span className="md:text-base text-sm text-[#01FF39] font-juraBold">
                 YOUR TIME
               </span>{" "}
               and stop looking at
             </p>
-            <p className="mt-2 text-sm text-[#d5d2d2]">
+            <p className="mt-2 md:text-sm text-xs text-[#d5d2d2]">
               charts, keep that to the{" "}
-              <span className="text-base text-[#01FF39] font-juraBold">
+              <span className="md:text-base text-sm text-[#01FF39] font-juraBold">
                 COMPUTERS
               </span>
               .
             </p>
             <Button
-              className="mt-10 w-52 h-10 rounded-2xl text-xl"
+              className="md:mt-10 mt-6 md:w-52 w-40 md:h-10 h-8 rounded-2xl md:text-xl text-base"
               title="START TRADING"
               href="/app/dashboard"
             />
