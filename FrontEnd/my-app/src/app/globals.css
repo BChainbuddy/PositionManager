@@ -122,19 +122,20 @@ body {
     display: block;
 
     -webkit-mask: linear-gradient(
-      to right,
+      90deg,
       transparent,
       white 10%,
       white 90%,
       transparent
     );
     mask: linear-gradient(
-      to right,
+      90deg,
       transparent,
       white 10%,
-      white 890%,
+      white 90%,
       transparent
     );
+    overflow: hidden;
   }
 }
 
