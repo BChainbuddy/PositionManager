@@ -54,13 +54,13 @@ export default function Home() {
             <p>V</p>
           </div>
         </div>
-        <div className="flex flex-col mt-32">
-          <p className="text-4xl text-center bg-gradient-to-r from-[#01FF39] to-[#FFE500] bg-clip-text text-transparent font-juraBold">
+        <div className="flex flex-col md:mt-32 mt-20">
+          <p className="md:text-4xl text-xl text-center bg-gradient-to-r from-[#01FF39] to-[#FFE500] bg-clip-text text-transparent font-juraBold">
             Unlock the Power of Decentralized Trading
           </p>
-          <div className="flex flex-row bg-gradient-to-br from-[#01FF39] to-[#FFE500] justify-evenly items-center py-10 mt-10">
+          <div className="flex flex-row bg-gradient-to-br from-[#01FF39] to-[#FFE500] justify-evenly items-center md:py-10 py-4 md:mt-10 mt-5">
             <div className="text-[#041516]">
-              <p className="w-[30rem] text-xl">
+              <p className="md:w-[30rem] w-[90%] md:text-xl text-sm mx-auto">
                 <span className="font-interBold">Trade Forge</span> is a
                 cutting-edge decentralized application (dApp) designed to{" "}
                 <span className="font-interBold">streamline</span> and{" "}
@@ -68,7 +68,7 @@ export default function Home() {
                 <span className="font-interBold">trading experience</span> on
                 Uniswap V2 and V3 forks.
               </p>
-              <p className="w-[30rem] text-xl mt-8">
+              <p className="md:w-[30rem] w-[90%] md:text-xl text-sm md:mt-8 mt-4 mx-auto">
                 With Trade Forge, you can{" "}
                 <span className="font-interBold">easily create</span>, manage,
                 and <span className="font-interBold">automate</span> custom
@@ -82,7 +82,7 @@ export default function Home() {
                 automating the heavy lifting.
               </p>
             </div>
-            <div className="relative h-[25rem] w-[25rem] rounded-md overflow-hidden">
+            <div className="relative h-[25rem] w-[25rem] rounded-md overflow-hidden md:block hidden">
               <Image src="/TradeForge.webp" alt="Trade Forge" fill />
             </div>
           </div>

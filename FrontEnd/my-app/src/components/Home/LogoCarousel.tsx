@@ -45,7 +45,7 @@ export default function LogoCarousel({ up }: { up?: boolean }) {
       }`}
     >
       <div
-        className={`flex md:flex-col flex-row gap-[1rem] md:h-[200%] md:w-fit w-[200%] h-[100%] ${
+        className={`flex md:flex-col flex-row gap-[1rem] md:h-[200%] md:w-fit w-[200%] ${
           up ? "carouselUp" : "carouselDown"
         }`}
       >
