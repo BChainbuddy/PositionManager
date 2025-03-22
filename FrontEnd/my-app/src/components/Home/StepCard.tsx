@@ -49,18 +49,18 @@ export default function StepCard({
 
   return (
     <div
-      className="flex flex-row justify-around items-center mt-32 font-inter"
+      className="flex md:flex-row flex-col justify-around items-center md:mt-32 mt-16 font-inter"
       ref={cardRef}
     >
-      {left && (
-        <div
-          className={`w-[20rem] h-[20rem] relative stepCardLeft ${
-            viewed ? "stepCardFinished" : ""
-          }`}
-        >
-          <Image src={imageSrc} alt={title} fill />
-        </div>
-      )}
+      <div
+        className={`md:w-[20rem] md:h-[20rem] w-[90%] max-w-[20rem] aspect-square relative md:mt-0 mt-10 ${
+          left
+            ? "stepCardLeft md:order-first order-last"
+            : "stepCardRight order-last"
+        } ${viewed ? "stepCardFinished" : ""}`}
+      >
+        <Image src={imageSrc} alt={title} fill />
+      </div>
       <div
         className={`text-white ${
           left
@@ -69,25 +69,18 @@ export default function StepCard({
         } `}
       >
         {header && (
-          <p className="font-juraBold text-3xl w-[20rem] text-center">
+          <p className="font-juraBold md:text-3xl md:w-[20rem] text-xl w-[90%] text-center">
             Seamless Trading in Three Easy Steps
           </p>
         )}
-        <div className="w-[20rem] mt-10 card p-5 border-2 border-[#01FF39] rounded-2xl">
-          <p className="text-sm text-[#01FF39] font-jura">{stepNumber}</p>
-          <p className="text-xl font-interBold">{title}</p>
-          <p className="text-white/80 text-sm mt-1">{description}</p>
+        <div className="md:w-[20rem] w-[90%] mx-auto mt-10 card p-5 border-2 border-[#01FF39] rounded-2xl">
+          <p className="md:text-sm text-xs text-[#01FF39] font-jura">
+            {stepNumber}
+          </p>
+          <p className="md:text-xl text-lg font-interBold">{title}</p>
+          <p className="text-white/80 md:text-sm text-xs mt-1">{description}</p>
         </div>
       </div>
-      {!left && (
-        <div
-          className={`w-[20rem] h-[20rem] relative stepCardRight ${
-            viewed ? "stepCardFinished" : ""
-          }`}
-        >
-          <Image src={imageSrc} alt={title} fill />
-        </div>
-      )}
     </div>
   );
 }
