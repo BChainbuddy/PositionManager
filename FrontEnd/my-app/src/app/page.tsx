@@ -142,12 +142,12 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="mt-52 flex flex-col justify-center items-center space-y-5">
-          <p className="text-center font-juraBold text-white text-2xl">
+        <div className="md:mt-52 mt-16 flex flex-col justify-center items-center space-y-5">
+          <p className="text-center font-juraBold text-white md:text-2xl text-lg">
             LIKE WHAT YOU SEE?
           </p>
           <Button
-            className="w-72 h-14 rounded-2xl text-2xl"
+            className="md:w-72 md:h-14 w-40 h-9 rounded-2xl md:text-2xl text-lg"
             title="START TRADING"
             href="/app/dashboard"
           />
