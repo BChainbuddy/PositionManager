@@ -87,7 +87,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="mt-24 relative">
+        <div className="md:mt-24 mt-12 relative">
           <LineScroll />
           <StepCard
             header={true}
@@ -155,28 +155,28 @@ export default function Home() {
         <Footer />
       </div>
       {/* Background */}
-      <div className="absolute top-[45%] left-[-10rem] z-0 rotate-[30deg] opacity-50 blur-sm ">
-        <div className="h-[20rem] w-[20rem] relative">
+      <div className="absolute top-[45%] md:left-[-10rem] left-[-5rem] z-0 rotate-[30deg] opacity-50 blur-sm ">
+        <div className="md:h-[20rem] md:w-[20rem] h-[12rem] w-[12rem] relative">
           <Image src={"/tokenImages/bitcoin-logo.svg"} alt="BTC logo" fill />
         </div>
       </div>
-      <div className="absolute top-[55%] right-[-14rem] z-0 rotate-[-30deg] opacity-50 blur-sm">
-        <div className="h-[28rem] w-[25rem] relative">
+      <div className="absolute md:top-[55%] top-[52%] md:right-[-14rem] right-[-8rem] z-0 rotate-[-30deg] opacity-50 blur-sm">
+        <div className="md:h-[28rem] md:w-[25rem] h-[18rem] w-[15rem] relative">
           <Image src={"/tokenImages/solana-logo.svg"} alt="SOL logo" fill />
         </div>
       </div>
-      <div className="absolute top-[70%] left-[-6rem] z-0 rotate-[0deg] opacity-50 blur-sm">
-        <div className="h-[15rem] w-[18rem] relative">
+      <div className="absolute md:top-[70%] top-[67%] md:left-[-6rem] left-[-5rem] z-0 rotate-[0deg] opacity-50 blur-sm">
+        <div className="md:h-[15rem] md:w-[18rem] h-[10rem] w-[13rem] relative">
           <Image src={"/tokenImages/binance-logo.svg"} alt="BNB logo" fill />
         </div>
       </div>
-      <div className="absolute top-[85%] right-[-11rem] z-0 rotate-[-20deg] opacity-50 blur-sm">
-        <div className="h-[25rem] w-[25rem] relative">
+      <div className="absolute md:top-[85%] top-[90%] md:right-[-11rem] right-[-5rem] z-0 rotate-[-20deg] opacity-50 blur-sm">
+        <div className="md:h-[25rem] md:w-[25rem] h-[12rem] w-[12rem] relative">
           <Image src={"/tokenImages/ethereum-logo.svg"} alt="ETH logo" fill />
         </div>
       </div>
-      <div className="absolute top-[85%] left-[-11rem] z-0 rotate-[20deg] opacity-50 blur-sm">
-        <div className="h-[25rem] w-[25rem] relative">
+      <div className="absolute md:top-[85%] top-[90%] md:left-[-11rem] left-[-5rem] z-0 rotate-[20deg] opacity-50 blur-sm">
+        <div className="md:h-[25rem] md:w-[25rem] h-[12rem] w-[12rem] relative">
           <Image src={"/tokenImages/ethereum-logo.svg"} alt="ETH logo" fill />
         </div>
       </div>
