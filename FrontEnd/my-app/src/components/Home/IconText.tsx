@@ -24,7 +24,7 @@ export default function IconText({ src, text, alt, delay }: IconTextProps) {
       }`}
       ref={ref}
     >
-      <div className="relative w-[5rem] h-[5rem]">
+      <div className="relative md:w-[5rem] md:h-[5rem] h-12 w-12">
         <Image
           src={src}
           alt={alt}
@@ -33,7 +33,7 @@ export default function IconText({ src, text, alt, delay }: IconTextProps) {
           className={`${inView && "iconImageFinished"}`}
         />
       </div>
-      <div className="font-juraBold text-white w-[10rem] text-center">
+      <div className="font-juraBold text-white md:w-[10rem] w-[7rem] text-center md:text-base text-sm">
         {text}
       </div>
     </div>
