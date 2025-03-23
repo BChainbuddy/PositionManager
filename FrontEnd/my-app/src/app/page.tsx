@@ -49,7 +49,7 @@ export default function Home() {
           </div>
           <LogoCarousel up={false} />
           <LogoCarousel up={true} />
-          <div className="text-white text-center absolute bottom-[5%] text-sm scrollDownText">
+          <div className="text-white text-center absolute bottom-[5%] text-sm scrollDownText md:block hidden">
             <p>Scroll Down</p>
             <p>V</p>
           </div>
