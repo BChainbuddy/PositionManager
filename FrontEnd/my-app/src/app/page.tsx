@@ -112,12 +112,16 @@ export default function Home() {
             imageSrc="/Step3Border.png"
           />
         </div>
-        <div className="mt-52">
+        <div className="md:mt-52 mt-28">
           <div className="flex flex-col text-center font-juraBold">
-            <p className="text-4xl font-jura text-white">Why Trade Forge?</p>
-            <p className="text-xl text-[#01FF39]">Trade Smarter, Not Harder</p>
+            <p className="md:text-4xl text-2xl font-jura text-white">
+              Why Trade Forge?
+            </p>
+            <p className="md:text-xl text-base text-[#01FF39]">
+              Trade Smarter, Not Harder
+            </p>
           </div>
-          <div className="flex flex-row space-x-32 justify-center mt-24">
+          <div className="flex md:flex-row flex-col md:space-x-32 space-y-10 justify-center md:mt-24 mt-10">
             <IconText
               src="/TradeIconWhite.png"
               alt="Trade Icon"
