@@ -62,12 +62,14 @@ export default function ConnectButton({
         </div>
       ) : (
         <div
-          className="bg-[#01FF39] text-black font-juraBold h-[2.2rem] w-[12rem] text-base rounded-xl text-center flex items-center justify-center cursor-pointer active:scale-[98%] active:translate-y-0.5 select-none"
+          className="bg-[#01FF39] text-black font-juraBold h-[2rem] md:h-[2.2rem] w-[10rem] md:w-[12rem] rounded-xl text-center flex items-center justify-center cursor-pointer active:scale-[98%] active:translate-y-0.5 select-none"
           onClick={() => {
             setViewModal(!viewModal);
           }}
         >
-          {viewModal ? "X" : "Connect Wallet"}
+          <p className="text-sm md:text-base">
+            {viewModal ? "X" : "Connect Wallet"}
+          </p>
         </div>
       )}
     </>

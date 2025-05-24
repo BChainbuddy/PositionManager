@@ -17,7 +17,7 @@ const NavOptions: navOption[] = [
 export default function NavBar() {
   return (
     <>
-      <div className="flex md:hidden">
+      <div className="flex md:hidden mr-2">
         <SmNavBar />
       </div>
       <div className="hidden md:flex flex-row gap-x-4">

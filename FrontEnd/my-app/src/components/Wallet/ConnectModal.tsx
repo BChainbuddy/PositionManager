@@ -60,20 +60,20 @@ export default function ConnectModal({
 
   return (
     <div
-      className={`fixed z-40 left-1/2 top-1/2 text-center rounded-2xl py-10 w-[20rem] px-8 ${
+      className={`fixed z-40 left-1/2 top-1/2 text-center rounded-2xl py-8 md:py-10 w-[95vw] max-w-[20rem] md:w-[20rem] px-[5%] md:px-8 ${
         showModal ? "block connectModal" : "hidden"
       }`}
     >
       <h1 className="text-3xl font-juraBold">SIGN IN</h1>
-      <div className="flex flex-col space-y-4 mt-6">
-        <p className="text-lg font-inter">
+      <div className="flex flex-col space-y-4 mt-4 md:mt-6">
+        <p className="text-base md:text-lg font-inter">
           Enter password to access/create account
         </p>
         <input
           type="password"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded-lg text-lg outline-none px-2 text-black focus:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 font-inter"
+          className="rounded-lg text-base md:text-lg outline-none px-1.5 md:px-2 text-black focus:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 font-inter"
         />
       </div>
       <button
@@ -85,7 +85,7 @@ export default function ConnectModal({
         {isLoading ? "Loading..." : "LOGIN"}
       </button>
       <p className="text-sm mt-6 mb-2">Or sign in via</p>
-      <div className="flex flex-row justify-around items-center">
+      <div className="flex flex-row justify-center space-x-2 md:space-x-0 md:justify-around items-center">
         <div
           onClick={() => {
             connect(async () => {
@@ -94,7 +94,7 @@ export default function ConnectModal({
               return wallet;
             });
           }}
-          className="rounded-xl bg-white overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
+          className="rounded-xl bg-white overflow-hidden relative h-[3rem] w-[3rem] md:h-[4rem] md:w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
           <Image
             src="/metamaskLogo.png"
@@ -111,7 +111,7 @@ export default function ConnectModal({
               return wallet;
             });
           }}
-          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
+          className="rounded-xl overflow-hidden relative h-[3rem] w-[3rem] md:h-[4rem] md:w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
           <Image
             src="/coinbaseWalletLogo.svg"
@@ -122,7 +122,7 @@ export default function ConnectModal({
         </div>
         <div
           onClick={handleLogin}
-          className="rounded-xl overflow-hidden relative h-[4rem] w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
+          className="rounded-xl overflow-hidden relative h-[3rem] w-[3rem] md:h-[4rem] md:w-[4rem] cursor-pointer hover:opacity-80 hover:drop-shadow-[0_0_0.3rem_#ffffff] transition-all duration-300 ease-out"
         >
           <Image
             src="/gmailLogo.png"
