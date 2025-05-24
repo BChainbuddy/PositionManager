@@ -16,9 +16,9 @@ export default function Header() {
 
   return (
     <>
-      <div className="w-full h-[11vh] header flex flex-row items-center justify-between px-16 z-50 relative">
+      <div className="w-full md:h-[11vh] py-2 md:py-0 header flex flex-row items-center justify-between md:px-16 px-2 z-50 relative">
         <p
-          className="text-[#01FF39] text-4xl font-juraBold cursor-pointer"
+          className="text-[#01FF39] text-lg md:text-3xl lg:text-4xl font-juraBold cursor-pointer"
           onClick={() => router.push("/")}
         >
           TRADE <span className="text-white ml-1">FORGE</span>
