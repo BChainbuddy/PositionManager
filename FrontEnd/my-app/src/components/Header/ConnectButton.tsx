@@ -31,16 +31,16 @@ export default function ConnectButton({
     <>
       {account && data ? (
         <div
-          className="text-white flex flex-col justify-evenly rounded-xl border-2 cursor-pointer connectButton w-[11rem] h-[3.5rem] items-center"
+          className="text-white flex flex-col justify-evenly rounded-xl border md:border-2 cursor-pointer connectButton w-[10rem] md:w-[11rem] h-[3rem] md:h-[3.5rem] items-center"
           onClick={() => {
             setViewModal2(!viewModal2);
           }}
         >
           {viewModal2 ? (
-            <p className="text-center">X</p>
+            <p className="text-sm md:text-base text-center">X</p>
           ) : (
             <div className="w-fit gap-1 flex flex-col">
-              <p className="text-xs">
+              <p className="text-[10px] md:text-xs">
                 Address:{" "}
                 {account?.address.substring(0, 8) +
                   "..." +
@@ -49,7 +49,7 @@ export default function ConnectButton({
                     account?.address.length
                   )}
               </p>
-              <p className="text-xs">
+              <p className="text-[10px] md:text-xs">
                 Balance:{" "}
                 {data.displayValue.toString().length > 9
                   ? data.displayValue.toString().substring(0, 8) +

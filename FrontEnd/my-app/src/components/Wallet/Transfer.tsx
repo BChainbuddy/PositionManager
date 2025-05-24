@@ -31,7 +31,6 @@ export default function Transfer({
         throw new Error("No connected account");
       }
       // 1. Get the contract instance
-
       const contract = getContract({
         client: client,
         address: selectedToken?.address as Address,
@@ -102,7 +101,7 @@ export default function Transfer({
             className="pr-[2.3rem]"
           />
           <div
-            className="absolute right-2 top-[1.6rem] z-40"
+            className="text-xs md:text-sm absolute right-2 top-[1.3rem] md:top-[1.6rem] z-40"
             onClick={() => {
               setAmount(
                 selectedToken?.balance
@@ -197,9 +196,9 @@ const Input = ({
 }) => {
   return (
     <div className="flex flex-col relative z-20">
-      <p className="font-juraBold text-sm">{label}</p>
+      <p className="font-juraBold text-xs md:text-sm">{label}</p>
       <input
-        className={`w-[12rem] rounded-md mx-auto px-2 py-1 text-black outline-none focus:outline-green-500 focus:outline-1 text-sm ${className}`}
+        className={`w-[12rem] rounded-md mx-auto px-2 py-1 text-black outline-none focus:outline-green-500 focus:outline-1 text-xs md:text-sm ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}

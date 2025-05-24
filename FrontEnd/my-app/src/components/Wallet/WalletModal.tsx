@@ -84,19 +84,19 @@ export default function WalletModal({
     showModal &&
     wallet && (
       <div
-        className={`fixed z-30 left-1/2 top-1/2 text-center rounded-2xl py-6 w-[20rem] px-8 h-[25rem] flex flex-col ${
+        className={`fixed z-30 left-1/2 top-1/2 text-center rounded-2xl py-8 md:py-10 h-[22rem] md:h-[25rem] w-[95vw] max-w-[20rem] md:w-[20rem] px-[5%] md:px-8 flex flex-col ${
           showModal ? "block connectModal" : "hidden"
         }`}
       >
         <h1 className="text-3xl font-juraBold">WALLET</h1>
         {!transfer && !balance ? (
           <div className="flex flex-col justify-between flex-1 h-full">
-            <div className="mt-7">
+            <div className="mt-5 md:mt-7 text-sm md:text-base">
               <p className="border-b border-white w-fit px-2 text-center mx-auto">
                 ETH balance
               </p>
               <p>{formatBalance(Number(data?.displayValue) ?? 0)}</p>
-              <p className="border-b border-white w-fit px-2 text-center mx-auto mt-5">
+              <p className="border-b border-white w-fit px-2 text-center mx-auto mt-3 md:mt-5">
                 Address
               </p>
               <div className="flex flex-row justify-center mt-1">
@@ -195,7 +195,7 @@ export const ActionButton = ({
 }) => {
   return (
     <button
-      className={`h-[2rem] border-2 border-white flex justify-center items-center rounded-xl mx-auto cursor-pointer ${
+      className={`text-sm md:text-base h-[2rem] border md:border-2 border-white flex justify-center items-center rounded-xl mx-auto cursor-pointer ${
         className ? className : "w-[8rem]"
       }`}
       onClick={onClick}
@@ -204,7 +204,11 @@ export const ActionButton = ({
       {!isPending ? (
         <span>{text}</span>
       ) : (
-        <CircleLoading height="h-4" width="w-4" innerColor="fill-[#FFFFFF]" />
+        <CircleLoading
+          height="h-3 md:h-4"
+          width="w-3 md:w-4"
+          innerColor="fill-[#FFFFFF]"
+        />
       )}
     </button>
   );
