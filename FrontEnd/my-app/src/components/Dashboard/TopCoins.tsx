@@ -24,7 +24,7 @@ export default function TopCoins() {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="hidden md:flex flex-col">
       <h2 className="text-center font-juraBold text-[#FFE500]">
         TOP CRYPTOCURRENCIES BY PRICE CHANGE
       </h2>

@@ -8,12 +8,12 @@ export default function ShadowBorders() {
   return (
     <>
       <div
-        className={`absolute top-[11vh] w-[100vw] ${
+        className={`hidden md:block absolute top-[11vh] w-[100vw] ${
           pathname.includes("positions") ? "topShadowYellow" : "topShadow"
         } z-40`}
       ></div>
       <div
-        className={`absolute bottom-0 w-[100vw] ${
+        className={`hidden md:block absolute bottom-0 w-[100vw] ${
           pathname.includes("positions") ? "bottomShadowYellow" : "bottomShadow"
         } z-40`}
       ></div>

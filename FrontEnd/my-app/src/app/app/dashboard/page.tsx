@@ -10,8 +10,8 @@ export default function Dashboard() {
   const account = useActiveAccount();
 
   return (
-    <div className="flex flex-row justify-evenly h-[89vh] items-center">
-      <div className="flex flex-col h-full justify-evenly">
+    <div className="flex flex-col md:flex-row justify-evenly md:h-[89vh] items-center">
+      <div className="flex flex-col h-full justify-evenly md:mt-0 mt-10">
         {account?.address ? (
           <p className="text-white font-interBold">
             Welcome back user{" "}
@@ -36,7 +36,7 @@ export default function Dashboard() {
         <MarketCap />
         <TopCoins />
         <Button
-          className="w-[14rem] h-[3rem] text-xl self-center rounded-xl"
+          className="mt-10 md:mt-0 md:w-[14rem] md:h-[3rem] h-[2.2rem] w-[9rem] text-bse md:text-xl self-center rounded-xl"
           title="FORGE TRADE"
           href="/app/forge"
         />
