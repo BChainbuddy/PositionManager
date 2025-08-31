@@ -65,7 +65,7 @@ export default function Chart() {
   }, [data]);
 
   return (
-    <div className="h-[22rem] w-[33rem] border-2 border-[#01FF39] rounded-sm shadow-lg shadow-[#01FF39] outline-none">
+    <div className="md:h-[22rem] md:w-[33rem] w-[95vw] h-[20rem] md:border-2 border border-[#01FF39] rounded-sm md:shadow-lg shadow-md shadow-[#01FF39] outline-none">
       {loading ? (
         <CircleLoading height="h-6" width="w-6" innerColor="fill-[#01FF39]" />
       ) : data.positions.length ? (

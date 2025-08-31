@@ -87,11 +87,11 @@ export default function ProlongTrade({ positionId }: { positionId: number }) {
         }}
         type="number"
         value={days}
-        className="text-black w-[3rem] rounded-lg p-1 outline-none"
+        className="text-black w-[3rem] rounded-lg p-1 outline-none md:text-base text-sm"
       />
-      <p>days</p>
+      <p className="md:text-base text-sm">days</p>
       <button
-        className="h-8 px-4 bg-[#01FF39] rounded-lg text-black"
+        className="md:h-8 h-7 px-4 bg-[#01FF39] rounded-lg text-black md:text-base text-sm"
         onClick={handleProlongPosition}
         disabled={txStatus === "pending"}
       >

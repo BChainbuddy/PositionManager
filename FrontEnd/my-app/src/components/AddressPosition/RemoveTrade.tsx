@@ -68,7 +68,7 @@ export default function RemoveTrade({ positionId }: { positionId: number }) {
   };
   return (
     <button
-      className="h-10 w-36 bg-[#01FF39] rounded-lg text-black flex justify-center items-center"
+      className="md:h-10 md:w-36 h-8 w-32 md:text-base text-sm bg-[#01FF39] rounded-lg text-black flex justify-center items-center"
       onClick={handleRemoveTrade}
     >
       {txStatus !== "pending" ? (

@@ -47,7 +47,7 @@ export default function PositionInfo() {
   }, [data]);
 
   return (
-    <div className="w-fit font-juraBold text-white h-[22rem]">
+    <div className="w-fit font-juraBold text-white md:h-[22rem] h-[18rem]">
       {address?.toString().toLowerCase() ==
       activeAccount?.address.toString().toLowerCase() ? (
         <>
@@ -58,40 +58,44 @@ export default function PositionInfo() {
           ) : position ? (
             <div className="flex flex-col font-juraBold h-full justify-between items-center">
               <div className="flex flex-row items-center justify-center space-x-1">
-                <p className="font-juraBold text-3xl">
+                <p className="font-juraBold md:text-3xl text-xl">
                   {position.tokenIn.symbol}/{position.tokenOut.symbol}
                 </p>
               </div>
               <div className="flex flex-col">
-                <p>
+                <p className="md:text-base text-sm">
                   Current Price:{" "}
                   {position.price ? formatNumber(position.price) : 0}
                 </p>
-                <p>
+                <p className="md:text-base text-sm">
                   Execution Price:{" "}
                   {formatNumber(position.executionValue / 10 ** 18)}
                 </p>
-                <p>End Date: {getDate(position.endTimestamp)}</p>
+                <p className="md:text-base text-sm">
+                  End Date: {getDate(position.endTimestamp)}
+                </p>
               </div>
               {position.status === "EXECUTED" ||
               position.status === "WITHDRAWN" ? (
                 <div>
-                  <p>
+                  <p className="md:text-base text-sm">
                     Trade has been{" "}
                     {position.status === "EXECUTED" ? "executed" : "withdrawn"}
                   </p>
                 </div>
               ) : (
                 <>
-                  <p>{getTimeLeft(position.endTimestamp)}</p>
+                  <p className="md:text-base text-sm">
+                    {getTimeLeft(position.endTimestamp)}
+                  </p>
                   <div className="flex flex-col items-center justify-center space-y-2">
-                    <p className="text-sm">
+                    <p className="md:text-sm text-xs">
                       Want to prolong the trade duration?
                     </p>
                     <ProlongTrade positionId={position.id} />
                   </div>
                   <div className="flex flex-col items-center justify-center space-y-2">
-                    <p className="text-sm">
+                    <p className="md:text-sm text-xs">
                       Stop the trade, receive the tokens
                     </p>
                     <RemoveTrade positionId={position.id} />
