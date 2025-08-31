@@ -409,10 +409,11 @@ body {
 
 .allPositionsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 7rem);
+  /* Flexible columns: pack as many 6.5rem+ cards per row as fit, expanding leftover space */
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
   gap: 0.7rem;
   padding: 1rem 0.6rem;
-  justify-content: center;
+  justify-items: center; /* center cards inside their fractional tracks */
   align-items: center;
   overflow-y: auto;
   grid-auto-rows: 11rem;

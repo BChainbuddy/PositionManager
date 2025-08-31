@@ -30,7 +30,7 @@ export default function AllPosition() {
   }, [data]);
 
   return (
-    <div className="allPositionsGrid w-full mt-4 border-4 border-[#01ff39] self-center h-[60vh] rounded-md">
+    <div className="allPositionsGrid w-full mt-4 md:border-4 border-2 border-[#01ff39] self-center h-[60vh] rounded-md">
       {positions.length ? (
         positions.map((position, i) => (
           <UserPosition position={position} key={i} />
