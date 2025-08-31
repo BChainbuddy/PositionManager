@@ -13,7 +13,7 @@ export default function InputToken({ input }: { input: boolean }) {
 
   return (
     <>
-      <div className="bg-[#282727] h-8 rounded-xl hover:bg-[#1b5e3591] transition-all duration-500 cursor-pointer w-28 text-center ease-out flex items-center justify-center space-x-1">
+      <div className="bg-[#282727] h-8 rounded-xl hover:bg-[#1b5e3591] transition-all duration-500 cursor-pointer md:w-28 w-20 text-center ease-out flex items-center justify-center space-x-1">
         <p onClick={() => setShowModal(!showModal)}>
           {input
             ? inputToken.symbol

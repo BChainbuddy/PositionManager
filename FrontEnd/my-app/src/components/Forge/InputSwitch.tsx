@@ -18,7 +18,10 @@ export default function InputSwitch() {
   const { outputToken, inputToken, setInputToken, setOutputToken } = useForge();
 
   return (
-    <div className="h-6 w-6 relative mt-4 z-10" onClick={handleSpin}>
+    <div
+      className="md:h-6 md:w-6 h-5 w-5 relative mt-4 z-10"
+      onClick={handleSpin}
+    >
       <Image
         src="/Reverse.png"
         fill

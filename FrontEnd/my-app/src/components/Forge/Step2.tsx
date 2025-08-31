@@ -27,7 +27,7 @@ export default function Step2({ nextStep, previousStep, step }: Step2Props) {
               : "opacity-0 translate-x-10 z-10"
           }`}
         >
-          <p className="text-center text-[#01FF39] text-2xl">
+          <p className="text-center text-[#01FF39] md:text-2xl text-lg">
             CHOOSE LIQUIDITY
           </p>
           <div className="flex flex-row space-x-2 mt-6">
@@ -47,14 +47,14 @@ export default function Step2({ nextStep, previousStep, step }: Step2Props) {
           </div>
           <AvailableDexes automatic={automatic} step={step} />
           <button
-            className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6"
+            className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6 md:text-base text-sm"
             onClick={nextStep}
             disabled={!dex}
           >
             CONTINUE
           </button>
           <button
-            className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
+            className="flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2 md:text-sm text-xs"
             onClick={previousStep}
           >
             back

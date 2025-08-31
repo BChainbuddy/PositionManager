@@ -21,7 +21,7 @@ export default function Dex({
   return (
     <div className="flex flex-col justify-center items-center w-[6rem] space-y-1">
       <div
-        className={`relative h-12 w-12 rounded-2xl overflow-clip cursor-pointer ${
+        className={`relative md:h-12 md:w-12 h-10 w-10 rounded-2xl overflow-clip cursor-pointer ${
           dex?.address === dexInfo?.address &&
           !automatic &&
           "border-4 border-[#ffe500]"

@@ -94,11 +94,11 @@ export default function TokenList({ input, showModal }: TokenListProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-opacity backdrop-blur-sm flex justify-center items-center z-20"
+      className="fixed inset-0 bg-opacity backdrop-blur-sm flex justify-center items-center z-20 left-0"
       id="wrapper"
       onClick={handleClose}
     >
-      <div className="w-[300px] flex flex-col">
+      <div className="md:w-[300px] w-[80vw] max-w-[300px] flex flex-col">
         <button
           className="text-white text-xl place-self-end"
           onClick={closeModal}
@@ -106,7 +106,7 @@ export default function TokenList({ input, showModal }: TokenListProps) {
           x
         </button>
         <input
-          className="rounded-t-md p-2 text-gray-600 outline-none"
+          className="rounded-t-md p-2 text-gray-600 outline-none md:text-base text-sm"
           type="text"
           placeholder="Search symbol..."
           onChange={(e) => filterTokenList(e.target.value)}
@@ -143,8 +143,8 @@ export default function TokenList({ input, showModal }: TokenListProps) {
                   closeModal();
                 }}
               >
-                <p>{token.symbol}</p>
-                <div className="relative h-6 w-6">
+                <p className="md:text-base text-sm">{token.symbol}</p>
+                <div className="relative md:h-6 md:w-6 w-5 h-5">
                   <Image
                     src={
                       TOKEN_IMAGES[token.address]

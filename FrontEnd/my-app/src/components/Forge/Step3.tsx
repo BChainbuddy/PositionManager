@@ -49,15 +49,15 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
               : "opacity-0 translate-x-10 z-10"
           }`}
         >
-          <p className="text-center text-[#01FF39] text-2xl">
+          <p className="text-center text-[#01FF39] md:text-2xl text-lg">
             CHOOSE TRADE PARAMETERS
           </p>
           <PairPrice step={step} />
           <div className="flex flex-row space-x-2 mt-4">
-            <p className="">Execution price:</p>
+            <p className="md:text-base text-sm">Execution price:</p>
             <input
               placeholder="0.003"
-              className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
+              className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black md:text-base text-sm"
               type="number"
               onChange={(e) => {
                 const price = Number(e.target.value) * 10 ** 18;
@@ -69,10 +69,10 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
             />
           </div>
           <div className="flex flex-row space-x-2 mt-4">
-            <p className="">Quantity:</p>
+            <p className="md:text-base text-sm">Quantity:</p>
             <input
               placeholder="1000"
-              className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
+              className="w-16 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black md:text-base text-sm"
               type="number"
               onChange={(e) => {
                 const quantity = Number(e.target.value);
@@ -84,10 +84,10 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
             />
           </div>
           <div className="flex flex-row mt-4">
-            <p>Duration:</p>
+            <p className="md:text-base text-sm">Duration:</p>
             <input
               placeholder="1"
-              className="w-12 ml-2 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black"
+              className="w-12 ml-2 bg-[#D9D9D9] outline-none rounded-sm px-1 text-black md:text-base text-sm"
               type="number"
               onChange={(e) => {
                 const days = Number(e.target.value);
@@ -97,16 +97,18 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
                 }));
               }}
             />
-            <p className="ml-0.5">Days</p>
+            <p className="ml-0.5 md:text-base text-sm">Days</p>
           </div>
           <div className="flex flex-col mt-4 text-center relative group">
-            <p className="text-center">Expected Fee</p>
+            <p className="text-center md:text-base text-sm">Expected Fee</p>
             <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
-            <p>{Number(parameters?.fee) / 10 ** 18} eth</p>
+            <p className="md:text-base text-sm">
+              {Number(parameters?.fee) / 10 ** 18} eth
+            </p>
           </div>
           <TransactionButton nextStep={nextStep} />
           <button
-            className="text-sm flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2"
+            className="flex items-center justify-center h-6 w-12 bg-white text-black rounded-2xl mt-2 md:text-sm text-xs"
             onClick={previousStep}
           >
             back
