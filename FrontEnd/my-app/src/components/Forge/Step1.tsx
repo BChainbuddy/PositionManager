@@ -23,14 +23,16 @@ export default function Step1({ nextStep, step }: Step1Props) {
       <p className="text-center text-[#01FF39] md:text-2xl text-lg">
         CREATE YOUR POSITION
       </p>
-      <div className="flex flex-row items-center md:space-x-2 space-x-1 self-end md:mr-10 mr-[10vw] mt-6 md:text-lg text-sm">
-        <p>INPUT TOKEN:</p>
-        <InputToken input={true} />
-      </div>
-      <InputSwitch />
-      <div className="flex flex-row items-center md:space-x-2 space-x-1 mt-4 self-end md:mr-10 mr-[10vw] md:text-lg text-sm">
-        <p>OUTPUT TOKEN:</p>
-        <InputToken input={false} />
+      <div className="flex flex-col w-fit justify-center items-center">
+        <div className="flex flex-row items-center md:space-x-2 space-x-1 self-end mt-6 md:text-lg text-sm">
+          <p>INPUT TOKEN:</p>
+          <InputToken input={true} />
+        </div>
+        <InputSwitch />
+        <div className="flex flex-row items-center md:space-x-2 space-x-1 mt-4 self-end md:text-lg text-sm">
+          <p>OUTPUT TOKEN:</p>
+          <InputToken input={false} />
+        </div>
       </div>
       <button
         className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6 md:text-base text-sm"

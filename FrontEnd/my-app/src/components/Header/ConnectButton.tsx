@@ -3,6 +3,7 @@
 import { client } from "@/lib/client";
 import { sepolia } from "thirdweb/chains";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
+import { FaWallet, FaCoins } from "react-icons/fa";
 
 interface ConnectButtonProps {
   signer: any;
@@ -41,7 +42,10 @@ export default function ConnectButton({
           ) : (
             <div className="w-fit gap-1 flex flex-col">
               <p className="text-[10px] md:text-xs">
-                Address:{" "}
+                <span className="md:inline hidden">Address: </span>
+                <span className="md:hidden inline">
+                  <FaWallet className="inline md:hidden text-xs" />{" "}
+                </span>
                 {account?.address.substring(0, 8) +
                   "..." +
                   account?.address.substring(
@@ -50,7 +54,10 @@ export default function ConnectButton({
                   )}
               </p>
               <p className="text-[10px] md:text-xs">
-                Balance:{" "}
+                <span className="md:inline hidden">Balance: </span>
+                <span className="md:hidden inline">
+                  <FaCoins className="inline md:hidden text-xs" />{" "}
+                </span>
                 {data.displayValue.toString().length > 9
                   ? data.displayValue.toString().substring(0, 8) +
                     " " +
