@@ -101,7 +101,7 @@ export default function Step3({ nextStep, previousStep, step }: Step3Props) {
           </div>
           <div className="flex flex-col mt-4 text-center relative group">
             <p className="text-center md:text-base text-sm">Expected Fee</p>
-            <div className="absolute top-6 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
+            <div className="absolute md:top-6 top-5 z-20 bg-[#01FF39] h-[0.1rem] w-0 left-[50%] translate-x-[-50%] transition-all duration-500 group-hover:w-20"></div>
             <p className="md:text-base text-sm">
               {Number(parameters?.fee) / 10 ** 18} eth
             </p>

@@ -35,7 +35,9 @@ export default function Step1({ nextStep, step }: Step1Props) {
         </div>
       </div>
       <button
-        className="flex items-center justify-center h-8 w-24 bg-[#01FF39] rounded-2xl text-black mt-6 md:text-base text-sm"
+        className={`flex items-center justify-center h-8 w-24 rounded-2xl text-black mt-6 md:text-base text-sm transition-all duration-300 ${
+          !outputToken || !inputToken ? "bg-[#01FF3995]" : "bg-[#01FF39]"
+        }`}
         onClick={nextStep}
         disabled={!outputToken || !inputToken}
       >
